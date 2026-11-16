@@ -32,7 +32,7 @@ const metaTag = (html: string, attr: string, name: string) => {
 };
 
 const STOP = new Set(["a", "an", "the", "in", "on", "for", "of", "to", "and", "or", "with", "your", "my", "is", "at", "by"]);
-const stem = (w: string) => (w.length > 3 ? w.replace(/(es|s)$/, "") : w);
+const stem = (w: string) => (w.length > 3 ? w.replace(/(ch|sh|s|x|z)es$/, "$1").replace(/s$/, "") : w);
 export const keywordWords = (k: string) => k.toLowerCase().split(/[^a-z0-9]+/).filter((w) => w && !STOP.has(w)).map(stem);
 /** Share of the keyword's words found in the text (0–1). */
 export function keywordMatch(keyword: string, text: string): number {
@@ -60,7 +60,7 @@ function analyse(route: SeoRoute, html: string, status: number, seo: SeoDoc): Pa
   const imgs = [...main.matchAll(/<img[^>]*>/gi)].map((m) => m[0]);
   const noAlt = imgs.filter((t) => !/\salt="/i.test(t)).length;
   const internal = new Set([...main.matchAll(/<a[^>]*href="(\/[^"#?]*)/gi)].map((m) => m[1])).size;
-  const focusKeyword = seo.pages[route.path]?.focusKeyword ?? "";
+  const focusKeyword = seo.pages[route.path]?.focusKeyword || route.keyword;
   const noindex = !!seo.pages[route.path]?.noindex;
   const checks: Check[] = [];
   const add = (label: string, level: Level, detail: string) => checks.push({ label, level, detail });
@@ -78,7 +78,8 @@ function analyse(route: SeoRoute, html: string, status: number, seo: SeoDoc): Pa
     const level = (m: number): Level => (m === 1 ? "good" : m >= 0.6 ? "ok" : "bad");
     add("Keyword in title", level(keywordMatch(focusKeyword, title)), `“${focusKeyword}” in the search title.`);
     add("Keyword in description", level(keywordMatch(focusKeyword, description)), `“${focusKeyword}” in the search description.`);
-    if (route.kind !== "home") add("Keyword in address", keywordMatch(focusKeyword, route.path) === 1 ? "good" : "ok", `The page address is ${route.path}.`);
+    // page addresses are fixed, so this is only credited when it matches (not counted against the page otherwise)
+    if (keywordMatch(focusKeyword, route.path) === 1) add("Keyword in address", "good", `The page address is ${route.path}.`);
     add("Keyword early in the text", keywordMatch(focusKeyword, text.split(" ").slice(0, 120).join(" ")) >= 0.75 ? "good" : "ok", "Checked in the first 120 words.");
     if (words >= 150) {
       const density = (phraseCount(focusKeyword, text) * keywordWords(focusKeyword).length) / words;

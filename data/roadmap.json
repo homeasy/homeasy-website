@@ -26,5 +26,5 @@
   },
   { "period": "Later", "title": "More cities in Bihar and across India", "status": "planned" },
   { "period": "Later", "title": "Homeasy Care plan and \"Moves with you\" service", "status": "planned" },
-  { "period": "Later", "title": "Voice control, energy insights, other smart brands in the app", "status": "planned" }
+  { "period": "Later", "title": "Voice control, energy insights, other smart brands in the app", "detail": "Voice control with Alexa and Google Assistant is planned. It is not available yet.", "status": "planned" }
 ]

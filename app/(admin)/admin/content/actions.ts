@@ -7,7 +7,7 @@ import { conform, schemaOf } from "@/lib/content/shape";
 import { saveDraft } from "@/lib/content/store";
 
 type Result = { ok: boolean; error?: string; data?: unknown };
-const GENERAL: ContentKey[] = ["home", "faq", "packages", "contact"];
+const GENERAL: ContentKey[] = ["home", "faq", "packages", "legal", "contact"];
 const FAILED = "Could not save. Check that storage is connected (in Supabase, run supabase/03-content.sql once).";
 
 function checkContact(c: (typeof SEEDS)["contact"]): string | null {
@@ -25,8 +25,8 @@ function checkContact(c: (typeof SEEDS)["contact"]): string | null {
 export async function saveContent(key: string, data: unknown): Promise<Result> {
   await requireAdmin();
   if (!GENERAL.includes(key as ContentKey)) return { ok: false, error: "Unknown document." };
-  const k = key as "home" | "faq" | "packages" | "contact";
-  if (JSON.stringify(data ?? null).length > 300_000) return { ok: false, error: "That is too much text to save." };
+  const k = key as "home" | "faq" | "packages" | "legal" | "contact";
+  if (JSON.stringify(data ?? null).length > 400_000) return { ok: false, error: "That is too much text to save." };
   const clean = conform(schemaOf(SEEDS[k]), data);
   if (k === "contact") {
     const problem = checkContact(clean as (typeof SEEDS)["contact"]);
@@ -40,7 +40,7 @@ export async function saveContent(key: string, data: unknown): Promise<Result> {
 export async function resetContent(key: string): Promise<Result> {
   await requireAdmin();
   if (!GENERAL.includes(key as ContentKey)) return { ok: false, error: "Unknown document." };
-  const k = key as "home" | "faq" | "packages" | "contact";
+  const k = key as "home" | "faq" | "packages" | "legal" | "contact";
   if (!(await saveDraft(k, SEEDS[k] as never))) return { ok: false, error: FAILED };
   refresh();
   return { ok: true, data: SEEDS[k] };

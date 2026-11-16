@@ -9,7 +9,7 @@ const LABEL = "mb-1.5 flex items-baseline justify-between text-xs font-medium up
 const count = (n: number, best: number) => <span className={`normal-case tracking-normal ${n > best ? "text-amber" : "text-ash"}`}>({n}/{best})</span>;
 
 /** Search title, description and keywords for one page, with a preview of the Google result. */
-export function SeoPanel({ path, address, saved, live }: { path: string; address: string; saved: SeoPage; live: { title: string; description: string } }) {
+export function SeoPanel({ path, address, saved, live }: { path: string; address: string; saved: SeoPage; live: { title: string; description: string; keyword: string } }) {
   const toast = useToast();
   const [busy, start] = useTransition();
   const [v, setV] = useState({ ...saved, keywords: saved.keywords.join(", ") });
@@ -36,7 +36,7 @@ export function SeoPanel({ path, address, saved, live }: { path: string; address
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
           <span className={LABEL}>Focus keyword</span>
-          <input value={v.focusKeyword} maxLength={80} placeholder="e.g. smart home in patna" onChange={(e) => set({ focusKeyword: e.target.value })} className="adm-control" />
+          <input value={v.focusKeyword} maxLength={80} placeholder={live.keyword} onChange={(e) => set({ focusKeyword: e.target.value })} className="adm-control" />
         </label>
         <label className="block">
           <span className={LABEL}>Other keywords</span>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import {
   BedDouble,
@@ -20,7 +21,8 @@ import { usp } from "@/lib/flags";
 
 const pageMeta: Metadata = {
   title: "Smart Retrofit for Government Buildings — Homeasy",
-  description: "Central control and schedules for lights and fans in public buildings, without rewiring.",
+  description:
+    "Smart retrofit for government buildings and institutions: central control and schedules for lights and fans, without rewiring.",
 };
 
 export function generateMetadata() {
@@ -65,7 +67,7 @@ export default async function GovernmentPage() {
       <PageHero
         eyebrow="Government and institutions"
         title="Smarter, energy-efficient public buildings — without rewiring."
-        sub="Homeasy retrofit gives departments central control and schedules for lights, fans and appliances across quarters, hostels and offices."
+        sub="Smart retrofit for government buildings: Homeasy gives departments central control and schedules for lights, fans and appliances across quarters, hostels and offices."
       >
         <a href="#enquire" className="btn btn-primary min-h-12 px-6">
           Request a proposal
@@ -111,6 +113,8 @@ export default async function GovernmentPage() {
           </div>
         </div>
       </Section>
+
+      <Related paths={["/how-it-works", "/installation", "/contact"]} />
 
       <CtaBand
         title="Start with one building"

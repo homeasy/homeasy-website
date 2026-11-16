@@ -31,6 +31,8 @@ async function Keywords() {
     console.error(e);
     loadError = dbErrorHint(e);
   }
+  const tracked = new Set(keywords.map((k) => k.term));
+  const recommended = new Set(SEO_ROUTES.flatMap((r) => [r.keyword, ...r.keywords]).filter((t) => !tracked.has(t))).size;
   const count = (c: Coverage) => keywords.filter((k) => coverage[k.id] === c).length;
   return (
     <AdminShell mode={dbMode()}>
@@ -41,7 +43,7 @@ async function Keywords() {
         <Kpi label="Well covered" value={count("strong")} />
         <Kpi label="Content gaps" value={count("missing") + count("unassigned")} sub="Missing or no page" />
       </div>
-      <KeywordsBoard keywords={keywords} coverage={coverage} pages={SEO_ROUTES.map((r) => ({ path: r.path, label: r.label }))} />
+      <KeywordsBoard keywords={keywords} coverage={coverage} pages={SEO_ROUTES.map((r) => ({ path: r.path, label: r.label }))} recommended={recommended} />
       <p className="mt-4 text-xs text-ash">Positions are typed in by hand from Google Search Console. This list is for your own planning and is never shown on the website.</p>
     </AdminShell>
   );

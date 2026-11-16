@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { getContent } from "@/lib/content/store";
@@ -9,8 +10,9 @@ import { CtaBand } from "@/components/ui/CtaBand";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
 
 const pageMeta: Metadata = {
-  title: "Homeasy FAQ — Smart Retrofit Questions Answered",
-  description: "Switches, wiring, installation, app, pricing and support.",
+  title: "Homeasy FAQ — Smart Home Retrofit Questions Answered",
+  description:
+    "Homeasy FAQ: clear answers on switches, wiring, installation, the app, pricing, warranty and support for a smart home retrofit in Bihar.",
 };
 
 export function generateMetadata() {
@@ -86,7 +88,7 @@ export default async function FaqPage() {
       <PageHero
         eyebrow="FAQ"
         title="Questions, answered simply"
-        sub="Switches, wiring, installation, app, pricing and support."
+        sub="The Homeasy FAQ: switches, wiring, installation, app, pricing and support."
       />
 
       <Section>
@@ -161,6 +163,8 @@ export default async function FaqPage() {
           </div>
         </div>
       </Section>
+
+      <Related paths={["/how-it-works", "/pricing", "/warranty"]} />
 
       <CtaBand />
     </>

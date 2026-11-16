@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { Gift, GraduationCap, Headset, Wallet } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
@@ -6,8 +7,9 @@ import { CtaBand } from "@/components/ui/CtaBand";
 import { CheckList, EnquiryCard, FeatureGrid, StepList, type Feature } from "@/components/catalog";
 
 const pageMeta: Metadata = {
-  title: "Join the Homeasy Electrician Network",
-  description: "Learn smart-home installation and take paid jobs from Homeasy. Training and support by the Homeasy team.",
+  title: "Smart Home Installation Training for Electricians",
+  description:
+    "Smart home installation training for electricians: join the Homeasy electrician network in Bihar and take paid jobs, with support from our team.",
 };
 
 export function generateMetadata() {
@@ -38,7 +40,7 @@ export default function ElectriciansPage() {
       <PageHero
         eyebrow="Electricians"
         title="Grow your work with Homeasy."
-        sub="We are building the Homeasy electrician network in Bihar, starting in Patna. Learn smart-home installation and take on new work."
+        sub="We are building the Homeasy electrician network in Bihar, starting in Patna. Get smart home installation training and take on new work."
       >
         <a href="#enquire" className="btn btn-primary min-h-12 px-6">
           Join the network
@@ -76,6 +78,8 @@ export default function ElectriciansPage() {
           </div>
         </div>
       </Section>
+
+      <Related paths={["/installation", "/careers", "/contact"]} />
 
       <CtaBand
         title="Know a home that wants to go smart?"

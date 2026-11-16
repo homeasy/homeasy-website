@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,8 +9,9 @@ import { flags, usp } from "@/lib/flags";
 import { getSite } from "@/lib/site-live";
 
 const pageMeta: Metadata = {
-  title: "Homeasy for Investors",
-  description: "Bringing smart living to India's traditional homes.",
+  title: "Homeasy for Investors — Smart Retrofit for India",
+  description:
+    "Homeasy for investors: bringing smart living to India's traditional homes by retrofitting the switchboxes people already have.",
 };
 
 export function generateMetadata() {
@@ -68,7 +70,7 @@ export default async function InvestorsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Investors"
+        eyebrow="Homeasy for investors"
         title="Bringing smart living to India's traditional homes."
         sub="Most Indian homes can't go smart without rewiring. Homeasy makes it possible with retrofit modules, professional installation and a free app."
       >
@@ -136,6 +138,8 @@ export default async function InvestorsPage() {
           </div>
         </div>
       </Section>
+
+      <Related paths={["/about", "/roadmap", "/how-it-works"]} />
 
       <CtaBand />
     </>

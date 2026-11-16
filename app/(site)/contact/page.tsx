@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
@@ -9,8 +10,9 @@ import { usp } from "@/lib/flags";
 import { getSite } from "@/lib/site-live";
 
 const pageMeta: Metadata = {
-  title: "Contact Homeasy — Patna",
-  description: "Call, WhatsApp or email Homeasy for a free home survey or partnership.",
+  title: "Contact Homeasy — Call, WhatsApp or Email, Patna",
+  description:
+    "Contact Homeasy in Patna by phone, WhatsApp or email to book a free home survey, ask a question or discuss a business partnership.",
 };
 
 export function generateMetadata() {
@@ -34,7 +36,7 @@ export default async function ContactPage() {
       <PageHero
         eyebrow="Contact"
         title="Get in touch"
-        sub="Questions, partnerships or press — we'd love to hear from you."
+        sub="Contact Homeasy with questions, partnerships or press — we'd love to hear from you."
       />
 
       <Section>
@@ -102,6 +104,34 @@ export default async function ContactPage() {
           .
         </p>
       </Section>
+
+      <Section>
+        <SectionHeading title="What happens after you contact us" />
+        <ol className="mt-10 grid gap-4 md:grid-cols-3">
+          {[
+            ["Tell us about your home", "Share your pincode and what you want to control: lights, fans, geyser, AC or TV. A photo of your switchboard helps."],
+            ["We book a free home survey", "Our electrician visits, checks your switchboxes and wiring, and tells you what can be made smart. The survey is free across Bihar."],
+            ["You get a written quote", "You see the modules, installation and app setup in writing before any work starts. You decide after you see it."],
+          ].map(([title, body], i) => (
+            <li key={title} className="min-w-0">
+              <Card className="h-full">
+                <p className="text-[13px] font-semibold uppercase tracking-[0.1em] text-slate">Step {i + 1}</p>
+                <h3 className="mt-2 text-h4">{title}</h3>
+                <p className="mt-2 text-body">{body}</p>
+              </Card>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-8 max-w-[720px] text-body">
+          Interior designer, builder, electrician or government department? See{" "}
+          <Link href="/solutions" className="link">
+            Homeasy for business
+          </Link>{" "}
+          and write to us about your project.
+        </p>
+      </Section>
+
+      <Related paths={["/book-survey", "/faq", "/how-it-works"]} />
 
       <CtaBand />
     </>

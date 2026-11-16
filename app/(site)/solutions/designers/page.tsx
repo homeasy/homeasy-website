@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { CalendarClock, Gem, Hammer, Headset, MonitorPlay, PencilRuler, Wallet, Wrench } from "lucide-react";
 import { Faq, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
@@ -8,7 +9,8 @@ import { flags, usp } from "@/lib/flags";
 
 const pageMeta: Metadata = {
   title: "Smart Home Solutions for Interior Designers — Homeasy",
-  description: "Add smart control behind existing switchboards — no design change, no rewiring.",
+  description:
+    "Smart home solutions for interior designers: add smart control behind the existing switchboards, with no design change and no rewiring.",
 };
 
 export function generateMetadata() {
@@ -66,7 +68,7 @@ export default function DesignersPage() {
       <PageHero
         eyebrow="Interior designers and architects"
         title="Smart homes without changing your design."
-        sub="Add smart control behind the switchboards your clients chose. No wall chasing, no redesign."
+        sub="Smart home solutions for interior designers and architects: add smart control behind the switchboards your clients chose. No wall chasing, no redesign."
       >
         <a href="#enquire" className="btn btn-primary min-h-12 px-6">
           Become a design partner
@@ -110,6 +112,8 @@ export default function DesignersPage() {
           </div>
         </div>
       </Section>
+
+      <Related paths={["/how-it-works", "/products", "/solutions/builders"]} />
 
       <CtaBand
         title="Planning a project now?"

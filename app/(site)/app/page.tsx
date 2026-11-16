@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import {
@@ -20,8 +21,9 @@ import { FeatureGrid, IconTile, type Feature } from "@/components/catalog";
 import { flags, usp } from "@/lib/flags";
 
 const pageMeta: Metadata = {
-  title: "Homeasy App — Control Your Whole Home",
-  description: "Rooms, scenes, schedules and family sharing. Free for every Homeasy customer.",
+  title: "Homeasy Smart Home App — Control Your Whole Home",
+  description:
+    "The Homeasy smart home app puts every room on your phone: rooms, scenes, schedules and family sharing. Free for every Homeasy customer.",
 };
 
 export function generateMetadata() {
@@ -76,8 +78,8 @@ export default function AppPage() {
         title="One easy app for your whole home."
         sub={
           live
-            ? "Free for every Homeasy customer, on Android and iOS. We set it up for you at installation."
-            : "Free for every Homeasy customer. Android and iOS versions are coming soon."
+            ? "The Homeasy smart home app is free for every Homeasy customer, on Android and iOS. We set it up for you at installation."
+            : "The Homeasy smart home app is free for every Homeasy customer. Android and iOS versions are coming soon."
         }
       >
         {/* Store badges go here once APP_LIVE=true and the store links exist. */}
@@ -140,6 +142,8 @@ export default function AppPage() {
           }
         />
       </Section>
+
+      <Related paths={["/how-it-works", "/products", "/faq"]} />
 
       <CtaBand
         title="Get the app with your installation"

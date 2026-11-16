@@ -1,5 +1,6 @@
 import { SurveyForm } from "@/components/forms/SurveyForm";
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { Check, Phone } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
@@ -9,7 +10,7 @@ import { getSite } from "@/lib/site-live";
 const pageMeta: Metadata = {
   title: "Book a Free Home Survey — Homeasy",
   description:
-    "Book a free Homeasy home survey anywhere in Bihar. We check your switchboxes and wiring and give you a fixed quote. No obligation.",
+    "Book a free home survey with Homeasy anywhere in Bihar. We check your switchboxes and wiring and give you a fixed quote. No obligation.",
 };
 
 export function generateMetadata() {
@@ -88,6 +89,7 @@ export default async function BookSurveyPage() {
           <Steps items={SURVEY_STEPS} />
         </div>
       </Section>
+      <Related paths={["/how-it-works", "/pricing", "/faq"]} />
     </>
   );
 }

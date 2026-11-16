@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { Plus, Search, Trash2 } from "lucide-react";
-import { addKeyword, deleteKeyword, keywordIdeas, updateKeyword } from "@/app/(admin)/admin/seo/actions";
+import { addKeyword, deleteKeyword, importRecommendedKeywords, keywordIdeas, updateKeyword } from "@/app/(admin)/admin/seo/actions";
 import { KEYWORD_STATUSES, type Coverage, type Keyword } from "@/lib/seo/keywords";
 import { useToast } from "./toast";
 import { Pill } from "./ui";
@@ -16,7 +16,7 @@ const COVER: Record<Coverage, { label: string; tone: "green" | "amber" | "red" |
   unassigned: { label: "No page chosen", tone: "grey" },
 };
 
-export function KeywordsBoard({ keywords, coverage, pages }: { keywords: Keyword[]; coverage: Record<string, Coverage>; pages: { path: string; label: string }[] }) {
+export function KeywordsBoard({ keywords, coverage, pages, recommended }: { keywords: Keyword[]; coverage: Record<string, Coverage>; pages: { path: string; label: string }[]; recommended: number }) {
   const toast = useToast();
   const [busy, start] = useTransition();
   const [term, setTerm] = useState("");
@@ -77,6 +77,21 @@ export function KeywordsBoard({ keywords, coverage, pages }: { keywords: Keyword
           </button>
         </form>
         <div className="flex flex-wrap items-center gap-2 border-b border-navy-700 px-4 py-3">
+          {recommended > 0 && (
+            <button
+              type="button"
+              disabled={busy}
+              className="adm-btn adm-btn-secondary"
+              onClick={() =>
+                start(async () => {
+                  const r = await importRecommendedKeywords();
+                  toast(r.ok ? "success" : "error", r.ok ? `${r.added} keywords added.` : (r.error ?? "Could not import."));
+                })
+              }
+            >
+              Import recommended ({recommended})
+            </button>
+          )}
           <input value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Search keywords" aria-label="Search keywords" className="adm-control w-full sm:w-56" />
           <select value={cover} onChange={(e) => setCover(e.target.value)} aria-label="Coverage" className="adm-control w-auto">
             <option value="">All coverage</option>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { ProductCard } from "@/components/catalog/ProductCard";
@@ -15,9 +16,9 @@ import { CtaBand } from "@/components/ui/CtaBand";
 import { IconTile } from "@/components/catalog";
 
 const pageMeta: Metadata = {
-  title: "Homeasy Smart Modules for Indian Switchboxes",
+  title: "Homeasy Smart Switch Module Range for Indian Homes",
   description:
-    "Smart relay, fan controller, power module and IR remote — installed inside your existing switchbox.",
+    "Every Homeasy smart switch module for lights, fans, geysers and ACs: smart relay, fan controller, power module and IR remote, inside your existing switchbox.",
 };
 
 export function generateMetadata() {
@@ -39,7 +40,7 @@ export default async function ProductsPage() {
       <PageHero
         eyebrow="Products"
         title="Homeasy smart modules"
-        sub="Designed to fit inside Indian switchboxes and make everyday appliances smart."
+        sub="Each Homeasy smart switch module is designed to fit inside Indian switchboxes and make everyday appliances smart."
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
           Book a free home survey
@@ -82,6 +83,30 @@ export default async function ProductsPage() {
           </Link>
         </p>
       </Section>
+
+      <Section tone="cloud">
+        <div className="max-w-[760px]">
+          <h2 className="text-h3 leading-[1.15]">Wi-Fi, Alexa and Google Home</h2>
+          <h3 className="mt-8 text-h4">Is this a Wi-Fi smart switch?</h3>
+          <p className="mt-2 text-body">
+            App control needs Wi-Fi and internet at home. Your switches always work by hand, even when the Wi-Fi or internet is down.
+          </p>
+          <h3 className="mt-6 text-h4">Does it work with Alexa or Google Home?</h3>
+          <p className="mt-2 text-body">
+            Not yet. Voice control with Alexa and Google Assistant is planned, and we will announce it only when it is ready. See the{" "}
+            <Link href="/roadmap" className="link">
+              roadmap
+            </Link>{" "}
+            and the{" "}
+            <Link href="/faq" className="link">
+              FAQ
+            </Link>
+            .
+          </p>
+        </div>
+      </Section>
+
+      <Related paths={["/how-it-works", "/pricing", "/installation"]} />
 
       <CtaBand
         title="Not sure which modules you need?"

@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { FileWarning } from "lucide-react";
+import Link from "next/link";
 import { PageHero, Section } from "@/components/ui";
+import { SEO_ROUTES } from "@/lib/seo/routes";
 import { getSite } from "@/lib/site-live";
 
 /** Static on purpose: update by hand when a legal page changes (no `new Date()` in server components). */
@@ -52,6 +54,18 @@ export function LegalPage({
           )}
           <p className={`${draft ? "mt-6" : ""} text-[15px] text-slate`}>{dates ?? `Last updated: ${LEGAL_LAST_UPDATED}`}</p>
           <div className={`mt-8 ${PROSE}`}>{children}</div>
+          <nav aria-label="Related pages" className="mt-12 border-t border-line pt-6">
+            <h2 className="text-[1.0625rem] font-semibold text-ink">Related pages</h2>
+            <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1">
+              {[...SEO_ROUTES.filter((r) => r.kind === "legal"), ...SEO_ROUTES.filter((r) => ["/warranty", "/contact"].includes(r.path))].map((r) => (
+                <li key={r.path}>
+                  <Link href={r.path} className="link inline-flex min-h-11 items-center">
+                    {r.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </Section>
     </>

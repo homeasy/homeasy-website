@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -8,9 +9,9 @@ import { BulletList, Callout, PromiseStatus, live } from "@/components/service";
 import { getSite } from "@/lib/site-live";
 
 const pageMeta: Metadata = {
-  title: "The Homeasy Promise, in Writing — Homeasy",
+  title: "The Homeasy Guarantee: Our Promises in Writing",
   description:
-    "Our draft guarantee terms: same-look installation, fixed price, WhatsApp replies, technician visits in Patna and a 3-year module warranty.",
+    "The Homeasy guarantee, in draft: same-look installation, fixed price, WhatsApp replies, technician visits in Patna and a 3-year module warranty.",
 };
 
 export function generateMetadata() {
@@ -148,7 +149,7 @@ export default async function GuaranteePage() {
       <PageHero
         eyebrow="Guarantee"
         title="The Homeasy promise. In writing."
-        sub="Five promises we make to every Homeasy customer, and exactly what they mean."
+        sub="The Homeasy guarantee: five promises we make to every Homeasy customer, and exactly what they mean."
       />
 
       <Section>
@@ -228,6 +229,8 @@ export default async function GuaranteePage() {
           .
         </p>
       </Section>
+
+      <Related paths={["/warranty", "/installation", "/faq"]} />
 
       <CtaBand />
     </>

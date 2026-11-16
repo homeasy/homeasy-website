@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { getContent } from "@/lib/content/store";
@@ -8,8 +9,9 @@ import { CheckList } from "@/components/catalog";
 import { flags, usp, type UspId } from "@/lib/flags";
 
 const pageMeta: Metadata = {
-  title: "Homeasy Packages — Smart Room to Full Smart Home",
-  description: "Simple smart-home packages. Exact price confirmed after a free home survey.",
+  title: "Home Automation Cost and Packages — Homeasy",
+  description:
+    "Home automation cost with Homeasy: simple packages from one room to the full home. Your exact price is confirmed after a free home survey.",
 };
 
 export function generateMetadata() {
@@ -62,8 +64,8 @@ export default async function PricingPage() {
         title="Simple packages. Exact price after a free survey."
         sub={
           fixedPrice
-            ? "One fixed price for modules, installation, app setup and GST. What we quote is what you pay."
-            : "Pick a starting point. We confirm your exact price in writing after a free home survey."
+            ? "Home automation cost, made simple: one fixed price for modules, installation, app setup and GST. What we quote is what you pay."
+            : "Home automation cost depends on how many rooms and appliances you want to control. Pick a starting point; we confirm your exact price in writing after a free home survey."
         }
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
@@ -163,6 +165,8 @@ export default async function PricingPage() {
           </div>
         </div>
       </Section>
+
+      <Related paths={["/products", "/installation", "/faq"]} />
 
       <CtaBand />
     </>

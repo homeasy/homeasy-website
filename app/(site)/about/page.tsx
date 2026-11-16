@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import type { ReactNode } from "react";
 import Image from "next/image";
@@ -28,9 +29,9 @@ import { LinkedInIcon } from "@/components/icons/brand-icons";
 import { getSite } from "@/lib/site-live";
 
 const pageMeta: Metadata = {
-  title: "About Homeasy — Smart Home Retrofit Company, Patna",
+  title: "About Homeasy — Home Automation Company in Patna",
   description:
-    "Homeasy Automation Pvt. Ltd. (founded 2025, Patna) makes traditional homes smart without rewiring.",
+    "Homeasy Automation Pvt. Ltd. is a home automation company in Patna, founded in 2025, that makes traditional homes smart without rewiring.",
 };
 
 export function generateMetadata() {
@@ -111,7 +112,7 @@ export default async function AboutPage() {
       <PageHero
         eyebrow="About Homeasy"
         title="Making Indian homes smart — the easy way."
-        sub="Homeasy is a Patna-based company converting traditional homes into smart homes, without changing switches or rewiring."
+        sub="Homeasy is a home automation company in Patna converting traditional homes into smart homes, without changing switches or rewiring."
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
           Book a free survey
@@ -291,6 +292,8 @@ export default async function AboutPage() {
           </dl>
         </Card>
       </Section>
+
+      <Related paths={["/how-it-works", "/careers", "/contact"]} />
 
       <CtaBand />
     </>

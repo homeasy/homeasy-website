@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { ArrowRight, Building2, Landmark, PencilRuler, Wrench, type LucideIcon } from "lucide-react";
@@ -7,9 +8,9 @@ import { CtaBand } from "@/components/ui/CtaBand";
 import { IconTile } from "@/components/catalog";
 
 const pageMeta: Metadata = {
-  title: "Homeasy for Business — Smart Retrofit Solutions",
+  title: "Smart Home Solutions for Business — Homeasy",
   description:
-    "Smart retrofit for interior designers, builders, electricians and government buildings. No rewiring, no new switchboards.",
+    "Smart home solutions for interior designers, builders, electricians and government buildings: retrofit with no rewiring and no new switchboards.",
 };
 
 export function generateMetadata() {
@@ -50,7 +51,7 @@ export default function SolutionsPage() {
       <PageHero
         eyebrow="Solutions"
         title="Homeasy for business"
-        sub="Smart retrofit for the people who build, design, wire and run India's buildings."
+        sub="Smart home solutions, by retrofit, for the people who build, design, wire and run India's buildings."
       />
 
       <Section>
@@ -78,6 +79,31 @@ export default function SolutionsPage() {
           </Link>
         </p>
       </Section>
+
+      <Section tone="cloud">
+        <h2 className="text-h3 leading-[1.15]">Why retrofit works for projects</h2>
+        <ul className="mt-8 grid gap-4 md:grid-cols-3">
+          {[
+            ["No rewiring", "Homeasy modules fit inside the existing switchbox, behind the switches already installed. Walls and finishes stay untouched."],
+            ["The design stays the same", "From the outside, the switchboard looks the same. If a switchbox needs a visible change, we agree it with you in the quote first."],
+            ["One team, survey to support", "We survey, quote, install, set up the app and support it, so you deal with one company from start to finish."],
+          ].map(([title, body]) => (
+            <li key={title} className="min-w-0">
+              <Card className="h-full">
+                <h3 className="text-h4">{title}</h3>
+                <p className="mt-2 text-body">{body}</p>
+              </Card>
+            </li>
+          ))}
+        </ul>
+        <h2 className="mt-12 text-h4">How a project starts</h2>
+        <p className="mt-3 max-w-[720px] text-body">
+          Tell us about the building and what needs control. We survey the site, share a written quote and agree an installation plan with you. Homes, flats,
+          offices, shops and public buildings in Bihar are all in scope; our base is Patna.
+        </p>
+      </Section>
+
+      <Related paths={["/how-it-works", "/products", "/contact"]} />
 
       <CtaBand
         title="Have a home, not a project?"

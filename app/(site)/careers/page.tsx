@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { Home, MapPin, UserCheck } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
@@ -7,8 +8,9 @@ import jobsData from "@/data/jobs.json";
 import { getSite } from "@/lib/site-live";
 
 const pageMeta: Metadata = {
-  title: "Careers at Homeasy",
-  description: "Join Homeasy and help make Indian homes smart.",
+  title: "Careers at Homeasy — Help Make Indian Homes Smart",
+  description:
+    "Careers at Homeasy: join us in Patna, Bihar and help make traditional Indian homes smart. See how to apply and what we look for.",
 };
 
 export function generateMetadata() {
@@ -41,7 +43,7 @@ export default async function CareersPage() {
   return (
     <>
       <PageHero
-        eyebrow="Careers"
+        eyebrow="Careers at Homeasy"
         title="Help us make Indian homes smart."
         sub="We're a small, focused team in Patna building hardware, software and service that families can trust."
       />
@@ -109,6 +111,29 @@ export default async function CareersPage() {
           </ul>
         </div>
       </Section>
+
+      <Section>
+        <SectionHeading title="How to apply" />
+        <div className="mt-8 max-w-[720px] space-y-4 text-body">
+          <p>
+            Email your profile to{" "}
+            <a href={careersMail} className="link">
+              {site.contact.email}
+            </a>{" "}
+            with the role you are interested in and a few lines on work you have done. We are a small team, so tell us what you would like to own. You do not need to wait for a role to be listed here.
+          </p>
+          <p>
+            <strong className="font-semibold text-ink">What we build:</strong> retrofit modules that fit inside existing switchboxes, the Homeasy app, and the
+            survey-to-support service around them.
+          </p>
+          <p>
+            <strong className="font-semibold text-ink">Where we work:</strong> Homeasy is based in Patna, Bihar. Installation roles work in customers&apos; homes
+            across our service area.
+          </p>
+        </div>
+      </Section>
+
+      <Related paths={["/about", "/solutions/electricians", "/contact"]} />
 
       <CtaBand />
     </>

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
-import { Activity, CircleHelp, ExternalLink, Gauge, Globe, Home, Inbox, Layers, Phone, Search, Type, LayoutDashboard, LogOut, Menu, Package, Server, Settings, ShoppingBag, X, type LucideIcon } from "lucide-react";
+import { Activity, CircleHelp, ExternalLink, FileText, Gauge, Globe, Home, Inbox, Layers, Phone, Search, Type, LayoutDashboard, LogOut, Menu, Package, Server, Settings, ShoppingBag, X, type LucideIcon } from "lucide-react";
 import { logout } from "@/app/(admin)/admin/actions";
 import { ToastProvider } from "./toast";
 
@@ -25,6 +25,7 @@ const NAV: { group: string; items: { href: string; label: string; icon: LucideIc
       { href: "/admin/content/home", label: "Homepage", icon: Home },
       { href: "/admin/content/faq", label: "FAQ", icon: CircleHelp },
       { href: "/admin/content/packages", label: "Packages", icon: Layers },
+      { href: "/admin/content/legal", label: "Policies & terms", icon: FileText },
       { href: "/admin/contact", label: "Contact & socials", icon: Phone },
     ],
   },

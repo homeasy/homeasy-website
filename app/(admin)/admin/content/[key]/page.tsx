@@ -39,6 +39,20 @@ async function Editor({ params }: { params: Promise<{ key: string }> }) {
         Write only what is true today: no prices, certifications, install counts or promises that are not final. Changes are saved as a draft and go live when you
         press <strong className="text-white">Publish changes</strong>.
       </p>
+      {k === "legal" && (
+        <div className="mb-6 rounded-lg border border-navy-700 bg-navy px-4 py-3 text-sm text-mist">
+          <p className="font-medium text-white">How to write the text</p>
+          <p className="mt-1">
+            Start a line with <code className="text-amber">## </code> for a heading, <code className="text-amber">### </code> for a smaller heading and{" "}
+            <code className="text-amber">- </code> for a bullet. Leave an empty line between paragraphs. <code className="text-amber">**bold**</code> makes bold
+            and <code className="text-amber">[words](/page)</code> makes a link.
+          </p>
+          <p className="mt-1">
+            <code className="text-amber">{"{phone}"}</code> <code className="text-amber">{"{email}"}</code> <code className="text-amber">{"{address}"}</code>{" "}
+            <code className="text-amber">{"{hours}"}</code> are filled in from Contact &amp; socials. “Draft” shows the “under legal review” notice on the page.
+          </p>
+        </div>
+      )}
       {draft ? (
         <ContentEditor key={k} docKey={k} schema={schemaOf(SEEDS[k]) as Extract<Schema, { t: "object" }>} initial={draft.data} canReset={draft.saved} />
       ) : (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { Box, Camera, Check, Cpu, Smartphone, ToggleRight, Wifi, WifiOff, Zap } from "lucide-react";
@@ -9,9 +10,9 @@ import { CtaBand } from "@/components/ui/CtaBand";
 import { Callout, SurveyChecklist, live, replyLine, visitLine } from "@/components/service";
 
 const pageMeta: Metadata = {
-  title: "How Homeasy Works — Smart Retrofit Without Rewiring",
+  title: "How Homeasy Works — Retrofit Smart Switch, No Rewiring",
   description:
-    "See how Homeasy fits smart modules behind your existing switches. Free survey, professional installation, easy app.",
+    "See how Homeasy fits a retrofit smart switch module behind your existing switches to make them smart. Free survey, professional installation, easy app.",
 };
 
 export function generateMetadata() {
@@ -118,7 +119,7 @@ export default async function HowItWorksPage() {
       <PageHero
         eyebrow="How it works"
         title="How Homeasy makes your home smart"
-        sub="Small modules, inside your existing switchbox. Same switches. Smarter home."
+        sub="Homeasy fits a retrofit smart switch module inside your existing switchbox, behind the switches you already have. It is the simple way to convert a normal switch to a smart switch, with no rewiring. Same switches. Smarter home."
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
           Book a free home survey
@@ -280,6 +281,8 @@ export default async function HowItWorksPage() {
           </p>
         </div>
       </Section>
+
+      <Related paths={["/products", "/installation", "/pricing"]} />
 
       <CtaBand title="Ready to see what's possible in your home?" />
     </>

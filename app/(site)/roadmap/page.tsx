@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { PageHero, Section, StatusBadge } from "@/components/ui";
@@ -6,8 +7,9 @@ import { CtaBand } from "@/components/ui/CtaBand";
 import roadmapData from "@/data/roadmap.json";
 
 const pageMeta: Metadata = {
-  title: "Homeasy Roadmap",
-  description: "What we've built and what's next for Homeasy in India.",
+  title: "Homeasy Roadmap — What Is Live and What Is Planned",
+  description:
+    "The Homeasy roadmap: what is available today and what is planned next for smart home retrofit in India, each item clearly marked.",
 };
 
 export function generateMetadata() {
@@ -42,7 +44,7 @@ export default function RoadmapPage() {
       <PageHero
         eyebrow="Roadmap"
         title="Where Homeasy is headed"
-        sub="What we've done, what we're building, and what's next. Plans may change — we'll keep this page honest."
+        sub="The Homeasy roadmap: what we've done, what we're building, and what's next. Plans may change — we'll keep this page honest."
       />
 
       <Section>
@@ -66,6 +68,12 @@ export default function RoadmapPage() {
         <p className="mt-10 max-w-[760px] rounded-card border border-line bg-cloud p-5 text-[15px] text-body">
           Roadmap reflects current plans and may change.
         </p>
+        <h2 className="mt-10 text-h4">How to read this roadmap</h2>
+        <p className="mt-3 max-w-[760px] text-body">
+          Items marked as available can be surveyed, quoted and installed today. Items marked as planned are not available yet: we do not take orders for them or
+          promise a date, and we will only move them forward on this page when they are real. If something you need is still planned, tell us; it helps us decide
+          what to build next.
+        </p>
         <p className="mt-6 text-body">
           Designer, builder or electrician?{" "}
           <Link href="/solutions" className="link">
@@ -74,6 +82,8 @@ export default function RoadmapPage() {
           .
         </p>
       </Section>
+
+      <Related paths={["/products", "/app", "/about"]} />
 
       <CtaBand title="Want to be part of it?" body="Book a free home survey, or talk to us about working together." />
     </>

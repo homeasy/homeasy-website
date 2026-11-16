@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import {
@@ -24,7 +25,8 @@ import { PincodeChecker } from "@/components/service/PincodeChecker";
 
 const pageMeta: Metadata = {
   title: "Smart Home Installation in Patna — Homeasy",
-  description: "Free home survey and professional installation by trained Homeasy electricians.",
+  description:
+    "Smart home installation in Patna by trained Homeasy electricians, inside your existing switchbox. It starts with a free home survey in Bihar.",
 };
 
 export function generateMetadata() {
@@ -122,7 +124,7 @@ export default async function InstallationPage() {
       <PageHero
         eyebrow="Installation"
         title="Professional installation, done right."
-        sub="From free survey to app setup, our trained electricians handle everything."
+        sub="Smart home installation in Patna, with free home surveys across Bihar. From survey to app setup, our trained electricians handle everything."
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
           Book a free home survey
@@ -229,6 +231,8 @@ export default async function InstallationPage() {
           </div>
         </div>
       </Section>
+
+      <Related paths={["/how-it-works", "/pricing", "/warranty"]} />
 
       <CtaBand />
     </>

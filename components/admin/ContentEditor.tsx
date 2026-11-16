@@ -19,11 +19,12 @@ const LABELS: Record<string, string> = {
   slug: "Short id (used in links)", whatsappMessages: "Pre-filled WhatsApp messages", general: "General message", photo: "Switchboard photo message",
   problem: "The problem", how: "How it works", promise: "What you get with Homeasy", switches: "Switch brands", parents: "For parents", indian: "Indian homes",
   app: "App", business: "Businesses and government", area: "Service area", founder: "Founder note", faq: "Short FAQ", process: "Survey to support",
+  draft: "Draft: show the “under legal review” notice", dates: "Dates line (empty = “Last updated” with the site date)", intro: "Line under the title",
   phone: "Phone (10 digits)", whatsapp: "WhatsApp number (10 digits)", hours: "Working hours", social: "Social links", sections: "Show or hide sections",
 };
 const SWITCHES = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "U9", "U10", "U11", "U12", "APP_LIVE", "SHOW_PRICES"];
 const SWITCH_KEYS = ["usp", "whenOn", "whenOff", "flag"];
-const LONG_KEYS = ["body", "text", "a", "line", "note", "quote", "sub", "benefit", "description", "result", "general", "photo", "tagline"];
+const LONG_KEYS = ["intro", "body", "text", "a", "line", "note", "quote", "sub", "benefit", "description", "result", "general", "photo", "tagline"];
 const TECH_KEYS = ["icon", "id", "slug", "href"];
 
 const human = (k: string) => LABELS[k] ?? k.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[-_]/g, " ").replace(/^./, (c) => c.toUpperCase());
@@ -94,7 +95,7 @@ function Field({ name, schema, value, onChange }: { name: string; schema: Schema
   } else if (schema.t === "number") {
     control = <input type="number" value={text} onChange={(e) => onChange(Number(e.target.value))} className="adm-control" />;
   } else if (LONG_KEYS.includes(name) || text.length > 70) {
-    control = <textarea value={text} rows={Math.min(8, Math.max(2, Math.ceil(text.length / 80)))} onChange={(e) => onChange(e.target.value)} className="adm-control" />;
+    control = <textarea value={text} rows={Math.min(28, Math.max(2, Math.ceil(text.length / 80)))} onChange={(e) => onChange(e.target.value)} className="adm-control" />;
   } else {
     control = (
       <input

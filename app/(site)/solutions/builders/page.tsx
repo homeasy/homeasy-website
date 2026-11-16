@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import {
   Armchair,
@@ -20,8 +21,9 @@ import { CtaBand } from "@/components/ui/CtaBand";
 import { ChipList, EnquiryCard, FeatureGrid, StepList, type Feature } from "@/components/catalog";
 
 const pageMeta: Metadata = {
-  title: "Smart-Ready Homes for Builders & Commercial — Homeasy",
-  description: "Retrofit smart control for flats, offices and shops with Homeasy.",
+  title: "Home Automation for Builders & Commercial — Homeasy",
+  description:
+    "Home automation for builders, offices and shops: Homeasy retrofits smart control into ready flats and commercial spaces without rewiring.",
 };
 
 export function generateMetadata() {
@@ -62,7 +64,7 @@ export default function BuildersPage() {
       <PageHero
         eyebrow="Builders and commercial"
         title="Smart-ready homes and spaces, without redesign."
-        sub="Upgrade ready flats, show flats, offices and shops with Homeasy retrofit. Give buyers one more reason to choose you."
+        sub="Home automation for builders and commercial spaces: upgrade ready flats, show flats, offices and shops with Homeasy retrofit. Give buyers one more reason to choose you."
       >
         <a href="#enquire" className="btn btn-primary min-h-12 px-6">
           Discuss a project
@@ -108,6 +110,8 @@ export default function BuildersPage() {
           </div>
         </div>
       </Section>
+
+      <Related paths={["/solutions/designers", "/products", "/installation"]} />
 
       <CtaBand
         title="Want to see it in one flat first?"

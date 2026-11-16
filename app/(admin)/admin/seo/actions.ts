@@ -98,6 +98,26 @@ export async function deleteKeyword(id: string): Promise<Result> {
   return { ok: true };
 }
 
+/** Adds the built-in keyword plan (each page's focus keyword and related searches) to the list, skipping any already tracked. */
+export async function importRecommendedKeywords(): Promise<Result & { added?: number }> {
+  await requireAdmin();
+  const list = await loadKeywords();
+  const have = new Set(list.map((k) => k.term));
+  const now = new Date().toISOString();
+  const fresh: Keyword[] = [];
+  for (const r of SEO_ROUTES) {
+    for (const [term, kind] of [[r.keyword, "target"], ...r.keywords.map((k) => [k, "trending"])] as [string, Keyword["kind"]][]) {
+      if (have.has(term)) continue;
+      have.add(term);
+      fresh.push({ id: randomUUID(), term, kind, page: r.path, status: "planned", position: null, created_at: now });
+    }
+  }
+  if (!fresh.length) return { ok: true, added: 0 };
+  if (!(await saveAdminDoc("keywords", [...list, ...fresh]))) return { ok: false, error: FAILED };
+  refresh();
+  return { ok: true, added: fresh.length };
+}
+
 const ideaCache = new Map<string, { at: number; groups: { group: string; ideas: string[] }[] }>();
 
 /**

@@ -64,7 +64,7 @@ const slugify = (s: string) => s.toLowerCase().normalize("NFKD").replace(/[^a-z0
 export function conform(s: Schema, v: unknown, key = ""): unknown {
   switch (s.t) {
     case "string":
-      return typeof v === "string" ? v.slice(0, 4000) : "";
+      return typeof v === "string" ? v.slice(0, 60_000) : "";
     case "number":
       return Number.isFinite(Number(v)) ? Number(v) : 0;
     case "boolean":

@@ -129,7 +129,7 @@
           ]
         },
         {
-          "q": "Does it work with Alexa or Google?",
+          "q": "Does it work with Alexa or Google Home?",
           "parts": [
             { "text": "Not yet. Voice assistant support is planned. We'll announce it only when it is ready." }
           ],

@@ -50,7 +50,7 @@ async function Pages({ searchParams }: { searchParams: Promise<{ path?: string }
         </Card>
         <div className="min-w-0 space-y-6">
           <Card title={`${route.label} · ${route.path}`}>
-            <SeoPanel key={route.path} path={route.path} address={site.url + (route.path === "/" ? "" : route.path)} saved={saved} live={{ title: audit?.title ?? "", description: audit?.description ?? "" }} />
+            <SeoPanel key={route.path} path={route.path} address={site.url + (route.path === "/" ? "" : route.path)} saved={saved} live={{ title: audit?.title ?? "", description: audit?.description ?? "", keyword: route.keyword }} />
           </Card>
           {audit && (
             <Card title="Checks on the live page" action={<ScoreBadge score={audit.score} size="sm" />}>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { getSite } from "@/lib/site-live";
@@ -8,9 +9,9 @@ import { WhatsAppIcon } from "@/components/icons/brand-icons";
 import { BulletList, Callout, live, replyLine, visitLine } from "@/components/service";
 
 const pageMeta: Metadata = {
-  title: "Warranty Policy: 3 Years on Homeasy Modules — Homeasy",
+  title: "Homeasy Warranty Policy: 3 Years on Modules",
   description:
-    "Homeasy modules carry a 3-year warranty against manufacturing defects, from your installation date. See what is covered and how to claim.",
+    "The Homeasy warranty: modules carry a 3-year warranty against manufacturing defects, from your installation date. See what is covered and how to claim.",
 };
 
 export function generateMetadata() {
@@ -138,6 +139,8 @@ export default async function WarrantyPage() {
           </div>
         </div>
       </Section>
+
+      <Related paths={["/guarantee", "/installation", "/contact"]} />
 
       <CtaBand />
     </>
