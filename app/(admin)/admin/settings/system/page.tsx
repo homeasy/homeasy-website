@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { Card, InfoRow, PageHeader, Pill } from "@/components/admin/ui";
+import { WhatsAppTest } from "@/components/admin/WhatsAppTest";
 import { requireAdmin } from "@/lib/admin/session";
 import { dbMode } from "@/lib/db";
 import { onTestAddress } from "@/lib/seo/audit";
@@ -46,6 +47,9 @@ async function System() {
             <InfoRow label="Admin account">{process.env.ADMIN_EMAIL}</InfoRow>
             <InfoRow label="Sign-in lasts">12 hours</InfoRow>
           </dl>
+        </Card>
+        <Card title="WhatsApp bridge test" className="lg:col-span-2">
+          <WhatsAppTest />
         </Card>
       </div>
     </AdminShell>

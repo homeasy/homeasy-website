@@ -19,7 +19,7 @@ export const teamNumbers = () => (env.WHATSAPP_TEAM_NUMBERS ?? "").split(",").ma
 
 const endpoint = () => `https://graph.facebook.com/${env.WHATSAPP_API_VERSION ? `${env.WHATSAPP_API_VERSION}/` : ""}${env.WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
-async function post(body: Record<string, unknown>): Promise<{ id: string | null; code: number | null }> {
+async function post(body: Record<string, unknown>): Promise<{ id: string | null; code: number | null; status?: number; message?: string }> {
   try {
     const res = await fetch(endpoint(), {
       method: "POST",
@@ -31,12 +31,12 @@ async function post(body: Record<string, unknown>): Promise<{ id: string | null;
     const json = (await res.json().catch(() => ({}))) as { messages?: { id: string }[]; error?: { code?: number; message?: string } };
     if (!res.ok) {
       console.error(`[whatsapp] send failed: ${res.status} ${json.error?.code ?? ""} ${json.error?.message ?? ""}`);
-      return { id: null, code: json.error?.code ?? res.status };
+      return { id: null, code: json.error?.code ?? res.status, status: res.status, message: json.error?.message };
     }
     return { id: json.messages?.[0]?.id ?? null, code: null };
   } catch (e) {
     console.error("[whatsapp] request failed", e);
-    return { id: null, code: null };
+    return { id: null, code: null, message: "Could not reach Meta (network or timeout)." };
   }
 }
 
@@ -74,4 +74,59 @@ export function validSignature(rawBody: string, header: string | null): boolean 
   const expected = Buffer.from(createHmac("sha256", secret).update(rawBody).digest("hex"));
   const given = Buffer.from(header.slice(7));
   return expected.length === given.length && timingSafeEqual(expected, given);
+}
+
+/** What Meta's error numbers mean, in plain words (for the admin's test button). */
+function explain(code: number | null, status?: number): string {
+  if (code === 190 || status === 401) return "Meta rejected the access token (wrong, expired or revoked). Generate a new system-user token with whatsapp_business_messaging and whatsapp_business_management, put it in WHATSAPP_TOKEN and redeploy.";
+  if (code === 131047) return "Outside the 24-hour window: send any WhatsApp message from this phone to the business number first, or set an approved template in WHATSAPP_TEMPLATE.";
+  if (code === 131030) return "This number is not on the test number's allowed list. In Meta, add it under \"Send to\" → Manage recipients and verify it.";
+  if (code === 10 || code === 200 || code === 3) return "The token does not have permission for this WhatsApp account. Assign the WhatsApp account to the system user with full control, then generate the token again.";
+  if (code === 100) return "Meta did not recognise the phone number ID or the request. Check WHATSAPP_PHONE_NUMBER_ID (the long number under \"Phone number ID\", not the phone number itself).";
+  if (code === 131026) return "WhatsApp could not deliver to this number (not on WhatsApp, or it has not accepted the latest terms).";
+  return "See the message from Meta above.";
+}
+
+export type WhatsAppTest = {
+  settings: { label: string; ok: boolean }[];
+  number: { ok: boolean; detail: string };
+  sends: { to: string; ok: boolean; detail: string }[];
+};
+
+/** Admin self-test: are the settings present, does Meta accept the token and number ID, and does a test message go out? */
+export async function whatsappSelfTest(): Promise<WhatsAppTest> {
+  const settings = [
+    { label: "WHATSAPP_TOKEN", ok: !!env.WHATSAPP_TOKEN },
+    { label: "WHATSAPP_PHONE_NUMBER_ID", ok: /^\d{8,}$/.test(env.WHATSAPP_PHONE_NUMBER_ID ?? "") },
+    { label: "WHATSAPP_TEAM_NUMBERS", ok: teamNumbers().length > 0 },
+    { label: "WHATSAPP_APP_SECRET (for replies coming back)", ok: !!env.WHATSAPP_APP_SECRET },
+    { label: "WHATSAPP_VERIFY_TOKEN", ok: !!env.WHATSAPP_VERIFY_TOKEN },
+  ];
+  if (!env.WHATSAPP_TOKEN || !env.WHATSAPP_PHONE_NUMBER_ID) return { settings, number: { ok: false, detail: "Add the missing settings and redeploy." }, sends: [] };
+
+  let number = { ok: false, detail: "Could not reach Meta." };
+  try {
+    const res = await fetch(`https://graph.facebook.com/${env.WHATSAPP_API_VERSION ? `${env.WHATSAPP_API_VERSION}/` : ""}${env.WHATSAPP_PHONE_NUMBER_ID}?fields=display_phone_number,verified_name`, {
+      headers: { Authorization: `Bearer ${env.WHATSAPP_TOKEN}` },
+      cache: "no-store",
+      signal: AbortSignal.timeout(8000),
+    });
+    const json = (await res.json().catch(() => ({}))) as { display_phone_number?: string; verified_name?: string; error?: { code?: number; message?: string } };
+    number = res.ok
+      ? { ok: true, detail: `Meta accepts the token. Business number: ${json.display_phone_number ?? "?"} (${json.verified_name ?? "no name"}).` }
+      : { ok: false, detail: `Meta said (${res.status}, code ${json.error?.code ?? "?"}): ${json.error?.message ?? "no message"}. ${explain(json.error?.code ?? null, res.status)}` };
+  } catch {
+    /* keep the default */
+  }
+
+  const sends: WhatsAppTest["sends"] = [];
+  for (const to of teamNumbers()) {
+    const r = await post({ to, type: "text", text: { body: "Homeasy test: the website chat bridge can reach this WhatsApp number." } });
+    sends.push({
+      to: `…${to.slice(-4)}`,
+      ok: !!r.id,
+      detail: r.id ? "Sent. It should arrive on this phone now." : `Meta said (${r.status ?? "?"}, code ${r.code ?? "?"}): ${r.message ?? "no message"}. ${explain(r.code, r.status)}`,
+    });
+  }
+  return { settings, number, sends };
 }

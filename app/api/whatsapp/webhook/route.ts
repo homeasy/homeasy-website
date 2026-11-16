@@ -21,7 +21,16 @@ export async function GET(request: Request) {
  */
 export async function POST(request: Request) {
   const raw = await request.text();
-  if (!validSignature(raw, request.headers.get("x-hub-signature-256"))) return new Response("bad signature", { status: 401 });
+  if (!validSignature(raw, request.headers.get("x-hub-signature-256"))) {
+    console.error(
+      !process.env.WHATSAPP_APP_SECRET
+        ? "[whatsapp] webhook refused: WHATSAPP_APP_SECRET is not set"
+        : request.headers.get("x-hub-signature-256")
+          ? "[whatsapp] webhook refused: signature does not match WHATSAPP_APP_SECRET (use the App secret from Meta: App settings > Basic)"
+          : "[whatsapp] webhook refused: call without a signature (not from Meta)",
+    );
+    return new Response("bad signature", { status: 401 });
+  }
   let payload: Payload;
   try {
     payload = JSON.parse(raw) as Payload;
