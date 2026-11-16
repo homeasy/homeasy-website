@@ -110,7 +110,7 @@ export default async function CareersPage() {
 
       <Section tone="tint" id="apply" className="scroll-mt-20">
         <div className="max-w-[820px]">
-          <SectionHeading title="Apply now" sub="All roles and internships are at our Patna office. Choose a role, add your details and attach your resume." />
+          <SectionHeading title="Apply now" sub="All roles and internships are at our Patna office. Choose a position, add your details, and attach your resume (maximum 2 MB) and a passport-size photo (maximum 200 KB)." />
           <div className="mt-8">
             <ApplicationForm roles={jobs.map((j) => j.title)} />
           </div>

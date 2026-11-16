@@ -31,6 +31,14 @@ values ('resumes', 'resumes', false, 4194304,
   array['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
 on conflict (id) do nothing;
 
+-- Added 17 Nov 2026: passport-size photo and two more answers on the application form. Safe to run again.
+alter table public.job_applications add column if not exists work text;
+alter table public.job_applications add column if not exists start_date text;
+alter table public.job_applications add column if not exists photo_path text;
+update storage.buckets
+set allowed_mime_types = array['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','image/jpeg','image/png']
+where id = 'resumes';
+
 -- WhatsApp messages from customers to the business number (Cloud API), and the team's replies from the admin.
 create table if not exists public.wa_messages (
   id text primary key,                      -- WhatsApp's message id

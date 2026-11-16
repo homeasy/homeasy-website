@@ -5,11 +5,26 @@ import { startTransition, useActionState, useEffect, useState } from "react";
 import { CircleCheck } from "lucide-react";
 import { track } from "@/lib/analytics";
 import { submitApplication } from "@/lib/applications/actions";
-import { EXPERIENCE_OPTIONS, GENERAL_ROLE } from "@/lib/applications/schema";
+import {
+  EXPERIENCE_OPTIONS,
+  GENERAL_ROLE,
+  PHOTO_HINT,
+  PHOTO_MAX_BYTES,
+  PHOTO_TOO_BIG,
+  PHOTO_TYPES,
+  PHOTO_WRONG_TYPE,
+  RESUME_HINT,
+  RESUME_MAX_BYTES,
+  RESUME_TOO_BIG,
+  RESUME_TYPES,
+  RESUME_WRONG_TYPE,
+} from "@/lib/applications/schema";
 
 const FIELD = "h-12 w-full rounded-input border border-line bg-white px-4 text-ink";
 const LABEL = "mb-1.5 block text-[15px] font-semibold text-ink";
 const OPTIONAL = <span className="font-normal text-slate">(optional)</span>;
+const FILE =
+  "block w-full rounded-input border border-line bg-white p-3 text-[15px] text-body file:mr-3 file:rounded-button file:border-0 file:bg-cloud file:px-4 file:py-2 file:font-semibold file:text-ink";
 
 /**
  * Job application form on /careers. The role list is the current openings (from Admin → Job postings), so it
@@ -33,7 +48,22 @@ export function ApplicationForm({ roles }: { roles: string[] }) {
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  const errors = state && !state.ok ? (state.errors ?? {}) : {};
+  // files are checked the moment they are chosen, so nobody waits for an upload that will be refused
+  const [fileErrors, setFileErrors] = useState<{ resume?: string; photo?: string }>({});
+  function checkFile(kind: "resume" | "photo", file: File | undefined) {
+    const types = kind === "resume" ? RESUME_TYPES : PHOTO_TYPES;
+    const ext = (file?.name.split(".").pop() ?? "").toLowerCase();
+    const problem = !file
+      ? undefined
+      : !types[ext]
+        ? kind === "resume" ? RESUME_WRONG_TYPE : PHOTO_WRONG_TYPE
+        : file.size > (kind === "resume" ? RESUME_MAX_BYTES : PHOTO_MAX_BYTES)
+          ? kind === "resume" ? RESUME_TOO_BIG : PHOTO_TOO_BIG
+          : undefined;
+    setFileErrors((e) => ({ ...e, [kind]: problem }));
+  }
+
+  const errors = { ...(state && !state.ok ? (state.errors ?? {}) : {}), ...Object.fromEntries(Object.entries(fileErrors).filter(([, v]) => v)) } as Record<string, string>;
   const err = (name: string) =>
     errors[name] ? (
       <p id={`apply-${name}-error`} className="mt-1 text-sm text-error">
@@ -58,6 +88,7 @@ export function ApplicationForm({ roles }: { roles: string[] }) {
       // sent by hand instead of through `action`, so a validation error does not wipe what the person typed
       onSubmit={(e) => {
         e.preventDefault();
+        if (fileErrors.resume || fileErrors.photo) return; // the message under the file box says what to fix
         const data = new FormData(e.currentTarget);
         startTransition(() => action(data));
       }}
@@ -71,7 +102,7 @@ export function ApplicationForm({ roles }: { roles: string[] }) {
 
       <div>
         <label htmlFor="apply-role" className={LABEL}>
-          Role you are applying for
+          Position you are applying for
         </label>
         <select id="apply-role" name="role" value={role} onChange={(e) => setRole(e.target.value)} required className={FIELD} {...aria("role")}>
           <option value="">Choose a role…</option>
@@ -95,7 +126,7 @@ export function ApplicationForm({ roles }: { roles: string[] }) {
         </div>
         <div>
           <label htmlFor="apply-mobile" className={LABEL}>
-            Mobile number
+            Contact number <span className="font-normal text-slate">(WhatsApp number preferred)</span>
           </label>
           <input id="apply-mobile" name="mobile" type="tel" inputMode="numeric" autoComplete="tel" required className={FIELD} {...aria("mobile")} />
           {err("mobile")}
@@ -109,9 +140,9 @@ export function ApplicationForm({ roles }: { roles: string[] }) {
         </div>
         <div>
           <label htmlFor="apply-city" className={LABEL}>
-            Current city {OPTIONAL}
+            City
           </label>
-          <input id="apply-city" name="city" autoComplete="address-level2" className={FIELD} {...aria("city")} />
+          <input id="apply-city" name="city" autoComplete="address-level2" required className={FIELD} {...aria("city")} />
           {err("city")}
         </div>
         <div>
@@ -145,39 +176,78 @@ export function ApplicationForm({ roles }: { roles: string[] }) {
         {err("link")}
       </div>
 
-      <div>
-        <label htmlFor="apply-resume" className={LABEL}>
-          Resume
-        </label>
-        <input
-          id="apply-resume"
-          name="resume"
-          type="file"
-          required
-          accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-          className="block w-full rounded-input border border-line bg-white p-3 text-[15px] text-body file:mr-3 file:rounded-button file:border-0 file:bg-cloud file:px-4 file:py-2 file:font-semibold file:text-ink"
-          aria-describedby={errors.resume ? "apply-resume-error" : "apply-resume-hint"}
-          aria-invalid={errors.resume ? true : undefined}
-        />
-        <p id="apply-resume-hint" className="mt-1 text-[14px] text-slate">
-          PDF or Word, up to 3 MB.
-        </p>
-        {err("resume")}
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label htmlFor="apply-resume" className={LABEL}>
+            Resume
+          </label>
+          <input
+            id="apply-resume"
+            name="resume"
+            type="file"
+            required
+            accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            onChange={(e) => checkFile("resume", e.target.files?.[0])}
+            className={FILE}
+            aria-describedby={errors.resume ? "apply-resume-error apply-resume-hint" : "apply-resume-hint"}
+            aria-invalid={errors.resume ? true : undefined}
+          />
+          <p id="apply-resume-hint" className="mt-1 text-[14px] text-slate">
+            {RESUME_HINT}
+          </p>
+          {err("resume")}
+        </div>
+        <div>
+          <label htmlFor="apply-photo" className={LABEL}>
+            Passport-size photo
+          </label>
+          <input
+            id="apply-photo"
+            name="photo"
+            type="file"
+            required
+            accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+            onChange={(e) => checkFile("photo", e.target.files?.[0])}
+            className={FILE}
+            aria-describedby={errors.photo ? "apply-photo-error apply-photo-hint" : "apply-photo-hint"}
+            aria-invalid={errors.photo ? true : undefined}
+          />
+          <p id="apply-photo-hint" className="mt-1 text-[14px] text-slate">
+            {PHOTO_HINT}
+          </p>
+          {err("photo")}
+        </div>
       </div>
 
       <div>
         <label htmlFor="apply-message" className={LABEL}>
-          Why this role? {OPTIONAL}
+          Why do you want to join this opportunity?
         </label>
-        <textarea id="apply-message" name="message" rows={4} maxLength={2000} className={`${FIELD} h-auto py-3`} {...aria("message")} />
+        <textarea id="apply-message" name="message" rows={4} maxLength={2000} required className={`${FIELD} h-auto py-3`} {...aria("message")} />
         {err("message")}
+      </div>
+
+      <div>
+        <label htmlFor="apply-work" className={LABEL}>
+          What work or project have you done that relates to this position? {OPTIONAL}
+        </label>
+        <textarea id="apply-work" name="work" rows={3} maxLength={2000} className={`${FIELD} h-auto py-3`} {...aria("work")} />
+        {err("work")}
+      </div>
+
+      <div>
+        <label htmlFor="apply-start" className={LABEL}>
+          When can you join? {OPTIONAL}
+        </label>
+        <input id="apply-start" name="start_date" placeholder="For example: immediately, or from 1 December" maxLength={80} className={FIELD} {...aria("start_date")} />
+        {err("start_date")}
       </div>
 
       <div>
         <label className="flex cursor-pointer items-start gap-3 text-[15px] text-body">
           <input type="checkbox" name="consent" className="mt-1 size-5 accent-[var(--brand-navy)]" {...aria("consent")} />
           <span>
-            I agree that Homeasy may store my details and resume and contact me about this application. See our{" "}
+            I agree that Homeasy may store my details, resume and photo and contact me about this application. See our{" "}
             <Link href="/privacy-policy" className="link">
               Privacy Policy
             </Link>

@@ -12,9 +12,12 @@ export type Application = {
   qualification: string | null;
   experience: string | null;
   link: string | null;
-  message: string | null;
+  message: string | null; // why they want to join
+  work: string | null; // relevant work or project
+  start_date: string | null; // when they can join
   resume_path: string | null;
   resume_name: string | null;
+  photo_path: string | null;
   status: string;
   admin_notes: string | null;
   created_at: string;

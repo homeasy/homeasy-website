@@ -109,15 +109,35 @@ async function Applications({ searchParams }: { searchParams: Search }) {
                           <Mail size={14} aria-hidden="true" /> Email
                         </a>
                       </div>
-                      {a.message && <p className="mb-4 whitespace-pre-wrap break-words text-sm text-white">{a.message}</p>}
+                      <div className="mb-4 flex gap-4">
+                        {a.photo_path && (
+                          // eslint-disable-next-line @next/next/no-img-element -- private file served by the admin route
+                          <img src={`/admin/applications/resume?ref=${a.ref}&file=photo`} alt={`Photo of ${a.name}`} className="size-24 shrink-0 rounded-lg border border-navy-700 object-cover" />
+                        )}
+                        <div className="min-w-0 space-y-3 text-sm">
+                          {a.message && (
+                            <p className="whitespace-pre-wrap break-words text-white">
+                              <span className="mb-0.5 block text-xs uppercase tracking-wider text-ash">Why they want to join</span>
+                              {a.message}
+                            </p>
+                          )}
+                          {a.work && (
+                            <p className="whitespace-pre-wrap break-words text-white">
+                              <span className="mb-0.5 block text-xs uppercase tracking-wider text-ash">Relevant work or project</span>
+                              {a.work}
+                            </p>
+                          )}
+                        </div>
+                      </div>
                       <dl className="divide-y divide-navy-700 border-t border-navy-700">
                         <InfoRow label="Application">{a.ref}</InfoRow>
                         <InfoRow label="Role">{a.role}</InfoRow>
-                        <InfoRow label="Mobile">+91 {a.mobile}</InfoRow>
+                        <InfoRow label="Contact no.">+91 {a.mobile}</InfoRow>
                         <InfoRow label="Email">{a.email}</InfoRow>
                         <InfoRow label="City">{a.city}</InfoRow>
                         <InfoRow label="Qualification">{a.qualification}</InfoRow>
                         <InfoRow label="Experience">{a.experience}</InfoRow>
+                        <InfoRow label="Can join from">{a.start_date}</InfoRow>
                         <InfoRow label="Link">
                           {a.link && (
                             <a href={a.link} target="_blank" rel="noopener noreferrer" className="text-white underline">
