@@ -27,6 +27,19 @@ const store = (s: Saved) => {
     /* private mode: the chat lasts until the page is closed */
   }
 };
+/** Page addresses the assistant mentions (e.g. /early-access) become links. */
+function withLinks(text: string) {
+  return text.split(/(?<=^|[\s(])(\/[a-z][a-z0-9-]*(?:\/[a-z0-9-]+)*)/g).map((part, i) =>
+    i % 2 === 1 ? (
+      <Link key={i} href={part} className="link font-semibold">
+        {part}
+      </Link>
+    ) : (
+      part
+    ),
+  );
+}
+
 const mobileOk = (v: string) => /^[6-9]\d{9}$/.test(v.replace(/[\s-]/g, "").replace(/^(\+91|91|0)(?=\d{10}$)/, ""));
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
@@ -216,7 +229,7 @@ export function ChatWidget({ whatsappNumber, telHref, mailHref, hours }: { whats
                 <div key={i} className={`flex ${b.from === "me" ? "justify-end" : "justify-start"}`}>
                   <p className={`max-w-[85%] whitespace-pre-wrap break-words rounded-card px-3.5 py-2.5 text-[15px] ${b.from === "me" ? "bg-navy text-white" : "border border-line bg-white text-ink"}`}>
                     {b.from === "team" && <span className="mb-0.5 block text-[12px] font-semibold text-link">Homeasy team</span>}
-                    {b.text}
+                    {b.from === "me" ? b.text : withLinks(b.text)}
                   </p>
                 </div>
               ),
