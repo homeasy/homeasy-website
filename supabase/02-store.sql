@@ -37,3 +37,43 @@ create table if not exists public.published_content (
   published_at timestamptz not null default now()
 );
 alter table public.published_content enable row level security;
+
+-- Store settings: the admin's working copy (the live copy is the 'store' row in published_content).
+create table if not exists public.store_settings (
+  key text primary key,                       -- always 'store'
+  gst_rate numeric not null default 18,
+  prices_include_gst boolean not null default true,
+  delivery_fee integer not null default 0,
+  free_delivery_above integer not null default 0,
+  booking_enabled boolean not null default false,
+  booking_amount integer not null default 0,
+  updated_at timestamptz not null default now()
+);
+alter table public.store_settings enable row level security;
+
+-- Orders placed on the website.
+create table if not exists public.orders (
+  id uuid primary key default gen_random_uuid(),
+  ref text not null unique,                   -- order number shown to the customer, e.g. HO-7K2QF
+  items jsonb not null,                       -- [{product_id, slug, name, price, qty}] as charged
+  items_total integer not null,
+  gst integer not null,
+  gst_rate numeric not null,
+  prices_include_gst boolean not null,
+  delivery_fee integer not null default 0,
+  total integer not null,
+  pay_mode text not null check (pay_mode in ('full','booking')),
+  amount_due_now integer not null,
+  amount_paid integer not null default 0,
+  status text not null default 'awaiting_payment'
+    check (status in ('awaiting_payment','new','booking_paid','paid','processing','delivered','installed','cancelled','refunded')),
+  contact jsonb not null,                     -- {name, mobile, email, address, locality, pincode, gstin, notes}
+  razorpay_order_id text unique,
+  razorpay_payment_id text,
+  admin_notes text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+create index if not exists orders_created_at_idx on public.orders (created_at desc);
+create index if not exists orders_status_idx on public.orders (status);
+alter table public.orders enable row level security;

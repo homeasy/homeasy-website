@@ -5,10 +5,13 @@ import { Download, LogOut } from "lucide-react";
 import { logout } from "@/app/(admin)/admin/actions";
 import { publishNow } from "@/app/(admin)/admin/products/actions";
 import { productPublishState } from "@/lib/store/products";
+import { settingsPending } from "@/lib/store/settings";
 
 const NAV = [
   { id: "leads", label: "Leads", href: "/admin" },
+  { id: "orders", label: "Orders", href: "/admin/orders" },
   { id: "products", label: "Products", href: "/admin/products" },
+  { id: "settings", label: "Settings", href: "/admin/settings" },
 ] as const;
 
 export function AdminShell({
@@ -28,7 +31,7 @@ export function AdminShell({
             <Link href="/admin" aria-label="Admin home" className="mr-1 shrink-0">
               <Image src="/logo/homeasy-icon.svg" alt="" width={28} height={28} />
             </Link>
-            <nav aria-label="Admin" className="flex items-center">
+            <nav aria-label="Admin" className="flex items-center overflow-x-auto">
               {NAV.map((n) => (
                 <Link
                   key={n.href}
@@ -74,7 +77,8 @@ export function AdminShell({
 async function PublishBar() {
   let state: Awaited<ReturnType<typeof productPublishState>>;
   try {
-    state = await productPublishState();
+    const [products, settings] = await Promise.all([productPublishState(), settingsPending()]);
+    state = { ...products, pending: products.pending + (settings ? 1 : 0), ready: products.ready || settings };
   } catch {
     return null;
   }
@@ -91,7 +95,7 @@ async function PublishBar() {
             "Everything is published."
           )}{" "}
           <span className={state.pending ? "text-mist" : "text-slate"}>
-            {state.publishedAt ? `Last published ${formatWhen(state.publishedAt)}.` : "Nothing has been published yet: the website shows the starter products."}
+            {state.publishedAt ? `Last published ${formatWhen(state.publishedAt)}.` : "Nothing has been published yet."}
           </span>
         </p>
         {state.pending > 0 && (

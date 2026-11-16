@@ -14,6 +14,7 @@ import {
   updateProduct,
   type ProductInput,
 } from "@/lib/store/products";
+import { publishSettings } from "@/lib/store/settings";
 
 export type ProductFormState = { error?: string; fields?: Record<string, string> } | undefined;
 
@@ -99,5 +100,6 @@ export async function importStarters() {
 export async function publishNow() {
   await requireAdmin();
   if (await publishProducts()) updateTag("products");
+  if (await publishSettings()) updateTag("store");
   refresh();
 }

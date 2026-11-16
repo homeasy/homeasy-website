@@ -14,7 +14,7 @@ const TEST_SENDER = "Homeasy <onboarding@resend.dev>";
 const esc = (v: unknown) =>
   String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
 
-async function send(to: string[], subject: string, html: string, replyTo?: string) {
+export async function sendEmail(to: string[], subject: string, html: string, replyTo?: string) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return;
   try {
@@ -75,7 +75,7 @@ export async function notifySurveyLead(lead: SurveyLead) {
     .join("");
   const wa = `https://wa.me/91${lead.whatsapp}`;
   const tasks = [
-    send(
+    sendEmail(
       to,
       `${lead.inServiceArea ? "New survey request" : "Out-of-area request"} ${lead.ref}: ${lead.fullName}, ${lead.locality}`,
       `<div style="font-family:Arial,sans-serif;font-size:15px"><h2 style="margin:0 0 12px">New survey request</h2><table style="border-collapse:collapse">${table}</table><p style="margin-top:16px"><a href="${wa}">Open WhatsApp chat</a> · <a href="tel:+91${esc(lead.mobile)}">Call</a></p><p style="color:#667085">Promise to the customer: we contact them ${esc(site.contact.leadResponse)}.</p></div>`,
@@ -85,7 +85,7 @@ export async function notifySurveyLead(lead: SurveyLead) {
   // customer confirmation needs a verified sender domain; the Resend test sender cannot reach customers
   if (lead.email && process.env.LEAD_NOTIFY_FROM) {
     tasks.push(
-      send(
+      sendEmail(
         [lead.email],
         "Your free Homeasy home survey request",
         `<div style="font-family:Arial,sans-serif;font-size:15px;color:#0B1220"><p>Hi ${esc(lead.fullName.split(" ")[0])},</p><p>Thanks for booking a free home survey with Homeasy. Your request number is <strong>${esc(lead.ref)}</strong>.</p><p>${

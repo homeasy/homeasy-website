@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Camera, Check, ChevronRight, ClipboardCheck, ShieldCheck, Truck, Wrench } from "lucide-react";
 import { PriceLine, ProductCard, ProductVisual } from "@/components/catalog/ProductCard";
+import { AddToCart } from "@/components/shop/AddToCart";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
 import { CtaBand, Faq, Section, SectionHeading, StatusBadge } from "@/components/ui";
 import { site, whatsappHref } from "@/lib/site";
@@ -31,6 +32,7 @@ async function ProductDetail({ params }: { params: Params }) {
   if (!p) notFound();
   const all = await getPublicProducts();
   const related = all.filter((x) => x.id !== p.id).sort((a, b) => Number(b.featured) - Number(a.featured)).slice(0, 3);
+  const buyable = !!p.price && p.status === "available";
   const paragraphs = p.description.split(/\n\s*\n/).map((t) => t.trim()).filter(Boolean);
   const points = p.highlights.length ? p.highlights : p.controls.map((c) => `Controls: ${c}`);
 
@@ -97,7 +99,7 @@ async function ProductDetail({ params }: { params: Params }) {
             )}
             <div className="mt-5">
               <PriceLine product={p} large />
-              {p.price && <p className="mt-1 text-[14px] text-slate">Per module. Taxes and delivery are shown at checkout.</p>}
+              {p.price && <p className="mt-1 text-[14px] text-slate">Per module. GST and delivery are shown in your cart.</p>}
             </div>
             {p.line && <p className="mt-5 text-lg text-body">{p.line}</p>}
 
@@ -112,14 +114,20 @@ async function ProductDetail({ params }: { params: Params }) {
               </ul>
             )}
 
-            {/* Buying (cart, booking amount, Razorpay) is added in the next build step. */}
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <Link href="/book-survey" className="btn btn-primary min-h-12 flex-1 whitespace-nowrap px-6">
-                Book a free home survey
-              </Link>
-              <a href={whatsappHref("general")} target="_blank" rel="noopener noreferrer" className="btn btn-outline min-h-12 flex-1 whitespace-nowrap px-6">
-                <WhatsAppIcon size={18} /> Ask on WhatsApp
-              </a>
+            {/* buyable = has a price and is marked Available; otherwise the page asks for a survey */}
+            <div className="mt-7">
+              {buyable ? (
+                <AddToCart productId={p.id} name={p.name} />
+              ) : (
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Link href="/book-survey" className="btn btn-primary min-h-12 flex-1 whitespace-nowrap px-6">
+                    Book a free home survey
+                  </Link>
+                  <a href={whatsappHref("general")} target="_blank" rel="noopener noreferrer" className="btn btn-outline min-h-12 flex-1 whitespace-nowrap px-6">
+                    <WhatsAppIcon size={18} /> Ask on WhatsApp
+                  </a>
+                </div>
+              )}
             </div>
 
             <div className="mt-6 flex items-start gap-3 rounded-card bg-tint p-4 text-[15px] text-ink">
@@ -140,7 +148,7 @@ async function ProductDetail({ params }: { params: Params }) {
             <ul className="mt-6 grid grid-cols-3 gap-3 text-center text-[13px] text-body">
               {[
                 { icon: ShieldCheck, t: "3-year warranty" },
-                { icon: Wrench, t: "Installed by our team" },
+                { icon: Wrench, t: "Installation available" },
                 { icon: Truck, t: "Delivery across Bihar" },
               ].map(({ icon: Icon, t }) => (
                 <li key={t} className="rounded-card border border-line p-3">

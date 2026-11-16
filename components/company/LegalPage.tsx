@@ -21,20 +21,36 @@ const PROSE = [
  * Layout for /privacy-policy, /terms-of-service and /cookie-policy (PRD §8.16, §15).
  * Every legal page carries the "Draft — under legal review" notice until a lawyer signs it off.
  */
-export function LegalPage({ title, intro, children }: { title: string; intro: string; children: ReactNode }) {
+export function LegalPage({
+  title,
+  intro,
+  children,
+  draft = true,
+  dates,
+}: {
+  title: string;
+  intro: string;
+  children: ReactNode;
+  /** false for a policy already in force (e.g. the privacy policy carried over from the live site) */
+  draft?: boolean;
+  /** replaces the default "Last updated" line */
+  dates?: string;
+}) {
   return (
     <>
       <PageHero eyebrow="Legal" title={title} sub={intro} />
       <Section>
         <div className="mx-auto max-w-[720px] lg:mx-0">
-          <div role="note" className="flex gap-4 rounded-card border border-amber bg-amber-50 p-5">
-            <FileWarning aria-hidden="true" className="mt-0.5 size-6 shrink-0 text-ink" strokeWidth={1.75} />
-            <p className="min-w-0 text-ink">
-              <strong className="font-semibold">Draft — under legal review.</strong> This page will be finalised before
-              we take our first order.
-            </p>
-          </div>
-          <p className="mt-6 text-[15px] text-slate">Last updated: {LEGAL_LAST_UPDATED}</p>
+          {draft && (
+            <div role="note" className="flex gap-4 rounded-card border border-amber bg-amber-50 p-5">
+              <FileWarning aria-hidden="true" className="mt-0.5 size-6 shrink-0 text-ink" strokeWidth={1.75} />
+              <p className="min-w-0 text-ink">
+                <strong className="font-semibold">Draft — under legal review.</strong> This page will be finalised before
+                we take our first order.
+              </p>
+            </div>
+          )}
+          <p className={`${draft ? "mt-6" : ""} text-[15px] text-slate`}>{dates ?? `Last updated: ${LEGAL_LAST_UPDATED}`}</p>
           <div className={`mt-8 ${PROSE}`}>{children}</div>
         </div>
       </Section>

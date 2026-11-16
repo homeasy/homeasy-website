@@ -1,64 +1,182 @@
 {
   "header": [
-    { "label": "How it works", "href": "/how-it-works" },
-    { "label": "Products", "href": "/products" },
-    { "label": "Pricing", "href": "/pricing" },
-    { "label": "Solutions", "href": "/solutions", "children": "solutions" },
-    { "label": "App", "href": "/app" },
-    { "label": "About", "href": "/about" }
+    {
+      "label": "How it works",
+      "href": "/how-it-works"
+    },
+    {
+      "label": "Products",
+      "href": "/products"
+    },
+    {
+      "label": "Pricing",
+      "href": "/pricing"
+    },
+    {
+      "label": "Solutions",
+      "href": "/solutions",
+      "children": "solutions"
+    },
+    {
+      "label": "App",
+      "href": "/app"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    }
   ],
   "solutions": [
-    { "label": "Interior designers", "href": "/solutions/designers", "description": "Smart features without changing your design." },
-    { "label": "Builders & commercial", "href": "/solutions/builders", "description": "Smart-ready flats, offices and shops." },
-    { "label": "Electricians", "href": "/solutions/electricians", "description": "Join the Homeasy electrician network." },
-    { "label": "Government & institutions", "href": "/solutions/government", "description": "Central control for public buildings." }
+    {
+      "label": "Interior designers",
+      "href": "/solutions/designers",
+      "description": "Smart features without changing your design."
+    },
+    {
+      "label": "Builders & commercial",
+      "href": "/solutions/builders",
+      "description": "Smart-ready flats, offices and shops."
+    },
+    {
+      "label": "Electricians",
+      "href": "/solutions/electricians",
+      "description": "Join the Homeasy electrician network."
+    },
+    {
+      "label": "Government & institutions",
+      "href": "/solutions/government",
+      "description": "Central control for public buildings."
+    }
   ],
   "drawerExtra": [
-    { "label": "Installation", "href": "/installation" },
-    { "label": "FAQ", "href": "/faq" },
-    { "label": "Contact", "href": "/contact" },
-    { "label": "Roadmap", "href": "/roadmap" },
-    { "label": "Investors", "href": "/investors" }
+    {
+      "label": "Installation",
+      "href": "/installation"
+    },
+    {
+      "label": "FAQ",
+      "href": "/faq"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact"
+    },
+    {
+      "label": "Roadmap",
+      "href": "/roadmap"
+    },
+    {
+      "label": "Investors",
+      "href": "/investors"
+    }
   ],
   "footer": [
     {
       "title": "Homes",
       "links": [
-        { "label": "How it works", "href": "/how-it-works" },
-        { "label": "Products", "href": "/products" },
-        { "label": "Installation", "href": "/installation" },
-        { "label": "Pricing", "href": "/pricing" },
-        { "label": "Homeasy app", "href": "/app" },
-        { "label": "Book a free survey", "href": "/book-survey" }
+        {
+          "label": "How it works",
+          "href": "/how-it-works"
+        },
+        {
+          "label": "Products",
+          "href": "/products"
+        },
+        {
+          "label": "Installation",
+          "href": "/installation"
+        },
+        {
+          "label": "Pricing",
+          "href": "/pricing"
+        },
+        {
+          "label": "Homeasy app",
+          "href": "/app"
+        },
+        {
+          "label": "Book a free survey",
+          "href": "/book-survey"
+        }
       ]
     },
     {
       "title": "Business",
       "links": [
-        { "label": "Interior designers", "href": "/solutions/designers" },
-        { "label": "Builders & commercial", "href": "/solutions/builders" },
-        { "label": "Electricians", "href": "/solutions/electricians" },
-        { "label": "Government", "href": "/solutions/government" }
+        {
+          "label": "Interior designers",
+          "href": "/solutions/designers"
+        },
+        {
+          "label": "Builders & commercial",
+          "href": "/solutions/builders"
+        },
+        {
+          "label": "Electricians",
+          "href": "/solutions/electricians"
+        },
+        {
+          "label": "Government",
+          "href": "/solutions/government"
+        }
       ]
     },
     {
       "title": "Company",
       "links": [
-        { "label": "About", "href": "/about" },
-        { "label": "Roadmap", "href": "/roadmap" },
-        { "label": "Investors", "href": "/investors" },
-        { "label": "Careers", "href": "/careers" }
+        {
+          "label": "About",
+          "href": "/about"
+        },
+        {
+          "label": "Roadmap",
+          "href": "/roadmap"
+        },
+        {
+          "label": "Investors",
+          "href": "/investors"
+        },
+        {
+          "label": "Careers",
+          "href": "/careers"
+        }
       ]
     },
     {
       "title": "Help & legal",
       "links": [
-        { "label": "FAQ", "href": "/faq" },
-        { "label": "Contact", "href": "/contact" },
-        { "label": "Warranty", "href": "/warranty" },
-        { "label": "Privacy policy", "href": "/privacy-policy" },
-        { "label": "Terms of service", "href": "/terms-of-service" },
-        { "label": "Cookie policy", "href": "/cookie-policy" }
+        {
+          "label": "FAQ",
+          "href": "/faq"
+        },
+        {
+          "label": "Contact",
+          "href": "/contact"
+        },
+        {
+          "label": "Warranty",
+          "href": "/warranty"
+        },
+        {
+          "label": "Privacy policy",
+          "href": "/privacy-policy"
+        },
+        {
+          "label": "Terms of service",
+          "href": "/terms-of-service"
+        },
+        {
+          "label": "Refund policy",
+          "href": "/refund-policy"
+        },
+        {
+          "label": "Delivery policy",
+          "href": "/delivery-policy"
+        },
+        {
+          "label": "Cookie policy",
+          "href": "/cookie-policy"
+        }
       ]
     }
   ]

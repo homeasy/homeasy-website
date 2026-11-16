@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { whatsappHref } from "@/lib/site";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
 
@@ -6,6 +9,9 @@ import { WhatsAppIcon } from "@/components/icons/brand-icons";
  * USP_U2 is on (PRD R13); otherwise a neutral label is used.
  */
 export function FloatingWhatsApp({ showReplyPromise }: { showReplyPromise: boolean }) {
+  // keep it off the checkout, where it would cover the pay button
+  const pathname = usePathname();
+  if (pathname === "/cart") return null;
   const label = showReplyPromise ? "Questions? We reply in 30 min" : "Questions? WhatsApp us";
   return (
     <a

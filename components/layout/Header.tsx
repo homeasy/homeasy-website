@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { whatsappHref } from "@/lib/site";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
+import { CartButton, HideOnPhoneWhenCartHasItems } from "@/components/shop/CartButton";
 import { Logo } from "./Logo";
 import { DesktopNav } from "./DesktopNav";
 import { MobileDrawer } from "./MobileDrawer";
@@ -22,10 +23,13 @@ export function Header() {
           >
             <WhatsAppIcon size={22} />
           </a>
-          <Link href="/book-survey" className="btn btn-primary min-h-10 whitespace-nowrap px-3 text-[15px] lg:min-h-11 lg:px-5">
-            <span className="lg:hidden">Book survey</span>
-            <span className="hidden lg:inline">Book a free survey</span>
-          </Link>
+          <CartButton />
+          <HideOnPhoneWhenCartHasItems>
+            <Link href="/book-survey" className="btn btn-primary min-h-10 whitespace-nowrap px-3 text-[15px] lg:min-h-11 lg:px-5">
+              <span className="lg:hidden">Book survey</span>
+              <span className="hidden lg:inline">Book a free survey</span>
+            </Link>
+          </HideOnPhoneWhenCartHasItems>
           <MobileDrawer photoHref={whatsappHref("photo")} />
         </div>
       </div>
