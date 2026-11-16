@@ -3,6 +3,7 @@
  * Import from "@/components/ui".
  */
 import type { ReactNode } from "react";
+import { site } from "@/lib/site";
 import { reveal } from "./reveal";
 
 type Tone = "white" | "cloud" | "navy" | "tint";
@@ -81,7 +82,7 @@ export function PageHero({
 export type Status = "available" | "coming-soon" | "planned";
 const BADGE: Record<Status, { label: string; cls: string }> = {
   available: { label: "Available", cls: "bg-[var(--badge-available-bg)] text-[var(--badge-available-text)]" },
-  "coming-soon": { label: "Coming soon", cls: "bg-[var(--badge-soon-bg)] text-[var(--badge-soon-text)]" },
+  "coming-soon": { label: `Launching ${site.launch.short}`, cls: "bg-[var(--badge-soon-bg)] text-[var(--badge-soon-text)]" },
   planned: { label: "Planned", cls: "bg-[var(--badge-planned-bg)] text-[var(--badge-planned-text)]" },
 };
 

@@ -42,5 +42,9 @@
   },
   "analytics": {
     "ga4": "G-CDVCNJQLVJ"
+  },
+  "launch": {
+    "label": "January 2027",
+    "short": "Jan 2027"
   }
 }

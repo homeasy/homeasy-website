@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSyncExternalStore } from "react";
 import { X } from "lucide-react";
 
-const KEY = "homeasy-announcement-dismissed-until";
+const KEY = "homeasy-early-access-dismissed-until";
 const EVENT = "homeasy-announcement-change";
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 
@@ -25,8 +25,8 @@ function subscribe(onChange: () => void) {
   };
 }
 
-/** Optional top bar, dismissible for 30 days (PRD §9). Enabled with SHOW_ANNOUNCEMENT. */
-export function AnnouncementBar() {
+/** Top bar inviting people to early access, dismissible for 30 days (PRD §9). Shown until launch (SHOW_ANNOUNCEMENT). */
+export function AnnouncementBar({ launch }: { launch: string }) {
   const visible = useSyncExternalStore(
     subscribe,
     () => Date.now() > readDismissedUntil(),
@@ -48,9 +48,9 @@ export function AnnouncementBar() {
     <div className="bg-tint text-ink">
       <div className="container-page flex min-h-10 items-center justify-between gap-3 py-1.5 text-sm">
         <p>
-          <span aria-hidden="true">📍 </span>Now booking free home surveys across Bihar.{" "}
-          <Link href="/book-survey" className="link font-semibold">
-            Book yours →
+          Launching {launch}. Early access for pilot homes is open.{" "}
+          <Link href="/early-access" className="link font-semibold">
+            Join the list →
           </Link>
         </p>
         <button

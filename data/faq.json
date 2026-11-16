@@ -6,6 +6,18 @@
       "title": "Retrofit basics",
       "items": [
         {
+          "q": "When does Homeasy launch?",
+          "parts": [
+            {
+              "text": "We plan to launch in January 2027. Until then you can join early access: we are inviting pilot homes in Patna, and everyone on the list gets a special early-access offer, confirmed in a written quote before you pay anything."
+            }
+          ],
+          "link": {
+            "href": "/early-access",
+            "label": "Join early access"
+          }
+        },
+        {
           "q": "Do I need to change my switches?",
           "parts": [
             {

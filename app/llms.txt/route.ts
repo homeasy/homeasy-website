@@ -1,4 +1,5 @@
 import { getContent } from "@/lib/content/store";
+import { flags } from "@/lib/flags";
 import { DEFAULT_DESCRIPTION } from "@/lib/seo/meta";
 import { SEO_ROUTES } from "@/lib/seo/routes";
 import { getSite } from "@/lib/site-live";
@@ -24,12 +25,13 @@ export async function GET() {
     `- ${site.brand} is a home automation company in Patna, Bihar, India (${site.legalName}, incorporated ${site.foundedYear}).`,
     "- It makes existing homes smart by retrofit: compact modules are installed inside the existing electrical switchbox, behind the switches already on the wall.",
     "- No rewiring and no new switchboards. The switches keep working by hand.",
+    ...(flags.LAUNCHED ? [] : [`- Public launch is planned for ${site.launch.label}. Until then, homes can join early access at ${url("/early-access")}.`]),
     "- The service is end to end: free home survey, written quote, professional installation, the Homeasy app, and support.",
     "- Service area: home surveys across Bihar. Office in Patna.",
     "- Customers: homes, interior designers, builders, electricians and government buildings.",
     "",
     "## Products",
-    ...products.map((p) => `- [${p.name}](${url(`/products/${p.slug}`)}): ${p.line || p.headline}${p.status === "available" ? "" : " (planned, not available yet)"}`),
+    ...products.map((p) => `- [${p.name}](${url(`/products/${p.slug}`)}): ${p.line || p.headline}${p.status === "available" ? "" : p.status === "coming-soon" ? ` (launching ${site.launch.label})` : " (planned, not available yet)"}`),
     "",
     "## Contact",
     `- Phone and WhatsApp: ${site.contact.phoneDisplay} (${site.contact.hours})`,

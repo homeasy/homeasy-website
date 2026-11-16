@@ -348,7 +348,7 @@ Note: v2 called the "Book a free consultation" CTA a positioning error. Under th
 
 | Rule | Detail |
 |---|---|
-| R1 | Future products/features carry **Planned**. Amended 16 Nov 2026 (founder): the app and the four core modules are presented as live on the website; see decisions log 22.2. |
+| R1 | Future products/features carry **Planned**. Amended 16 Nov 2026 (founder, later the same day): until the January 2027 launch the app and the four core modules read "Launching Jan 2027" (`LAUNCHED` flag); see decisions log 22.2. |
 | R2 | No certification claims (BIS, WPC/ETA, ISI, Works with Alexa/Google) until certificates are issued. |
 | R3 | No prices on site until final; until then "Exact price after free survey" (feature flag `SHOW_PRICES`). |
 | R4 | No product specs (dimensions, load ratings) until confirmed by ODM datasheets and testing. |
@@ -1942,6 +1942,7 @@ R = Responsible, A = Accountable, C = Consulted, I = Informed
 | 16 Nov 2026 | Hero room revised: painted walls with a blue accent wall, curtains, Indian-style fan with real motion blur, fan and TV repositioned to be fully in view; About page expanded (vision, mission, promise, differentiators, journey from 2025, who we work with) |
 | 16 Nov 2026 | Homepage trimmed: "From survey to support", "Parents' home" and "Made for Indian homes" hidden via switches in `data/home.json`; sixth card "Your switches keep working" added to the promise section; scroll-reveal and hover motion added (movement and colour only) |
 | 16 Nov 2026 | Q6/Q7/Q17 facts: phone + WhatsApp +91 91173 79099; working hours 9 am–9 pm every day; survey service area = all of Bihar; form success promise "within 2 working hours"; CIN U74909BR2025PTC073219; registered office B Hub, Mauryalok Complex, A Block, Patna, Bihar 800001 |
+| 16 Nov 2026 | **Early access before a January 2027 launch (replaces the earlier "present everything as live" decision).** Public launch is planned for January 2027. Until then the site runs in early-access mode (`LAUNCHED=false`): the four core modules and the app read "Launching Jan 2027", online buying is off, an announcement bar and a homepage band invite people to `/early-access`, where they join the pilot list. Everyone on the list is promised a special early-access offer, confirmed in the written quote; the offer's value is not published until the founder fixes it. Setting `LAUNCHED=true` on launch day turns the modules to Available, the app live and the cart on. |
 
 ---
 

@@ -17,7 +17,7 @@ const LABELS: Record<string, string> = {
   link: "Link under the answer (optional)", priceType: "Price type", price: "Price (₹)", everyPackage: "In every package",
   addOns: "Add-ons", includes: "What it includes", good: "This is the good option (Homeasy)", icon: "Icon name", id: "Short id (used in links)",
   slug: "Short id (used in links)", whatsappMessages: "Pre-filled WhatsApp messages", general: "General message", photo: "Switchboard photo message",
-  problem: "The problem", how: "How it works", promise: "What you get with Homeasy", switches: "Switch brands", parents: "For parents", indian: "Indian homes",
+  early: "Early access band (shown until launch)", problem: "The problem", how: "How it works", promise: "What you get with Homeasy", switches: "Switch brands", parents: "For parents", indian: "Indian homes",
   app: "App", business: "Businesses and government", area: "Service area", founder: "Founder note", faq: "Short FAQ", process: "Survey to support",
   draft: "Draft: show the “under legal review” notice", dates: "Dates line (empty = “Last updated” with the site date)", intro: "Line under the title",
   google: "Google Business Profile link",

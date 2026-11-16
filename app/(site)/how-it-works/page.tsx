@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { site as company } from "@/lib/site";
 import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
@@ -71,7 +72,7 @@ export default async function HowItWorksPage() {
           We set up rooms, scenes and family access, and show you how it works.
           {!flags.APP_LIVE && (
             <span className="mt-2 block">
-              <StatusBadge status="coming-soon" label="App coming soon" />
+              <StatusBadge status="coming-soon" label={`App launching ${company.launch.short}`} />
             </span>
           )}
         </>
@@ -180,7 +181,7 @@ export default async function HowItWorksPage() {
           <Card className="min-w-0">
             <div className="flex flex-wrap items-center gap-3">
               <h3 className="text-h4">What you gain</h3>
-              {!flags.APP_LIVE && <StatusBadge status="coming-soon" label="App coming soon" />}
+              {!flags.APP_LIVE && <StatusBadge status="coming-soon" label={`App launching ${company.launch.short}`} />}
             </div>
             <ul className="mt-4 space-y-3 text-body">
               {GAINS.map((item) => (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { site as company } from "@/lib/site";
 import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
@@ -80,7 +81,7 @@ export default async function InstallationPage() {
           <Who>Homeasy technician</Who>
           {!flags.APP_LIVE && (
             <span className="mt-2 block">
-              <StatusBadge status="coming-soon" label="App coming soon" />
+              <StatusBadge status="coming-soon" label={`App launching ${company.launch.short}`} />
             </span>
           )}
         </>

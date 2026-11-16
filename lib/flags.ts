@@ -10,17 +10,26 @@ function bool(value: string | undefined, fallback: boolean): boolean {
 
 const env = process.env;
 
+/**
+ * Founder decision 16 Nov 2026: the public launch is planned for January 2027. Until LAUNCHED=true the site is in
+ * "early access" mode: the core modules and the app read "Launching January 2027", online buying is off, and the
+ * announcement bar invites people to the early-access list. Set LAUNCHED=true on launch day; the three flags below
+ * that default to it can still be set one by one.
+ */
+const launched = bool(env.LAUNCHED, false);
+
 export const flags = {
+  LAUNCHED: launched,
   SHOW_PRICES: bool(env.SHOW_PRICES, false),
-  // Online buying (cart, checkout). Founder decision 16 Nov 2026: on. Set SHOW_CART=false to show survey → quote → install only.
-  SHOW_CART: bool(env.SHOW_CART, true),
+  // Online buying (cart, checkout). On from launch; before that the site shows survey → quote → install only.
+  SHOW_CART: bool(env.SHOW_CART, launched),
   // "Delivery across Bihar" wording and delivery of online orders.
   DELIVERY_ENABLED: bool(env.DELIVERY_ENABLED, true),
   SHOW_INSTALLS: bool(env.SHOW_INSTALLS, false),
-  // Founder decision (16 Nov 2026): the app launches together with the website, so this is on by default.
-  // Set APP_LIVE=false if the site ever has to go live before the app.
-  APP_LIVE: bool(env.APP_LIVE, true),
-  SHOW_ANNOUNCEMENT: bool(env.SHOW_ANNOUNCEMENT, false),
+  // The app goes live with the launch.
+  APP_LIVE: bool(env.APP_LIVE, launched),
+  // The early-access bar shows until launch.
+  SHOW_ANNOUNCEMENT: bool(env.SHOW_ANNOUNCEMENT, !launched),
   SHOW_INVESTORS_PAGE: bool(env.SHOW_INVESTORS_PAGE, true),
   SHOW_BLOG: bool(env.SHOW_BLOG, false),
   SHOW_CERTIFICATIONS: bool(env.SHOW_CERTIFICATIONS, false),

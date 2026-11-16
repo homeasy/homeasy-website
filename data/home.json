@@ -1,6 +1,7 @@
 {
   "_sections_note": "Set a section to true/false to show or hide it on the homepage. Hidden ones keep their copy below.",
   "sections": {
+    "early": true,
     "problem": true,
     "how": true,
     "appliances": true,
@@ -15,6 +16,11 @@
     "area": true,
     "founder": true,
     "faq": true
+  },
+  "early": {
+    "title": "Early access is open",
+    "body": "Homeasy plans to launch in January 2027. Join the early-access list now: we are inviting pilot homes in Patna, and everyone on the list gets a special early-access offer.",
+    "cta": "Join early access"
   },
   "problem": {
     "title": "Smart homes shouldn't mean breaking walls.",

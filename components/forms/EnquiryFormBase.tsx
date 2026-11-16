@@ -52,6 +52,7 @@ export function EnquiryFormBase({
       // PRD §14.1 names: partner forms, the government form and the demo form each have their own key event
       if (kind === "government") track("gov_submit", { building_type: String(data.get("extra_building_type") ?? "") });
       else if (kind === "demo") track("demo_submit", { demo_type: String(data.get("extra_demo_type") ?? "") });
+      else if (kind === "early_access") track("early_access_submit", { home_type: String(data.get("extra_home_type") ?? "") });
       else if (kind === "contact") track("contact_submit", { topic: String(data.get("extra_topic") ?? "") });
       else track("b2b_submit", { type: kind });
     }

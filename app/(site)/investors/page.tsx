@@ -101,7 +101,7 @@ export default async function InvestorsPage() {
           <Card className="min-w-0">
             <h2 className="text-h4">Stage</h2>
             <p className="mt-4 text-body">
-              Pre-launch. We are preparing pilot installations in Patna. The company was incorporated in{" "}
+              Pre-launch. We are inviting pilot homes in Patna through early access, with the public launch planned for January 2027. The company was incorporated in{" "}
               {site.foundedYear}.
             </p>
             <p className="mt-4">

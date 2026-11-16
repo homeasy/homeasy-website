@@ -3,6 +3,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { cacheLife, cacheTag } from "next/cache";
 import seed from "@/data/products.json";
+import { flags } from "@/lib/flags";
 import { dbDelete, dbInsert, dbList, dbMode, dbUpdate } from "@/lib/db";
 import { getSnapshot } from "./publish";
 
@@ -78,7 +79,11 @@ export async function getPublicProducts(): Promise<Product[]> {
     console.error(e);
   }
   // before the first publish (or with no storage) show the starter list, so the catalogue is never empty
-  return (live ?? seedRows()).filter((p) => p.active).sort((a, b) => a.sort_order - b.sort_order);
+  return (live ?? seedRows())
+    .filter((p) => p.active)
+    // before the public launch nothing is "available" yet: it shows as launching (LAUNCHED flag)
+    .map((p) => (!flags.LAUNCHED && p.status === "available" ? { ...p, status: "coming-soon" as const } : p))
+    .sort((a, b) => a.sort_order - b.sort_order);
 }
 
 export async function getPublicProduct(slug: string): Promise<Product | null> {

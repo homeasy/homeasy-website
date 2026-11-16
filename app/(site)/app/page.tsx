@@ -81,7 +81,7 @@ export default function AppPage() {
         sub={
           live
             ? "The Homeasy smart home app is free for every Homeasy customer, on Android and iOS. Control lights, fans, the geyser and the AC from your phone. App control needs Wi-Fi and internet; we set it up for you at installation."
-            : "The Homeasy smart home app is free for every Homeasy customer. Control lights, fans, the geyser and the AC from your phone. App control needs Wi-Fi and internet. Android and iOS versions are coming soon."
+            : "The Homeasy smart home app is free for every Homeasy customer. Control lights, fans, the geyser and the AC from your phone. App control needs Wi-Fi and internet. Android and iOS versions launch with Homeasy."
         }
       >
         {/* Store badges go here too once the store links exist. */}
@@ -91,7 +91,7 @@ export default function AppPage() {
         {!live && (
           <div className="flex flex-wrap items-center gap-3">
             <StatusBadge status="coming-soon" />
-            <span className="text-[15px] text-body">Coming soon with your installation.</span>
+            <span className="text-[15px] text-body">The app launches with Homeasy, and we set it up at your installation.</span>
           </div>
         )}
       </PageHero>

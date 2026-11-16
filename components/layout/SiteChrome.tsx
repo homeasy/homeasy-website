@@ -52,7 +52,7 @@ export async function SiteChrome({ children }: { children: ReactNode }) {
       >
         Skip to content
       </a>
-      {flags.SHOW_ANNOUNCEMENT && <AnnouncementBar />}
+      {flags.SHOW_ANNOUNCEMENT && <AnnouncementBar launch={site.launch.label} />}
       <Header />
       <main id="main" className="flex-1">
         {children}

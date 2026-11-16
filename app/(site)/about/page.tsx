@@ -78,7 +78,9 @@ const JOURNEY = [
   { when: "2025", title: "Homeasy Automation Pvt. Ltd. incorporated in Patna", body: "The company is registered with its office at Mauryalok Complex." },
   { when: "2025–2026", title: "Product research and app design", body: "We study Indian switchboxes, wiring and how families actually use their homes." },
   { when: "November 2026", title: "Retrofit-first", body: "We commit to one idea: make existing homes smart without changing switches or rewiring." },
+  { when: "Now", title: "Early access", body: "We are inviting homes to our pilot. Everyone on the early-access list gets a special offer." },
   { when: "Next", title: "Pilot homes in Patna", body: "First installations with real families, so every promise we publish is one we have kept." },
+  { when: "January 2027 (planned)", title: "Patna launch", body: "Surveys and installations open to more homes." },
 ];
 
 const WORK_WITH = [

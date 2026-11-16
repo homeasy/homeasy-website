@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { ChevronDown, Mail, Phone } from "lucide-react";
+import { ChevronDown, Download, Mail, Phone } from "lucide-react";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { EnquiryControls } from "@/components/admin/EnquiryRow";
 import { Card, EmptyState, ErrorBanner, fmtDateTime, InfoRow, PageHeader, Pill, timeAgo } from "@/components/admin/ui";
@@ -31,7 +31,15 @@ async function Enquiries({ searchParams }: { searchParams: Search }) {
   );
   return (
     <AdminShell mode={dbMode()}>
-      <PageHeader title="Enquiries" description="Messages from the contact, partner, government and demo forms. Survey bookings are under Leads." />
+      <PageHeader
+        title="Enquiries"
+        description="Early-access sign-ups and messages from the contact, partner, government and demo forms. Survey bookings are under Leads."
+        actions={
+          <a href={`/admin/enquiries/export${kind ? `?kind=${kind}` : ""}`} className="adm-btn adm-btn-secondary">
+            <Download size={16} aria-hidden="true" /> Export CSV
+          </a>
+        }
+      />
       <form method="get" className="mb-4 flex flex-wrap items-center gap-2">
         <input name="q" defaultValue={q} placeholder="Search name, mobile, organisation, message" aria-label="Search enquiries" className="adm-control w-full sm:w-72" />
         <select name="kind" defaultValue={kind} aria-label="Type" className="adm-control w-auto sm:w-52">

@@ -4,6 +4,7 @@ import {
   AppSection,
   Business,
   CtaBand,
+  EarlyAccess,
   FounderNote,
   HomeFaq,
   HowItWorks,
@@ -17,6 +18,7 @@ import {
   Switches,
 } from "@/components/home/sections";
 import { getContent } from "@/lib/content/store";
+import { flags } from "@/lib/flags";
 import { seoMetadata } from "@/lib/seo/meta";
 import { getSite } from "@/lib/site-live";
 
@@ -34,6 +36,7 @@ export default async function Home() {
       <link rel="preload" as="image" href="/hero/mobile/ambient.jpg" media="(max-width: 1023px)" fetchPriority="high" />
       <link rel="preload" as="image" href="/hero/desktop/ambient.jpg" media="(min-width: 1024px)" fetchPriority="high" />
       <Hero tagline={site.tagline} photoHref={site.whatsappHref("photo")} />
+      {show.early && !flags.LAUNCHED && <EarlyAccess />}
       {show.problem && <Problem />}
       {show.how && <HowItWorks />}
       {show.appliances && <Appliances />}

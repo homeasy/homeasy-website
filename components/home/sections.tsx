@@ -70,6 +70,25 @@ function IconTile({ name, onDark = false }: { name: string; onDark?: boolean }) 
   );
 }
 
+/** Early-access invitation, shown until launch (switch: sections.early in Admin → Homepage). */
+export async function EarlyAccess() {
+  const home = await getContent("home");
+  const e = home.early;
+  return (
+    <Section tone="tint" className="!py-10 lg:!py-12">
+      <div className="flex flex-col items-start gap-5 lg:flex-row lg:items-center lg:justify-between">
+        <div className="max-w-[760px]">
+          <h2 className="text-h3 leading-[1.15]">{e.title}</h2>
+          <p className="mt-2 text-lg text-body">{e.body}</p>
+        </div>
+        <Link href="/early-access" className="btn btn-secondary min-h-12 shrink-0 whitespace-nowrap px-6">
+          {e.cta}
+        </Link>
+      </div>
+    </Section>
+  );
+}
+
 export async function Problem() {
   const home = await getContent("home");
   const p = home.problem;

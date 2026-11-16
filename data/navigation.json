@@ -50,6 +50,10 @@
   ],
   "drawerExtra": [
     {
+      "label": "Early access",
+      "href": "/early-access"
+    },
+    {
       "label": "Installation",
       "href": "/installation"
     },
@@ -74,6 +78,10 @@
     {
       "title": "Homes",
       "links": [
+        {
+          "label": "Early access",
+          "href": "/early-access"
+        },
         {
           "label": "How it works",
           "href": "/how-it-works"
