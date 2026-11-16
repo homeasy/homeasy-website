@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { preload } from "react-dom";
 import "./globals.css";
-import { site } from "@/lib/site";
+import { isTestSite, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+  // beta and preview addresses stay out of search engines
+  ...(isTestSite ? { robots: { index: false, follow: false } } : {}),
   title: {
     default: "Homeasy — Make Your Existing Home Smart Without Rewiring",
     template: "%s",

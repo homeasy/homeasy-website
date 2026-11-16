@@ -1,7 +1,7 @@
 /**
- * Admin login (server only). One shared password in ADMIN_PASSWORD; the session is a signed, HttpOnly cookie.
+ * Admin login (server only). One account: ADMIN_EMAIL + ADMIN_PASSWORD; the session is a signed, HttpOnly cookie.
  * ADMIN_SESSION_SECRET signs the cookie (falls back to a key derived from the password, so changing the
- * password logs everyone out). If ADMIN_PASSWORD is not set, the admin is switched off.
+ * password logs everyone out). If either ADMIN_EMAIL or ADMIN_PASSWORD is not set, the admin is switched off.
  */
 import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
@@ -11,10 +11,10 @@ import { redirect } from "next/navigation";
 const COOKIE = "he_admin";
 const MAX_AGE = 60 * 60 * 12; // 12 hours
 
-export const adminConfigured = () => !!process.env.ADMIN_PASSWORD;
+export const adminConfigured = () => !!(process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD);
 
 function secret() {
-  return process.env.ADMIN_SESSION_SECRET || `he-admin:${process.env.ADMIN_PASSWORD}`;
+  return process.env.ADMIN_SESSION_SECRET || `he-admin:${process.env.ADMIN_EMAIL}:${process.env.ADMIN_PASSWORD}`;
 }
 function sign(value: string) {
   return createHmac("sha256", secret()).update(value).digest("hex");
@@ -25,9 +25,14 @@ function safeEqual(a: string, b: string) {
   return x.length === y.length && timingSafeEqual(x, y);
 }
 
-export function passwordMatches(input: string) {
+/** Both the email and the password must match. Compared in constant time; the email ignores case. */
+export function credentialsMatch(email: string, password: string) {
+  const e = process.env.ADMIN_EMAIL;
   const pw = process.env.ADMIN_PASSWORD;
-  return !!pw && safeEqual(sign(input), sign(pw));
+  if (!e || !pw) return false;
+  const emailOk = safeEqual(sign(email.trim().toLowerCase()), sign(e.trim().toLowerCase()));
+  const pwOk = safeEqual(sign(password), sign(pw));
+  return emailOk && pwOk;
 }
 
 export async function startSession() {

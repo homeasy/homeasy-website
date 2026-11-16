@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { endSession, passwordMatches, requireAdmin, startSession } from "@/lib/admin/session";
+import { endSession, credentialsMatch, requireAdmin, startSession } from "@/lib/admin/session";
 import { allow } from "@/lib/leads/rate-limit";
 import { LEAD_STATUSES } from "@/lib/leads/schema";
 import { updateLead } from "@/lib/leads/store";
@@ -11,7 +11,9 @@ export async function login(_prev: { error?: string } | undefined, formData: For
   const h = await headers();
   const ip = (h.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
   if (!allow(`admin:${ip}`)) return { error: "Too many attempts. Wait a few minutes and try again." };
-  if (!passwordMatches(String(formData.get("password") ?? ""))) return { error: "Wrong password." };
+  if (!credentialsMatch(String(formData.get("email") ?? ""), String(formData.get("password") ?? ""))) {
+    return { error: "Wrong email or password." };
+  }
   await startSession();
   redirect("/admin");
 }

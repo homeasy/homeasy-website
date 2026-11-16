@@ -8,6 +8,12 @@ export function LoginForm() {
   return (
     <form action={action} className="mt-6 space-y-4">
       <div>
+        <label htmlFor="email" className="mb-1.5 block text-[15px] font-semibold">
+          Email
+        </label>
+        <input id="email" name="email" type="email" autoComplete="username" required className="h-12 w-full rounded-input border border-line bg-white px-4" />
+      </div>
+      <div>
         <label htmlFor="password" className="mb-1.5 block text-[15px] font-semibold">
           Password
         </label>

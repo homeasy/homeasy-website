@@ -10,7 +10,7 @@ async function LoginCard() {
     <LoginForm />
   ) : (
     <p className="mt-6 rounded-card bg-tint p-4 text-[15px]">
-      The admin is switched off. Set <code>ADMIN_PASSWORD</code> in the environment settings, then redeploy.
+      The admin is switched off. Set <code>ADMIN_EMAIL</code> and <code>ADMIN_PASSWORD</code> in the environment settings, then redeploy.
     </p>
   );
 }
