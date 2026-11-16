@@ -38,7 +38,14 @@ export default async function ContactPage() {
         eyebrow="Contact"
         title="Get in touch"
         sub="Contact Homeasy with questions, partnerships or press — we'd love to hear from you."
-      />
+      >
+        <a href={site.whatsappHref("general")} target="_blank" rel="noopener noreferrer" className="btn btn-secondary min-h-12 px-6">
+          <WhatsAppIcon size={18} /> WhatsApp us
+        </a>
+        <Link href="/book-survey" className="btn btn-outline min-h-12 px-6">
+          Book a free home survey
+        </Link>
+      </PageHero>
 
       <Section>
         <ul className="grid gap-4 md:grid-cols-3">
@@ -110,7 +117,21 @@ export default async function ContactPage() {
         <div id="message" className="max-w-[760px] scroll-mt-28">
           <SectionHeading title="Send us a message" sub="Tell us what you need and we will get back to you during working hours." />
           <div className="mt-8">
-            <EnquiryFormBase kind="contact" page="/contact" show={{ email: true, city: true, message: true }} submitLabel="Send message" />
+            <EnquiryFormBase
+              kind="contact"
+              page="/contact"
+              show={{ email: true, city: true, message: true }}
+              submitLabel="Send message"
+              extraFields={[
+                {
+                  name: "topic",
+                  label: "What is this about?",
+                  type: "select",
+                  required: true,
+                  options: ["Home survey", "Designer", "Builder or commercial", "Electrician", "Government", "Investor", "Press", "Careers", "Support"],
+                },
+              ]}
+            />
           </div>
         </div>
       </Section>

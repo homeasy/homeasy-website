@@ -45,7 +45,14 @@ export default function RoadmapPage() {
         eyebrow="Roadmap"
         title="Where Homeasy is headed"
         sub="The Homeasy roadmap: what we've done, what we're building, and what's next. Plans may change — we'll keep this page honest."
-      />
+      >
+        <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
+          Book a free survey
+        </Link>
+        <Link href="/solutions" className="btn btn-outline min-h-12 px-6">
+          Partner with us
+        </Link>
+      </PageHero>
 
       <Section>
         <ol className="relative max-w-[760px] border-l border-line">

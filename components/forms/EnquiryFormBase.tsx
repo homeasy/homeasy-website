@@ -14,7 +14,10 @@ type Props = {
   kind: EnquiryKind;
   /** which of the standard optional fields to show */
   show?: { email?: boolean; organisation?: boolean; city?: boolean; message?: boolean };
+  /** standard fields that must be filled on this form (name, mobile and consent always are) */
+  required?: ("email" | "organisation" | "city")[];
   organisationLabel?: string;
+  cityLabel?: string;
   messageLabel?: string;
   /** extra questions for this form */
   extraFields?: ExtraField[];
@@ -33,7 +36,9 @@ type Props = {
 export function EnquiryFormBase({
   kind,
   show = { email: true, organisation: true, city: true, message: true },
+  required = [],
   organisationLabel = "Company or organisation",
+  cityLabel = "City or district",
   messageLabel = "How can we help?",
   extraFields = [],
   submitLabel = "Send enquiry",
@@ -55,6 +60,8 @@ export function EnquiryFormBase({
     ) : null;
   const aria = (name: string) => (errors[name] ? { "aria-invalid": true, "aria-describedby": `${kind}-${name}-error` } : {});
   const id = (name: string) => `${kind}-${name}`;
+  const needs = (name: "email" | "organisation" | "city") => required.includes(name);
+  const optionalTag = (name: "email" | "organisation" | "city") => (needs(name) ? null : <span className="font-normal text-slate">(optional)</span>);
 
   if (state?.ok) {
     return (
@@ -71,6 +78,8 @@ export function EnquiryFormBase({
     <form action={action} noValidate className="space-y-5 rounded-card border border-line bg-white p-5 sm:p-6">
       <input type="hidden" name="kind" value={kind} />
       <input type="hidden" name="page" value={page} />
+      <input type="hidden" name="required_fields" value={required.join(",")} />
+      <input type="hidden" name="number_extras" value={extraFields.filter((f) => f.type === "number").map((f) => f.name).join(",")} />
       <input type="hidden" name="required_extras" value={extraFields.filter((f) => f.required).map((f) => f.name).join(",")} />
       {/* honeypot: hidden from people and screen readers; bots fill it in */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
@@ -98,27 +107,27 @@ export function EnquiryFormBase({
         {show.email && (
           <div>
             <label htmlFor={id("email")} className={LABEL}>
-              Email <span className="font-normal text-slate">(optional)</span>
+              Email {optionalTag("email")}
             </label>
-            <input id={id("email")} name="email" type="email" autoComplete="email" className={FIELD} {...aria("email")} />
+            <input id={id("email")} name="email" type="email" autoComplete="email" required={needs("email")} className={FIELD} {...aria("email")} />
             {err("email")}
           </div>
         )}
         {show.organisation && (
           <div>
             <label htmlFor={id("organisation")} className={LABEL}>
-              {organisationLabel} <span className="font-normal text-slate">(optional)</span>
+              {organisationLabel} {optionalTag("organisation")}
             </label>
-            <input id={id("organisation")} name="organisation" autoComplete="organization" className={FIELD} {...aria("organisation")} />
+            <input id={id("organisation")} name="organisation" autoComplete="organization" required={needs("organisation")} className={FIELD} {...aria("organisation")} />
             {err("organisation")}
           </div>
         )}
         {show.city && (
           <div>
             <label htmlFor={id("city")} className={LABEL}>
-              City or district <span className="font-normal text-slate">(optional)</span>
+              {cityLabel} {optionalTag("city")}
             </label>
-            <input id={id("city")} name="city" autoComplete="address-level2" className={FIELD} {...aria("city")} />
+            <input id={id("city")} name="city" autoComplete="address-level2" required={needs("city")} className={FIELD} {...aria("city")} />
             {err("city")}
           </div>
         )}

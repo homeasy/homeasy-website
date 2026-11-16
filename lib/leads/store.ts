@@ -51,6 +51,48 @@ export async function saveLead(table: "survey_requests", row: LeadRow): Promise<
   return { ok: false, reason: "not_configured" };
 }
 
+/**
+ * Updates a lead that was saved after step 1 of the booking form (PRD §25.11) and is still unfinished.
+ * The row must match the request number AND the private token given to that browser, so nobody can
+ * overwrite someone else's request by guessing a number. "not_found" = no such unfinished lead (the caller
+ * then saves a new one); "error" = storage failed or the partial-lead columns are missing.
+ */
+export async function updatePartialLead(ref: string, token: string, changes: LeadRow): Promise<"updated" | "not_found" | "error"> {
+  const patch = { ...changes, updated_at: new Date().toISOString() };
+  const sb = supabase();
+  if (sb) {
+    try {
+      const where = `ref=eq.${encodeURIComponent(ref)}&resume_token=eq.${encodeURIComponent(token)}&partial=is.true`;
+      const res = await fetch(`${sb.base}?${where}&select=ref`, {
+        method: "PATCH",
+        headers: { ...sb.headers, Prefer: "return=representation" },
+        body: JSON.stringify(patch),
+        cache: "no-store",
+      });
+      if (!res.ok) {
+        console.error(`[leads] Supabase partial update failed: ${res.status} ${await res.text()}`);
+        return "error";
+      }
+      return ((await res.json()) as unknown[]).length > 0 ? "updated" : "not_found";
+    } catch (e) {
+      console.error("[leads] Supabase request failed", e);
+      return "error";
+    }
+  }
+  if (!localEnabled()) return "error";
+  let rows: Record<string, unknown>[] = [];
+  try {
+    rows = JSON.parse(await readFile(LOCAL_FILE, "utf8"));
+  } catch {
+    return "not_found";
+  }
+  const row = rows.find((r) => r.ref === ref && r.resume_token === token && r.partial === true);
+  if (!row) return "not_found";
+  Object.assign(row, patch);
+  await writeFile(LOCAL_FILE, JSON.stringify(rows, null, 2));
+  return "updated";
+}
+
 // ---------------------------------------------------------------- admin: read and update leads
 
 export type Lead = {
@@ -75,6 +117,8 @@ export type Lead = {
   utm_medium: string | null;
   utm_campaign: string | null;
   status: string;
+  /** true while only step 1 of the booking form is done (contact details, no home details yet: home_type is "") */
+  partial: boolean;
   assigned_to: string | null;
   notes: string | null; // older free-text note, shown at the bottom of the activity list
   priority: string; // high | medium | low
@@ -86,11 +130,16 @@ export type Lead = {
 export type LeadNote = { id: string; text: string; author: string; at: string; system?: boolean };
 
 /** Fills in fields that older rows (or a table without the newer columns) do not have. */
-function normalise(r: Partial<Lead>): Lead {
+function normalise(row: Partial<Lead>): Lead {
+  // resume_token is private to the customer's browser (see updatePartialLead): never hand it to the admin
+  const r = { ...row } as Partial<Lead> & { resume_token?: unknown };
+  delete r.resume_token;
   return {
     assigned_to: null,
     notes: null,
     ...r,
+    partial: r.partial === true,
+    home_type: r.home_type ?? "",
     priority: r.priority || "medium",
     activity: Array.isArray(r.activity) ? r.activity : [],
     updated_at: r.updated_at || r.created_at,

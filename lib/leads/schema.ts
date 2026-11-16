@@ -36,6 +36,20 @@ export const stepOneSchema = z.object({
   consent: z.literal("on", { error: "Please accept to continue." }),
 });
 
+/** Hidden fields sent with both steps: where the lead came from, and which saved step-1 lead to update. */
+const trackingFields = {
+  sourceCta: optional(z.string().max(60)),
+  page: optional(z.string().max(200)),
+  utmSource: optional(z.string().max(80)),
+  utmMedium: optional(z.string().max(80)),
+  utmCampaign: optional(z.string().max(80)),
+  leadRef: optional(z.string().regex(/^HE-[2-9A-HJ-NP-Z]{5}$/)),
+  leadToken: optional(z.string().regex(/^[0-9a-f]{32}$/)),
+};
+
+/** What the server saves when step 1 is completed (a partial lead, PRD §25.11). */
+export const partialLeadSchema = stepOneSchema.extend(trackingFields);
+
 export const surveySchema = stepOneSchema.extend({
   email: optional(z.email("Enter a valid email address.")),
   homeType: z.enum(HOME_TYPES, { error: "Please choose your home type." }),
@@ -45,11 +59,7 @@ export const surveySchema = stepOneSchema.extend({
   preferredDate: optional(z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Choose a valid date.")),
   timeSlot: optional(z.enum(TIME_SLOTS)),
   heardFrom: optional(z.enum(HEARD_FROM)),
-  sourceCta: optional(z.string().max(60)),
-  page: optional(z.string().max(200)),
-  utmSource: optional(z.string().max(80)),
-  utmMedium: optional(z.string().max(80)),
-  utmCampaign: optional(z.string().max(80)),
+  ...trackingFields,
 });
 
 export type SurveyInput = z.infer<typeof surveySchema>;
@@ -67,7 +77,38 @@ export function fieldErrors(error: z.ZodError): FieldErrors {
 
 export type SurveyResult =
   | { ok: true; ref: string; inServiceArea: boolean }
-  | { ok: false; errors?: FieldErrors; message?: string };
+  | { ok: false; errors?: FieldErrors; message?: string; reason?: "validation" | "rate_limit" | "server" };
+
+/** Result of saving step 1. `token` lets the same browser finish (update) this lead in step 2. */
+export type PartialLeadResult = { ok: true; ref: string; token: string } | { ok: false };
+
+/** Values the booking form can be opened with, e.g. /book-survey?rooms=2-3&appliances=Lights,Fans&pincode=800001&source=estimator */
+export type SurveyPrefill = {
+  rooms?: (typeof ROOM_OPTIONS)[number];
+  appliances: (typeof APPLIANCES)[number][];
+  switchBrand?: (typeof SWITCH_BRANDS)[number];
+  pincode?: string;
+  source?: string;
+};
+
+const same = (a: string, b: string) => a.trim().toLowerCase().replace(/-/g, "–") === b.toLowerCase();
+
+/** Reads the prefill from a query string. Unknown values are ignored. */
+export function parseSurveyPrefill(search: string): SurveyPrefill {
+  const p = new URLSearchParams(search);
+  const rooms = p.get("rooms") ?? "";
+  const brand = p.get("brand") ?? "";
+  const wanted = (p.get("appliances") ?? "").split(",");
+  const pincode = (p.get("pincode") ?? "").trim();
+  const source = (p.get("source") ?? "").trim().toLowerCase();
+  return {
+    rooms: ROOM_OPTIONS.find((v) => same(rooms, v)),
+    appliances: APPLIANCES.filter((v) => wanted.some((w) => same(w, v))),
+    switchBrand: SWITCH_BRANDS.find((v) => same(brand, v)),
+    pincode: /^[1-9]\d{5}$/.test(pincode) ? pincode : undefined,
+    source: /^[a-z0-9][a-z0-9_-]{0,59}$/.test(source) ? source : undefined,
+  };
+}
 
 /** Lead pipeline (PRD §27.3). Order = the order shown in the admin. */
 export const LEAD_STATUSES = [

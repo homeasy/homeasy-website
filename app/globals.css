@@ -180,3 +180,8 @@ details[open]::details-content { height: auto; }
 @media (max-width: 1023.98px) {
   .site-chrome { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
 }
+
+/* Phones: hide the bottom action bar while a text field is focused, so it never covers the form above the keyboard. */
+.site-chrome:has(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus, textarea:focus, select:focus) nav[aria-label="Quick actions"] {
+  display: none;
+}

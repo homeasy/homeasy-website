@@ -1,6 +1,85 @@
 {
-  "_note": "Estimator data (PRD §8.18). Prices stay null until the founder confirms them: with SHOW_PRICES=false the estimator shows modules needed, not rupees.",
-  "rooms": [],
-  "appliances": [],
-  "note": ""
+  "_note": "Estimator data (PRD §8.18). Prices stay null until the founder confirms them: with SHOW_PRICES=false the estimator shows modules needed, not rupees. Module names come from data/products.json (matched by slug). Appliance labels must match APPLIANCES in lib/leads/schema.ts so the survey form can be pre-filled.",
+  "_insert": [
+    "[insert: modules.smart-relay.pointsPerModule = how many light switches one Smart Relay handles. While null, the estimator shows the number of light points to cover instead of a module count.]",
+    "[insert: confirm modules.fan-controller.pointsPerModule = 1 (one Fan Controller per fan)]",
+    "[insert: confirm modules.power-module.pointsPerModule = 1 (one Power Module per geyser or water motor)]",
+    "[insert: confirm modules.ir-remote.perRoom = true (one IR Remote covers the AC and TV in the same room)]",
+    "[insert: confirm AC maps to the IR Remote only (PRD §8.5 'AC (IR)'), not also a Power Module]",
+    "[insert: modules.*.price = 'from' price per module in rupees, once final]"
+  ],
+  "homeTypes": ["Apartment", "Independent house", "Office or shop"],
+  "maxRooms": 12,
+  "modules": [
+    {
+      "slug": "smart-relay",
+      "unit": "light point",
+      "unitPlural": "light points",
+      "pointsPerModule": null,
+      "perRoom": false,
+      "price": null
+    },
+    {
+      "slug": "fan-controller",
+      "unit": "fan",
+      "unitPlural": "fans",
+      "pointsPerModule": 1,
+      "perRoom": false,
+      "price": null
+    },
+    {
+      "slug": "power-module",
+      "unit": "heavy appliance",
+      "unitPlural": "heavy appliances",
+      "pointsPerModule": 1,
+      "perRoom": false,
+      "price": null
+    },
+    {
+      "slug": "ir-remote",
+      "unit": "room with an AC or TV",
+      "unitPlural": "rooms with an AC or TV",
+      "pointsPerModule": 1,
+      "perRoom": true,
+      "price": null
+    }
+  ],
+  "appliances": [
+    { "id": "lights", "label": "Lights", "question": "Light points", "hint": "Count each switch that turns on a light.", "kind": "count", "max": 12, "module": "smart-relay" },
+    { "id": "fans", "label": "Fans", "question": "Ceiling fans", "kind": "count", "max": 4, "module": "fan-controller" },
+    { "id": "ac", "label": "AC", "question": "AC with a remote", "kind": "toggle", "max": 1, "module": "ir-remote" },
+    { "id": "tv", "label": "TV", "question": "TV with a remote", "kind": "toggle", "max": 1, "module": "ir-remote" },
+    { "id": "geyser", "label": "Geyser", "question": "Geyser", "kind": "toggle", "max": 1, "module": "power-module" },
+    { "id": "water-motor", "label": "Water motor", "question": "Water motor", "kind": "toggle", "max": 1, "module": "power-module" },
+    { "id": "outdoor-lights", "label": "Outdoor lights", "question": "Outdoor light points", "hint": "Gate, porch, balcony or garden lights.", "kind": "count", "max": 8, "module": "smart-relay" }
+  ],
+  "rooms": [
+    { "id": "bedroom", "label": "Bedroom", "appliances": ["lights", "fans", "ac", "tv"], "defaults": { "lights": 2, "fans": 1 } },
+    { "id": "living-room", "label": "Living room", "appliances": ["lights", "fans", "ac", "tv"], "defaults": { "lights": 3, "fans": 1, "tv": 1 } },
+    { "id": "kitchen", "label": "Kitchen", "appliances": ["lights", "fans", "geyser"], "defaults": { "lights": 2 } },
+    { "id": "bathroom", "label": "Bathroom", "appliances": ["lights", "geyser"], "defaults": { "lights": 1, "geyser": 1 } },
+    { "id": "balcony-outdoor", "label": "Balcony or outdoor", "appliances": ["outdoor-lights", "water-motor"], "defaults": { "outdoor-lights": 1 } },
+    { "id": "other", "label": "Other room", "appliances": ["lights", "fans", "ac", "tv", "geyser", "water-motor"], "defaults": { "lights": 1 } }
+  ],
+  "copy": {
+    "steps": ["Your home", "Your rooms", "What to control", "Your estimate"],
+    "homeTitle": "Your home",
+    "homeHint": "Optional. It helps us plan the survey.",
+    "roomsTitle": "Your rooms",
+    "roomsHint": "Add the rooms you want to make smart. You can start with one room.",
+    "controlTitle": "What to control",
+    "controlHint": "We have filled in a typical room. Change the numbers to match your home.",
+    "controlEmpty": "Add a room above to choose what to control.",
+    "resultTitle": "Your estimated setup",
+    "resultEmpty": "Add a room to see which Homeasy modules it needs.",
+    "resultIndicative": "This is an indicative list. We check your switchboxes and confirm the exact modules at the free survey.",
+    "relayPending": "Number of modules confirmed at the survey",
+    "noPrice": "Price after free survey",
+    "priceOffNote": "We'll confirm your exact price after the free survey.",
+    "priceOnNote": "Prices shown are starting prices per module. Your exact price is confirmed in writing after the free survey.",
+    "ctaPrimary": "Book a free survey with this list",
+    "ctaWhatsapp": "Send this list on WhatsApp",
+    "reset": "Start again"
+  },
+  "note": "Indicative only. Fit depends on the switchbox and wiring in each room, which we check at the free survey."
 }

@@ -14,9 +14,8 @@ export type Package = { slug: string; name: string; tagline: string; priceType: 
 export type AddOn = { name: string; price: number | null; status: Status | null };
 export type PackagesFile = { packages: Package[]; everyPackage: PackageItem[]; addOns: AddOn[] };
 
-/** data/estimator.json: room-by-room estimator (PRD §8.18). Prices stay null until final (SHOW_PRICES). */
-export type EstimatorAppliance = { id: string; label: string; module: string; price: number | null };
-export type EstimatorFile = { rooms: { id: string; label: string }[]; appliances: EstimatorAppliance[]; note: string };
+/** data/estimator.json: room-by-room estimator (PRD §8.18). */
+export type { EstimatorData as EstimatorFile } from "@/components/estimator/types";
 
 /** data/service-areas.json */
 export type ServiceAreasFile = { label: string; pincodePrefixes: string[]; note?: string };

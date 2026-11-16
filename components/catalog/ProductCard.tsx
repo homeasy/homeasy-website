@@ -31,7 +31,7 @@ export function ProductVisual({ product, className = "", sizes }: { product: Pic
 }
 
 export function PriceLine({ product, large = false }: { product: Pick<Product, "price" | "mrp">; large?: boolean }) {
-  if (!product.price) return <p className={large ? "text-h4 font-semibold" : "text-[15px] font-semibold"}>Price on request</p>;
+  if (!product.price) return <p className={large ? "text-h4 font-semibold" : "text-[15px] font-semibold"}>Price after free survey</p>;
   const off = product.mrp ? Math.round((1 - product.price / product.mrp) * 100) : 0;
   return (
     <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">

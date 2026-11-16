@@ -149,8 +149,19 @@ export default async function GuaranteePage() {
       <PageHero
         eyebrow="Guarantee"
         title="The Homeasy promise. In writing."
-        sub="The Homeasy guarantee: five promises we make to every Homeasy customer, and exactly what they mean."
-      />
+        sub={
+          live.reply && live.sameLook && live.fixedPrice && live.visit
+            ? "The Homeasy guarantee: five promises we make to every Homeasy customer, and exactly what they mean."
+            : "The Homeasy guarantee: five promises we are preparing for every Homeasy customer, exactly what each will mean, and which are in force today."
+        }
+      >
+        <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
+          Book a free home survey
+        </Link>
+        <Link href="/warranty" className="btn btn-outline min-h-12 px-6">
+          Read the warranty
+        </Link>
+      </PageHero>
 
       <Section>
         <div className="max-w-[820px]">

@@ -3,7 +3,6 @@ import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { Home, MapPin, UserCheck } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
-import { CtaBand } from "@/components/ui/CtaBand";
 import jobsData from "@/data/jobs.json";
 import { getSite } from "@/lib/site-live";
 
@@ -46,7 +45,11 @@ export default async function CareersPage() {
         eyebrow="Careers at Homeasy"
         title="Help us make Indian homes smart."
         sub="We're a small, focused team in Patna building hardware, software and service that families can trust."
-      />
+      >
+        <a href={careersMail} className="btn btn-primary min-h-12 px-6">
+          Email your profile
+        </a>
+      </PageHero>
 
       <Section>
         <SectionHeading title="Why Homeasy" />
@@ -120,7 +123,7 @@ export default async function CareersPage() {
             <a href={careersMail} className="link">
               {site.contact.email}
             </a>{" "}
-            with the role you are interested in and a few lines on work you have done. We are a small team, so tell us what you would like to own. You do not need to wait for a role to be listed here.
+            with the role you are interested in and a few lines on work you have done. We are a small team, so tell us what you would like to own. You do not need to wait for a role to be listed here. Tell us about the hardware, software or installation work you have done, and link to anything you have built.
           </p>
           <p>
             <strong className="font-semibold text-ink">What we build:</strong> retrofit modules that fit inside existing switchboxes, the Homeasy app, and the
@@ -135,7 +138,6 @@ export default async function CareersPage() {
 
       <Related paths={["/about", "/solutions/electricians", "/contact"]} />
 
-      <CtaBand />
     </>
   );
 }

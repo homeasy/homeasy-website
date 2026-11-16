@@ -136,7 +136,7 @@ export function ProductForm({ values }: { values: ProductFormValues }) {
               </div>
             </div>
             <p className={hint}>
-              Leave the price empty to show &ldquo;Price on request&rdquo;. The list price is optional and is shown struck through.
+              Leave the price empty to show &ldquo;Price after free survey&rdquo;. The list price is optional and is shown struck through.
             </p>
             {err("mrp")}
             <div>

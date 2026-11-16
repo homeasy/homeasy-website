@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { FileWarning } from "lucide-react";
 import Link from "next/link";
 import { PageHero, Section } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { SEO_ROUTES } from "@/lib/seo/routes";
 import { getSite } from "@/lib/site-live";
 
@@ -68,6 +69,7 @@ export function LegalPage({
           </nav>
         </div>
       </Section>
+      <CtaBand title="Questions about this policy?" body="Ask us on WhatsApp or book a free home survey. We are happy to explain anything on this page." />
     </>
   );
 }

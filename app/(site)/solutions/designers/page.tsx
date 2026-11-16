@@ -4,7 +4,9 @@ import { seoMetadata } from "@/lib/seo/meta";
 import { CalendarClock, Gem, Hammer, Headset, MonitorPlay, PencilRuler, Wallet, Wrench } from "lucide-react";
 import { Faq, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
 import { CtaBand } from "@/components/ui/CtaBand";
-import { EnquiryCard, FeatureGrid, type Feature } from "@/components/catalog";
+import { FeatureGrid, type Feature } from "@/components/catalog";
+import { EnquirySection } from "@/components/solutions/EnquirySection";
+import { DESIGNER_FIELDS } from "@/components/solutions/enquiry-fields";
 import { flags, usp } from "@/lib/flags";
 
 const pageMeta: Metadata = {
@@ -97,21 +99,23 @@ export default function DesignersPage() {
       </Section>
 
       <Section tone="cloud">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <div className="min-w-0">
-            <SectionHeading title="Questions designers ask" />
-            <div className="mt-8">
-              <Faq items={faq} />
-            </div>
-          </div>
-          <div className="min-w-0">
-            <EnquiryCard
-              title="Tell us about your practice"
-              body="Send us your studio name, city and the kind of projects you do. We will set up a call or a site visit."
-            />
-          </div>
+        <SectionHeading title="Questions designers ask" />
+        <div className="mt-8 max-w-[760px]">
+          <Faq items={faq} />
         </div>
       </Section>
+
+      <EnquirySection
+        required={["email", "organisation", "city"]}
+        kind="designer"
+        page="/solutions/designers"
+        title="Tell us about your practice"
+        sub="Send us your studio name, city and the kind of projects you do. We will set up a call or a site visit."
+        organisationLabel="Firm or studio"
+        messageLabel="Your projects and what you need"
+        submitLabel="Send partner enquiry"
+        extraFields={DESIGNER_FIELDS}
+      />
 
       <Related paths={["/how-it-works", "/products", "/solutions/builders"]} />
 

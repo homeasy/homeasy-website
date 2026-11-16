@@ -16,9 +16,11 @@ import {
   Stethoscope,
   Store,
 } from "lucide-react";
-import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { Card, Faq, PageHero, Section, SectionHeading } from "@/components/ui";
 import { CtaBand } from "@/components/ui/CtaBand";
-import { ChipList, EnquiryCard, FeatureGrid, StepList, type Feature } from "@/components/catalog";
+import { ChipList, FeatureGrid, StepList, type Feature } from "@/components/catalog";
+import { EnquirySection } from "@/components/solutions/EnquirySection";
+import { BUILDER_FIELDS } from "@/components/solutions/enquiry-fields";
 
 const pageMeta: Metadata = {
   title: "Home Automation for Builders & Commercial — Homeasy",
@@ -57,6 +59,25 @@ const STEPS = [
   { title: "Resident support", body: "We help residents with the app and with service." },
 ];
 
+const FAQ = [
+  {
+    q: "Can you retrofit flats that are already finished?",
+    a: "Yes. The modules fit inside the existing switchboxes, so walls and finishes stay untouched. We check each switchbox at the survey, because not every one suits a module.",
+  },
+  {
+    q: "How is project pricing worked out?",
+    a: "By the number of units and the scope in each one. You get a written proposal after the project survey.",
+  },
+  {
+    q: "Who supports residents after handover?",
+    a: "Homeasy, directly. Residents reach us on WhatsApp or phone, and the modules carry a 3-year warranty.",
+  },
+  {
+    q: "Do you work outside Patna?",
+    a: "Yes. We are based in Patna and survey across Bihar. Contact us for locations outside Bihar.",
+  },
+];
+
 /** PRD §8.7.2 / §26.8 */
 export default function BuildersPage() {
   return (
@@ -93,7 +114,7 @@ export default function BuildersPage() {
       </Section>
 
       <Section tone="cloud">
-        <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-12">
           <Card className="min-w-0 p-6 sm:p-8">
             <Building2 aria-hidden="true" size={28} strokeWidth={1.75} className="text-navy" />
             <h2 className="mt-4 text-h3 leading-[1.2]">Project pricing</h2>
@@ -103,13 +124,25 @@ export default function BuildersPage() {
             <p className="mt-3 text-body">Homeasy modules carry a 3-year warranty.</p>
           </Card>
           <div className="min-w-0">
-            <EnquiryCard
-              title="Tell us about your project"
-              body="Send us the project name, location, number of units and stage. We will arrange a project survey."
-            />
+            <h2 className="text-h3 leading-[1.2]">Questions builders ask</h2>
+            <div className="mt-6">
+              <Faq items={FAQ} />
+            </div>
           </div>
         </div>
       </Section>
+
+      <EnquirySection
+        required={["email", "organisation", "city"]}
+        kind="builder"
+        page="/solutions/builders"
+        title="Tell us about your project"
+        sub="Send us the project name, location, number of units and stage. We will arrange a project survey."
+        organisationLabel="Company"
+        messageLabel="Project name and anything else we should know"
+        submitLabel="Send project enquiry"
+        extraFields={BUILDER_FIELDS}
+      />
 
       <Related paths={["/solutions/designers", "/products", "/installation"]} />
 

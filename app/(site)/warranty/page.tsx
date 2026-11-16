@@ -34,7 +34,14 @@ export default async function WarrantyPage() {
         eyebrow="Warranty"
         title="Homeasy warranty policy"
         sub="3 years on Homeasy modules, from your installation date."
-      />
+      >
+        <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
+          Book a free home survey
+        </Link>
+        <a href={site.whatsappHref("general")} target="_blank" rel="noopener noreferrer" className="btn btn-outline min-h-12 px-6">
+          <WhatsAppIcon size={18} /> Claim on WhatsApp
+        </a>
+      </PageHero>
 
       <Section>
         <div className="max-w-[820px]">

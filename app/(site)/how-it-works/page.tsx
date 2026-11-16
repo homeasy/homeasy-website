@@ -282,7 +282,7 @@ export default async function HowItWorksPage() {
         </div>
       </Section>
 
-      <Related paths={["/products", "/installation", "/pricing"]} />
+      <Related paths={["/products", "/readiness-report", "/pricing"]} />
 
       <CtaBand title="Ready to see what's possible in your home?" />
     </>

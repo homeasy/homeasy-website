@@ -1,0 +1,139 @@
+{
+  "note": "SAMPLE Smart Home Readiness Report shown on /readiness-report (PRD §8.21, §26.19, §27.8). Everything here is illustrative: an invented home, no real customer, no photos, no rupee amounts. verdict: suitable | needs-fix | not-suitable. Module names must match data/products.json. Do not add prices, specs or module quantities here.",
+  "sampleLabel": "Sample report",
+  "sampleNote": "This is a sample. The home below is made up to show the layout. It is not a real customer, and the drawings are diagrams, not photos.",
+  "cover": {
+    "title": "Smart Home Readiness Report",
+    "rows": [
+      { "label": "Home", "value": "Sample home, 2 BHK apartment" },
+      { "label": "Customer", "value": "Sample customer (not a real person)" },
+      { "label": "Request number", "value": "SAMPLE-0000" },
+      { "label": "Survey date", "value": "Sample date" },
+      { "label": "Surveyed by", "value": "Homeasy technician" }
+    ]
+  },
+  "verdict": "Most of this sample home is ready. One point needs a repair first, and one switchbox has to wait.",
+  "boxes": [
+    {
+      "id": "living-main",
+      "room": "Living room",
+      "name": "Main switchboard",
+      "switches": 6,
+      "hasRegulator": true,
+      "verdict": "suitable",
+      "checks": [
+        { "label": "Neutral wire", "value": "Yes, present in the box" },
+        { "label": "Box depth", "value": "Enough room for a module" },
+        { "label": "Wiring condition", "value": "Good. No loose or burnt wires seen" },
+        { "label": "Loads", "value": "Tube light, lamp, ceiling fan" },
+        { "label": "Wi-Fi signal", "value": "Good at this board" }
+      ],
+      "finding": "Modules fit behind the existing switches. The fan regulator stays where it is.",
+      "modules": ["Homeasy Smart Relay", "Homeasy Fan Controller"]
+    },
+    {
+      "id": "living-tv",
+      "room": "Living room",
+      "name": "AC and TV",
+      "switches": 0,
+      "hasRegulator": false,
+      "verdict": "suitable",
+      "checks": [
+        { "label": "Wiring needed", "value": "None. Works through the remote signal" },
+        { "label": "Appliances", "value": "Split AC and TV, both with a remote" },
+        { "label": "Wi-Fi signal", "value": "Good in this room" }
+      ],
+      "finding": "The AC and TV both answered remote commands in our check.",
+      "modules": ["Homeasy IR Remote"]
+    },
+    {
+      "id": "bedroom-1",
+      "room": "Bedroom 1",
+      "name": "Switchboard near the door",
+      "switches": 4,
+      "hasRegulator": true,
+      "verdict": "suitable",
+      "checks": [
+        { "label": "Neutral wire", "value": "Yes, present in the box" },
+        { "label": "Box depth", "value": "Enough room for a module" },
+        { "label": "Wiring condition", "value": "Good" },
+        { "label": "Loads", "value": "Two lights, ceiling fan" },
+        { "label": "Wi-Fi signal", "value": "Fair. Works, but weaker than the living room" }
+      ],
+      "finding": "Ready as it is. We note the weaker Wi-Fi so you know before you decide.",
+      "modules": ["Homeasy Smart Relay", "Homeasy Fan Controller"]
+    },
+    {
+      "id": "bathroom-geyser",
+      "room": "Bathroom",
+      "name": "Geyser point",
+      "switches": 1,
+      "hasRegulator": false,
+      "verdict": "needs-fix",
+      "checks": [
+        { "label": "Neutral wire", "value": "Yes, present in the box" },
+        { "label": "Box depth", "value": "Enough room for a module" },
+        { "label": "Wiring condition", "value": "Heat mark on one wire at the switch" },
+        { "label": "Loads", "value": "Geyser (heavy load)" }
+      ],
+      "finding": "The marked wire should be replaced before any module goes in. We list this repair separately in the quote, and nothing is done without your approval.",
+      "modules": ["Homeasy Power Module (16A)"]
+    },
+    {
+      "id": "bedroom-2",
+      "room": "Bedroom 2",
+      "name": "Switchboard near the bed",
+      "switches": 3,
+      "hasRegulator": false,
+      "verdict": "not-suitable",
+      "checks": [
+        { "label": "Neutral wire", "value": "No neutral wire in this box" },
+        { "label": "Box depth", "value": "Enough room for a module" },
+        { "label": "Wiring condition", "value": "Good" },
+        { "label": "Loads", "value": "Two lights, one socket" }
+      ],
+      "finding": "Our current modules need a neutral wire, so we leave this board as it is for now. A No-Neutral Module is planned. We do not quote for anything we cannot fit.",
+      "modules": []
+    }
+  ],
+  "safety": [
+    {
+      "urgency": "Fix first",
+      "where": "Bathroom, geyser point",
+      "text": "Heat mark on one wire at the switch. Replace the wire before installation."
+    },
+    {
+      "urgency": "Recommended",
+      "where": "Bedroom 1",
+      "text": "Wi-Fi is weaker here. Moving the router or adding a repeater would help."
+    },
+    {
+      "urgency": "Note",
+      "where": "Bedroom 2",
+      "text": "No neutral wire in the switchbox. The switches work normally by hand."
+    }
+  ],
+  "setup": [
+    "Living room lights and fan from the app, and by hand as before",
+    "AC and TV from your phone",
+    "Bedroom 1 lights and fan from the app",
+    "Geyser on a schedule, so it is not left on by mistake (after the wire repair)",
+    "Scenes and schedules for the rooms above, shared with your family"
+  ],
+  "quote": {
+    "lines": [
+      { "item": "Homeasy modules", "detail": "The modules listed above, counted for your home" },
+      { "item": "Professional installation", "detail": "By Homeasy electricians, inside your existing switchboxes" },
+      { "item": "App setup for your family", "detail": "Rooms, scenes, schedules and family accounts" },
+      { "item": "Repair agreed with you", "detail": "In this sample: replacing the marked wire at the geyser point" },
+      { "item": "GST", "detail": "Shown as its own line" }
+    ],
+    "total": "Total",
+    "validity": "Your quote carries the date it is valid until."
+  },
+  "nextSteps": [
+    "Read the findings and ask us anything on WhatsApp.",
+    "If you want to go ahead, tell us on WhatsApp and we fix an installation day.",
+    "If you don't, that is fine. There is no charge for the survey."
+  ]
+}

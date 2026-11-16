@@ -160,7 +160,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<{ days?: stri
             <HBarList data={tally(leads.map((l) => l.heard_from || (l.utm_source ? `Campaign: ${l.utm_source}` : "Not said")))} />
           </Card>
           <Card title="Home types">
-            <HBarList data={tally(leads.map((l) => l.home_type))} />
+            <HBarList data={tally(leads.map((l) => l.home_type).filter(Boolean))} />
           </Card>
         </div>
 

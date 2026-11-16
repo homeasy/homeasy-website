@@ -5,12 +5,13 @@ import { seoMetadata } from "@/lib/seo/meta";
 import { Check, Phone } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
+import { usp } from "@/lib/flags";
 import { getSite } from "@/lib/site-live";
 
 const pageMeta: Metadata = {
   title: "Book a Free Home Survey — Homeasy",
   description:
-    "Book a free home survey with Homeasy anywhere in Bihar. We check your switchboxes and wiring and give you a fixed quote. No obligation.",
+    "Book a free home survey with Homeasy anywhere in Bihar. We check your switchboxes and wiring and give you a clear written quote. No obligation.",
 };
 
 export function generateMetadata() {
@@ -18,9 +19,8 @@ export function generateMetadata() {
 }
 
 /*
- * INTERIM PAGE. This is replaced later by the survey booking form and global modal
- * (PRD §8.14, §10.1, §26.17) once Supabase storage is in place. Until then, bookings
- * go through WhatsApp or a phone call.
+ * Survey booking page (PRD §8.14, §10.1, §26.17). The form is a client component and reads any prefill
+ * (?rooms=…&appliances=…&pincode=…&source=…) in the browser, so this page stays statically prerendered.
  */
 
 const BOOKING_MESSAGE =
@@ -30,7 +30,10 @@ const SURVEY_STEPS = [
   { title: "We visit your home", body: "A Homeasy technician comes at a time that suits you." },
   { title: "We check switchboxes and wiring", body: "We look inside the switchboxes in the rooms you choose." },
   { title: "We suggest the best setup", body: "You see what can be made smart, room by room." },
-  { title: "You get a fixed quote", body: "It comes with your Readiness Report. You decide in your own time." },
+  {
+    title: usp("U4") ? "You get a fixed quote" : "You get a clear written quote",
+    body: usp("U1") ? "It comes with your Readiness Report. You decide in your own time." : "It lists the modules, installation and app setup. You decide in your own time.",
+  },
 ];
 
 const GOOD_TO_KNOW = [
@@ -47,7 +50,7 @@ export default async function BookSurveyPage() {
       <PageHero
         eyebrow="Free home survey"
         title="Book your free home survey"
-        sub="We'll visit, check your switchboxes and wiring, and give you a clear quote. No obligation. It is the first step to home automation and smart home installation in your home."
+        sub={`We'll visit, check your switchboxes and wiring, and give you ${usp("U1") && usp("U4") ? "a Readiness Report with a fixed quote" : "a clear written quote"}. No obligation. It is the first step to home automation and smart home installation in your home.`}
       />
 
       <Section>
@@ -89,7 +92,7 @@ export default async function BookSurveyPage() {
           <Steps items={SURVEY_STEPS} />
         </div>
       </Section>
-      <Related paths={["/how-it-works", "/pricing", "/faq"]} />
+      <Related paths={["/how-it-works", "/readiness-report", "/faq"]} />
     </>
   );
 }

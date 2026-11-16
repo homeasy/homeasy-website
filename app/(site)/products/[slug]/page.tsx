@@ -120,14 +120,19 @@ async function ProductDetail({ params }: { params: Params }) {
             {/* buyable = has a price and is marked Available; otherwise the page asks for a survey */}
             <div className="mt-7">
               {buyable ? (
-                <AddToCart productId={p.id} name={p.name} />
+                <div className="space-y-3">
+                  <AddToCart productId={p.id} name={p.name} />
+                  <Link href="/book-survey" className="btn btn-outline min-h-12 w-full whitespace-nowrap px-6">
+                    Not sure it fits? Book a free survey
+                  </Link>
+                </div>
               ) : (
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <Link href="/book-survey" className="btn btn-primary min-h-12 flex-1 whitespace-nowrap px-6">
                     Book a free home survey
                   </Link>
-                  <a href={site.whatsappHref("general")} target="_blank" rel="noopener noreferrer" className="btn btn-outline min-h-12 flex-1 whitespace-nowrap px-6">
-                    <WhatsAppIcon size={18} /> Ask on WhatsApp
+                  <a href={site.whatsappHref("photo")} target="_blank" rel="noopener noreferrer" className="btn btn-outline min-h-12 flex-1 whitespace-nowrap px-6">
+                    <WhatsAppIcon size={18} /> Send switchboard photo
                   </a>
                 </div>
               )}

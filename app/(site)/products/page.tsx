@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Wrench,
   type LucideIcon,
+  ClipboardCheck,
 } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
 import { CtaBand } from "@/components/ui/CtaBand";
@@ -30,6 +31,7 @@ export function generateMetadata() {
 const INFO: { icon: LucideIcon; text: string }[] = [
   { icon: Wrench, text: "All Homeasy modules are installed by our trained electricians after a free survey." },
   { icon: ShieldCheck, text: "3-year warranty on every Homeasy module." },
+  { icon: ClipboardCheck, text: "Detailed specifications will be published once certification and testing are complete." },
   ...(flags.DELIVERY_ENABLED ? [{ icon: Truck, text: "Delivery across Bihar. We recommend a free survey first, to check your switchboxes." }] : []),
 ];
 

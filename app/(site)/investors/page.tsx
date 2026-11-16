@@ -4,7 +4,6 @@ import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
-import { CtaBand } from "@/components/ui/CtaBand";
 import { flags, usp } from "@/lib/flags";
 import { getSite } from "@/lib/site-live";
 
@@ -141,7 +140,6 @@ export default async function InvestorsPage() {
 
       <Related paths={["/about", "/roadmap", "/how-it-works"]} />
 
-      <CtaBand />
     </>
   );
 }

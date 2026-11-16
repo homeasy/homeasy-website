@@ -10,7 +10,7 @@ import { useConfirm } from "./confirm";
 import { useToast } from "./toast";
 import { LeadStatusBadge, PriorityBadge } from "./ui";
 
-export type LeadRow = { ref: string; name: string; mobile: string; area: string; wants: string; home: string; priority: string; status: string; ago: string; when: string };
+export type LeadRow = { partial?: boolean; ref: string; name: string; mobile: string; area: string; wants: string; home: string; priority: string; status: string; ago: string; when: string };
 
 export function LeadsTable({ rows }: { rows: LeadRow[] }) {
   const router = useRouter();
@@ -93,6 +93,7 @@ export function LeadsTable({ rows }: { rows: LeadRow[] }) {
                   <Link href={`/admin/leads/${r.ref}`} onClick={(e) => e.stopPropagation()} className="block truncate font-medium text-white no-underline hover:text-amber">
                     {r.name}
                   </Link>
+                  {r.partial && <span className="mr-1.5 rounded-full bg-white/5 px-2 py-0.5 text-[11px] text-mist ring-1 ring-inset ring-white/10">Step 1 only</span>}
                   <p className="truncate text-xs text-mist">
                     +91 {r.mobile} · {r.ref}
                   </p>

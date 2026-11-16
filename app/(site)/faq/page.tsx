@@ -89,7 +89,14 @@ export default async function FaqPage() {
         eyebrow="FAQ"
         title="Questions, answered simply"
         sub="The Homeasy FAQ: switches, wiring, installation, app, pricing and support."
-      />
+      >
+        <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
+          Book a free home survey
+        </Link>
+        <a href={site.whatsappHref("general")} target="_blank" rel="noopener noreferrer" className="btn btn-outline min-h-12 px-6">
+          <WhatsAppIcon size={18} /> Ask on WhatsApp
+        </a>
+      </PageHero>
 
       <Section>
         <div className="grid gap-10 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-16">

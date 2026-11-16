@@ -232,7 +232,7 @@ export default async function InstallationPage() {
         </div>
       </Section>
 
-      <Related paths={["/how-it-works", "/pricing", "/warranty"]} />
+      <Related paths={["/how-it-works", "/readiness-report", "/warranty"]} />
 
       <CtaBand />
     </>

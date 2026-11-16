@@ -166,7 +166,17 @@ export default async function PricingPage() {
         </div>
       </Section>
 
-      <Related paths={["/products", "/installation", "/faq"]} />
+      <Section tone="cloud" className="!py-10">
+        <p className="text-lg text-body">
+          Want a rough idea first?{" "}
+          <Link href="/estimator" className="link font-semibold">
+            Try the estimator
+          </Link>{" "}
+          to see which modules your rooms need.
+        </p>
+      </Section>
+
+      <Related paths={["/estimator", "/installation", "/faq"]} />
 
       <CtaBand />
     </>

@@ -95,6 +95,14 @@
           "href": "/app"
         },
         {
+          "label": "Estimator",
+          "href": "/estimator"
+        },
+        {
+          "label": "Sample Readiness Report",
+          "href": "/readiness-report"
+        },
+        {
           "label": "Book a free survey",
           "href": "/book-survey"
         }

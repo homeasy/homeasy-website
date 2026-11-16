@@ -38,6 +38,13 @@ export async function submitEnquiry(_prev: EnquiryResult, formData: FormData): P
     if (Object.keys(extra).length < 12) extra[label] = value.trim().slice(0, 500);
   }
   const requiredMissing = String(formData.get("required_extras") ?? "").split(",").filter(Boolean).filter((n) => !String(formData.get(`extra_${n}`) ?? "").trim());
+  const numberBad = String(formData.get("number_extras") ?? "").split(",").filter(Boolean).filter((n) => {
+    const v = String(formData.get(`extra_${n}`) ?? "").trim();
+    return v !== "" && !/^\d{1,6}$/.test(v);
+  });
+  if (numberBad.length) return { ok: false, errors: Object.fromEntries(numberBad.map((n) => [`extra_${n}`, "Please enter a number."])) };
+  const fieldMissing = String(formData.get("required_fields") ?? "").split(",").filter((n) => ["email", "organisation", "city"].includes(n) && !input[n as "email" | "organisation" | "city"]);
+  if (fieldMissing.length) return { ok: false, errors: Object.fromEntries(fieldMissing.map((n) => [n, "Please fill this in."])) };
   if (requiredMissing.length) return { ok: false, errors: Object.fromEntries(requiredMissing.map((n) => [`extra_${n}`, "Please fill this in."])) };
 
   if (dbMode() === "none") return { ok: false, message: "We could not save your request just now. Please WhatsApp or call us instead." };

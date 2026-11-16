@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { Gift, GraduationCap, Headset, Wallet } from "lucide-react";
-import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { Card, Faq, PageHero, Section, SectionHeading } from "@/components/ui";
 import { CtaBand } from "@/components/ui/CtaBand";
-import { CheckList, EnquiryCard, FeatureGrid, StepList, type Feature } from "@/components/catalog";
+import { CheckList, FeatureGrid, StepList, type Feature } from "@/components/catalog";
+import { EnquirySection } from "@/components/solutions/EnquirySection";
+import { ELECTRICIAN_FIELDS } from "@/components/solutions/enquiry-fields";
 
 const pageMeta: Metadata = {
   title: "Smart Home Installation Training for Electricians",
@@ -31,6 +33,19 @@ const STEPS = [
   { title: "Training session", body: "You learn the modules and how we install them." },
   { title: "First jobs with a lead", body: "You work alongside a Homeasy lead." },
   { title: "Independent jobs", body: "You take jobs on your own." },
+];
+
+const FAQ = [
+  {
+    q: "Do I need smart-home experience?",
+    a: "No. You need house-wiring experience. The training covers Homeasy modules and how we install them.",
+  },
+  {
+    q: "Do I have to be in Patna?",
+    a: "No. We are starting in Patna and building the network across Bihar. Tell us your area when you apply.",
+  },
+  { q: "How are jobs paid?", a: "Jobs come from Homeasy. We share the payout details when you apply." },
+  { q: "Do I need a licence?", a: "We confirm any ID or licence requirements when you apply." },
 ];
 
 /** PRD §8.7.3 / §26.9 */
@@ -62,7 +77,7 @@ export default function ElectriciansPage() {
       </Section>
 
       <Section>
-        <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-12">
           <Card className="min-w-0 p-6 sm:p-8">
             <h2 className="text-h3 leading-[1.2]">Who can join</h2>
             <CheckList items={WHO} className="mt-5" />
@@ -71,13 +86,26 @@ export default function ElectriciansPage() {
             </p>
           </Card>
           <div className="min-w-0">
-            <EnquiryCard
-              title="Apply to join"
-              body="Send us your name, phone number, area and years of experience. We will call you back."
-            />
+            <h2 className="text-h3 leading-[1.2]">Questions electricians ask</h2>
+            <div className="mt-6">
+              <Faq items={FAQ} />
+            </div>
           </div>
         </div>
       </Section>
+
+      <EnquirySection
+        required={["city"]}
+        cityLabel="Area"
+        kind="electrician"
+        page="/solutions/electricians"
+        title="Apply to join"
+        sub="Send us your name, phone number, area and years of experience. We will call you back."
+        organisationLabel="Firm or shop name"
+        messageLabel="The kind of work you do"
+        submitLabel="Apply to join"
+        extraFields={ELECTRICIAN_FIELDS}
+      />
 
       <Related paths={["/installation", "/careers", "/contact"]} />
 

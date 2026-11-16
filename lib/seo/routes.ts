@@ -1,4 +1,6 @@
 /** The public pages managed by the SEO tools, listed in the sitemap and /llms.txt, and linked from "Keep exploring". Add new pages here. */
+import { flags } from "@/lib/flags";
+
 export type SeoRoute = {
   path: string;
   label: string;
@@ -19,6 +21,12 @@ export const SEO_ROUTES: SeoRoute[] = [
   { path: "/installation", label: "Installation", kind: "page", keyword: "smart home installation in patna", keywords: ["smart home installation services", "smart home installation near me", "home automation in bihar"], summary: "What happens on survey day and installation day, and the safety checks we follow." },
   { path: "/app", label: "Homeasy app", kind: "page", keyword: "smart home app", keywords: ["control ac from phone", "smart home app for android", "smart switch app", "wifi smart switch app"], summary: "Rooms, scenes, schedules and family sharing on your phone." },
   { path: "/book-survey", label: "Book a free survey", kind: "page", keyword: "free home survey", keywords: ["smart home installation near me", "home automation near me"], summary: "Pick a day and we will check your switchboxes at home, free anywhere in Bihar." },
+  { path: "/estimator", label: "Estimator", kind: "page", keyword: "smart home cost estimator", keywords: ["home automation cost calculator", "smart home cost", "home automation cost"], summary: "Pick your rooms and appliances and see which Homeasy modules you need." },
+  { path: "/readiness-report", label: "Sample Readiness Report", kind: "page", keyword: "smart home readiness report", keywords: ["free home survey", "smart home survey report", "home automation quote"], summary: "A sample of what our free survey checks in your home and what we share with you." },
+  // the demo page exists only while SHOW_DEMO is on
+  ...(flags.SHOW_DEMO
+    ? [{ path: "/demo", label: "Book a demo", kind: "page" as const, keyword: "smart home demo", keywords: ["smart home demo in patna", "home automation demo"], summary: "Visit the Patna demo home or take a short video demo on WhatsApp." }]
+    : []),
   { path: "/solutions", label: "Solutions", kind: "page", keyword: "smart home solutions", keywords: ["smart home solutions patna", "smart retrofit solutions"], summary: "Homeasy for interior designers, builders, electricians and government buildings." },
   { path: "/solutions/designers", label: "Interior designers", kind: "page", keyword: "smart home solutions for interior designers", keywords: ["home automation for interior designers", "smart switch board for home"], summary: "Add smart control behind the switchboards your clients chose, with no redesign." },
   { path: "/solutions/builders", label: "Builders & commercial", kind: "page", keyword: "home automation for builders", keywords: ["smart-ready homes", "home automation for offices", "smart home solutions patna"], summary: "Retrofit smart control for ready flats, show flats, offices and shops." },

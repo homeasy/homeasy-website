@@ -82,7 +82,10 @@ export default function AppPage() {
             : "The Homeasy smart home app is free for every Homeasy customer. Control lights, fans, the geyser and the AC from your phone. App control needs Wi-Fi and internet. Android and iOS versions are coming soon."
         }
       >
-        {/* Store badges go here once APP_LIVE=true and the store links exist. */}
+        {/* Store badges go here too once the store links exist. */}
+        <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
+          Book a free home survey
+        </Link>
         {!live && (
           <div className="flex flex-wrap items-center gap-3">
             <StatusBadge status="coming-soon" />

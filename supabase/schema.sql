@@ -42,3 +42,11 @@ alter table public.survey_requests enable row level security;
 alter table public.survey_requests add column if not exists priority text not null default 'medium';
 alter table public.survey_requests add column if not exists activity jsonb not null default '[]'::jsonb;
 alter table public.survey_requests add column if not exists updated_at timestamptz not null default now();
+
+-- Added for partial leads (PRD §25.11): step 1 of the booking form saves the contact details, step 2 updates
+-- the same row. `partial` is true until step 2 is finished; `resume_token` is a private key held by the
+-- customer's browser so only that browser can finish the request (cleared once finished).
+-- Safe to run again on a table that already exists.
+alter table public.survey_requests add column if not exists partial boolean not null default false;
+alter table public.survey_requests add column if not exists resume_token text;
+create index if not exists survey_requests_partial_idx on public.survey_requests (partial) where partial;

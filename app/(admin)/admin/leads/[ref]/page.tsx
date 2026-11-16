@@ -75,7 +75,7 @@ async function LeadDetail({ params }: { params: Promise<{ ref: string }> }) {
               {lead.appliances?.length ? lead.appliances.map((a) => <Pill key={a}>{a}</Pill>) : <span className="text-sm text-mist">Not said</span>}
             </div>
             <dl className="-mb-2.5 divide-y divide-navy-700 border-t border-navy-700">
-              <InfoRow label="Home type">{lead.home_type}</InfoRow>
+              <InfoRow label="Home type">{lead.home_type || (lead.partial ? "Not given yet (stopped after step 1)" : "")}</InfoRow>
               <InfoRow label="Rooms">{lead.rooms}</InfoRow>
               <InfoRow label="Switch brand">{lead.switch_brand}</InfoRow>
               <InfoRow label="Preferred visit">{[lead.preferred_date, lead.time_slot].filter(Boolean).join(", ")}</InfoRow>

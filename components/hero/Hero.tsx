@@ -158,7 +158,10 @@ export function Hero({ tagline, photoHref }: Props) {
             </a>
           </div>
           <p className="mt-4 text-sm text-slate lg:text-mist">
-            Free survey · Installed by trained electricians · Now serving Bihar
+            Free survey · Installed by trained electricians ·{" "}
+            <a href="#service-area" className="underline underline-offset-2 hover:no-underline">
+              Now serving Bihar
+            </a>
           </p>
           <div className="mt-8 hidden flex-wrap items-center gap-3 lg:flex">
             {controls}
