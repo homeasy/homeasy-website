@@ -97,8 +97,12 @@ async function ArticleView({ params }: { params: Params }) {
         <div className="container-page py-10 lg:py-14">
           <div className="mx-auto max-w-[760px]">
             {a.cover_url && (
-              // eslint-disable-next-line @next/next/no-img-element -- photos are uploaded in the admin and served from storage as they are
-              <img src={a.cover_url} alt={a.cover_alt} fetchPriority="high" decoding="async" className="mb-10 aspect-[16/9] w-full rounded-card bg-cloud object-cover" />
+              <figure className="mb-10">
+                {/* eslint-disable-next-line @next/next/no-img-element -- photos are uploaded in the admin and served from storage as they are */}
+                <img src={a.cover_url} alt={a.cover_alt} fetchPriority="high" decoding="async" width={1600} height={900} className="aspect-[16/9] h-auto w-full rounded-card bg-cloud object-cover" />
+                {/* pictures that are not real photos say so: their description starts with "Illustration" */}
+                {/^illustration/i.test(a.cover_alt) && <figcaption className="mt-2 text-[13px] text-slate">Illustrative image</figcaption>}
+              </figure>
             )}
             {/* cleaned on the server when the article is saved (lib/blog/sanitize.ts) */}
             <div className="article-prose" dangerouslySetInnerHTML={{ __html: a.body_html }} />

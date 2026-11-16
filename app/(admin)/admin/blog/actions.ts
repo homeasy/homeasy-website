@@ -77,7 +77,7 @@ export async function importStarterArticles(): Promise<{ ok: boolean; message: s
         title: a.title,
         excerpt: a.excerpt,
         body_html: cleanArticleHtml(a.body_html),
-        cover_url: null,
+        cover_url: a.cover_url,
         cover_alt: a.cover_alt,
         author: DEFAULT_AUTHOR,
         category: a.category,
