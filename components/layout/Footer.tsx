@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { flags } from "@/lib/flags";
-import { Mail, Phone } from "lucide-react";
+import { Mail } from "lucide-react";
 import nav from "@/data/navigation.json";
 import { getPublicArticles } from "@/lib/blog/store";
 import { getSite } from "@/lib/site-live";
-import { WhatsAppIcon } from "@/components/icons/brand-icons";
+import { FooterEndWatch } from "./FooterEndWatch";
 import { Logo } from "./Logo";
 import { CookieSettingsLink } from "./CookieBanner";
 import { SocialLinks } from "./SocialLinks";
@@ -25,36 +25,20 @@ export async function Footer() {
 
   return (
     <footer className="on-dark bg-navy text-white">
-      <div className="container-page py-12 lg:py-16">
+      <div className="container-page pb-8 pt-12 lg:pt-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-12">
           {/* brand and contact */}
           <div>
             <Logo variant="dark" className="h-7 lg:h-8" />
             <p className="mt-3 max-w-[320px] text-sm text-mist">{site.tagline}</p>
-            <ul className="mt-5">
-              <li>
-                <a href={site.telHref} className={CONTACT}>
-                  <Phone size={16} aria-hidden="true" className="shrink-0 text-mist" /> {site.contact.phoneDisplay}
-                </a>
-              </li>
-              <li>
-                <a href={site.whatsappHref("general")} target="_blank" rel="noopener noreferrer" className={CONTACT}>
-                  <span className="shrink-0 text-mist">
-                    <WhatsAppIcon size={16} />
-                  </span>
-                  WhatsApp us
-                </a>
-              </li>
-              <li>
-                <a href={site.mailHref} className={`${CONTACT} break-all`}>
-                  <Mail size={16} aria-hidden="true" className="shrink-0 text-mist" /> {site.contact.email}
-                </a>
-              </li>
-            </ul>
-            <p className="mt-2 text-sm text-mist">{site.contact.hours}</p>
-            <Link href="/book-survey?source=footer" className="btn btn-primary mt-5 min-h-11 px-5">
-              Book a free home survey
-            </Link>
+            <a href={site.mailHref} className={`${CONTACT} mt-4 break-all`}>
+              <Mail size={16} aria-hidden="true" className="shrink-0 text-mist" /> {site.contact.email}
+            </a>
+            <div>
+              <Link href="/book-survey?source=footer" className="btn btn-primary mt-4 min-h-11 px-5">
+                Book a free home survey
+              </Link>
+            </div>
             <SocialLinks className="-ml-3 mt-4 text-white" />
           </div>
 
@@ -100,16 +84,20 @@ export async function Footer() {
           </nav>
         </div>
 
-        {/* company details and legal links */}
-        <div className="mt-10 flex flex-col gap-5 border-t border-navy-700 pt-6 text-[13px] leading-relaxed text-mist lg:flex-row lg:items-start lg:justify-between lg:gap-10">
-          <div className="min-w-0">
-            <p>
-              © {site.copyrightYear} {site.legalName} · Incorporated {site.foundedYear}
-            </p>
-            <p>CIN {site.cin}</p>
-            <p>Registered office: {site.fullAddress}, India</p>
-          </div>
-          <ul className="flex flex-wrap gap-x-5 gap-y-1 lg:max-w-[46%] lg:justify-end">
+        {/* company details the law asks a company website to show */}
+        <p className="mt-10 text-[13px] leading-relaxed text-mist">
+          {site.legalName} · CIN {site.cin} · Incorporated {site.foundedYear} · Registered office: {site.fullAddress}, India
+        </p>
+      </div>
+
+      {/* last line: copyright and policies on the left, credit on the right; nothing below it */}
+      <div className="relative border-t border-navy-700">
+        <FooterEndWatch />
+        <div className="container-page flex flex-col gap-x-8 gap-y-1 py-3 text-[13px] text-mist sm:flex-row sm:items-center sm:justify-between">
+          <ul className="flex flex-wrap items-center gap-x-5">
+            <li className="inline-flex min-h-8 items-center">
+              © {site.copyrightYear} {site.brand}
+            </li>
             {nav.footerLegal.filter(shown).map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className={`inline-flex min-h-8 items-center ${LINK}`}>
@@ -118,9 +106,16 @@ export async function Footer() {
               </li>
             ))}
             <li>
-              <CookieSettingsLink className={`inline-flex min-h-8 items-center ${LINK}`} />
+              <CookieSettingsLink className={`inline-flex min-h-8 items-center font-normal ${LINK}`} />
             </li>
           </ul>
+          <p className="inline-flex min-h-8 shrink-0 items-center gap-1">
+            Made with <span aria-hidden="true">❤️</span>
+            <span className="sr-only">love</span> by{" "}
+            <a href="https://www.kynyx.com" target="_blank" rel="noopener" className="font-semibold text-white no-underline hover:underline">
+              Kynyx
+            </a>
+          </p>
         </div>
       </div>
     </footer>

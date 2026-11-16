@@ -191,23 +191,23 @@
   ],
   "footerLegal": [
     {
-      "label": "Privacy policy",
+      "label": "Privacy",
       "href": "/privacy-policy"
     },
     {
-      "label": "Terms of service",
+      "label": "Terms",
       "href": "/terms-of-service"
     },
     {
-      "label": "Refund policy",
+      "label": "Refunds",
       "href": "/refund-policy"
     },
     {
-      "label": "Delivery policy",
+      "label": "Delivery",
       "href": "/delivery-policy"
     },
     {
-      "label": "Cookie policy",
+      "label": "Cookies",
       "href": "/cookie-policy"
     }
   ]

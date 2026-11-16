@@ -209,7 +209,7 @@ export function ChatWidget({ whatsappNumber, telHref, mailHref, hours }: { whats
         <button
           type="button"
           onClick={openPanel}
-          className="on-dark fixed bottom-20 right-4 z-40 inline-flex items-center gap-2 rounded-full bg-navy py-3 pl-4 pr-5 text-[15px] font-semibold text-white hover:bg-navy-700 lg:bottom-6 lg:right-6"
+          className="float-launcher on-dark fixed bottom-20 right-4 z-40 inline-flex items-center gap-2 rounded-full bg-navy py-3 pl-4 pr-5 text-[15px] font-semibold text-white hover:bg-navy-700 lg:bottom-6 lg:right-6"
         >
           <MessageCircle size={22} aria-hidden="true" /> Ask Homeasy
         </button>

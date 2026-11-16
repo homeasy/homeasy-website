@@ -280,6 +280,10 @@ details::details-content {
 }
 details[open]::details-content { height: auto; }
 
+/* The floating chat / WhatsApp button steps aside while the footer's last line is on screen (FooterEndWatch) */
+.float-launcher { transition: opacity 200ms ease-out, translate 200ms ease-out, visibility 200ms; }
+html[data-footer-end] .float-launcher { opacity: 0; translate: 0 8px; visibility: hidden; }
+
 /* Leave room for the fixed mobile action bar (64px) so it never covers content */
 @media (max-width: 1023.98px) {
   .site-chrome { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }

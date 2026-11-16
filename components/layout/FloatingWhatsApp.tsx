@@ -17,7 +17,7 @@ export function FloatingWhatsApp({ whatsappHref, showReplyPromise }: { whatsappH
       href={whatsappHref}
       target="_blank"
       rel="noopener noreferrer"
-      className="group fixed bottom-6 right-6 z-40 hidden items-center gap-2 rounded-full bg-navy py-3 pl-3 pr-4 text-white no-underline hover:bg-navy-700 lg:inline-flex on-dark"
+      className="float-launcher group fixed bottom-6 right-6 z-40 hidden items-center gap-2 rounded-full bg-navy py-3 pl-3 pr-4 text-white no-underline hover:bg-navy-700 lg:inline-flex on-dark"
     >
       <WhatsAppIcon size={24} />
       <span className="text-[15px] font-semibold">{label}</span>
