@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { randomInt } from "node:crypto";
 import { fieldErrors, surveySchema, type SurveyResult } from "@/lib/leads/schema";
 import { allow } from "@/lib/leads/rate-limit";
+import { notifySurveyLead } from "@/lib/leads/notify";
 import { saveLead } from "@/lib/leads/store";
 import { checkPincode } from "@/lib/service-area";
 
@@ -69,5 +70,24 @@ export async function submitSurvey(formData: FormData): Promise<SurveyResult> {
   });
 
   if (!saved.ok) return { ok: false, message: "Something went wrong on our side. Please WhatsApp or call us instead." };
+  await notifySurveyLead({
+    ref,
+    fullName: d.fullName,
+    mobile: d.mobile,
+    whatsapp: d.whatsapp ?? d.mobile,
+    email: d.email,
+    pincode: d.pincode,
+    locality: d.locality,
+    inServiceArea,
+    homeType: d.homeType,
+    rooms: d.rooms,
+    appliances: d.appliances,
+    switchBrand: d.switchBrand,
+    preferredDate: d.preferredDate,
+    timeSlot: d.timeSlot,
+    heardFrom: d.heardFrom,
+    page: d.page,
+    utmSource: d.utmSource,
+  });
   return { ok: true, ref, inServiceArea };
 }

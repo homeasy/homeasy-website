@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useId, useRef, useState, useTransition } from "react";
 import { ArrowLeft, ArrowRight, CircleCheck } from "lucide-react";
-import { submitSurvey } from "@/app/book-survey/actions";
+import { submitSurvey } from "@/app/(site)/book-survey/actions";
 import {
   APPLIANCES,
   fieldErrors,

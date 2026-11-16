@@ -134,5 +134,5 @@ details[open]::details-content { height: auto; }
 
 /* Leave room for the fixed mobile action bar (64px) so it never covers content */
 @media (max-width: 1023.98px) {
-  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  .site-chrome { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
 }

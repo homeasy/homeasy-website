@@ -68,3 +68,18 @@ export function fieldErrors(error: z.ZodError): FieldErrors {
 export type SurveyResult =
   | { ok: true; ref: string; inServiceArea: boolean }
   | { ok: false; errors?: FieldErrors; message?: string };
+
+/** Lead pipeline (PRD §27.3). Order = the order shown in the admin. */
+export const LEAD_STATUSES = [
+  { id: "new", label: "New" },
+  { id: "contacted", label: "Contacted" },
+  { id: "survey_scheduled", label: "Survey scheduled" },
+  { id: "surveyed", label: "Surveyed" },
+  { id: "quoted", label: "Quoted" },
+  { id: "won", label: "Won" },
+  { id: "installed", label: "Installed" },
+  { id: "lost", label: "Lost" },
+  { id: "out_of_area", label: "Out of area" },
+] as const;
+export type LeadStatus = (typeof LEAD_STATUSES)[number]["id"];
+export const statusLabel = (id: string) => LEAD_STATUSES.find((s) => s.id === id)?.label ?? id;

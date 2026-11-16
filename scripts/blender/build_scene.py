@@ -347,11 +347,11 @@ pillows, _ = import_model("throw_pillows_01", (0.15, BACK_Y - 0.5, 0.42), 0, 0.8
 import_model("modern_coffee_table_01", (0.15, BACK_Y - 1.75, 0), math.radians(90), 1.0)
 side, _ = import_model("side_table_01", (1.42, BACK_Y - 0.3, 0), 0, 0.9)
 import_model("potted_plant_02", (-2.35, BACK_Y - 0.45, 0), math.radians(30), 1.15)
-cab, _ = import_model("modern_wooden_cabinet", (HALF_W - 0.28, -0.35, 0), math.radians(-90), 0.72)
-import_model("brass_vase_03", (HALF_W - 0.3, -1.1, 0.49), 0, 1.6)
-import_model("brass_pot_01", (HALF_W - 0.35, 0.85, 0), 0, 1.3)
+cab, _ = import_model("modern_wooden_cabinet", (HALF_W - 0.28, 0.6, 0), math.radians(-90), 0.72)
+import_model("brass_vase_03", (HALF_W - 0.3, 1.36, 0.49), 0, 1.6)
+import_model("brass_pot_01", (HALF_W - 0.35, -0.75, 0), 0, 1.3)
 # Indian-style 3-blade ceiling fan (own model). Everything that spins hangs off "fan_rotor".
-FAN_X, FAN_Y, FAN_Z = 0.35, -0.1, H - 0.3
+FAN_X, FAN_Y, FAN_Z = 0.9, 0.3, H - 0.3
 fan_white = principled("fan_brown", (0.16, 0.08, 0.045, 1), 0.22)
 fan_trim = principled("fan_trim", (0.72, 0.55, 0.3, 1), 0.3, 1.0)
 cyl("fan_canopy", 0.06, 0.07, (FAN_X, FAN_Y, H - 0.035), fan_white, r2=0.03)
@@ -433,7 +433,7 @@ light("tube_light", "AREA", (0.15, BACK_Y - 0.1, tube_z - 0.02), 110, (1.0, 0.96
 
 # TV on the cabinet (left wall, facing +X)
 tv_x = HALF_W - 0.06
-tv_y = -0.35
+tv_y = 0.6
 tv_z = 0.49 + 0.38
 box("tv_bezel", (0.035, 1.12, 0.65), (tv_x, tv_y, tv_z), black_gloss, bevel=0.004)
 # TV picture: a calm sunrise landscape generated here (no third-party imagery)
@@ -617,7 +617,7 @@ plane("art_mat", (0.9, 0.6), (0.15, BACK_Y - 0.026, 1.68), principled("art_matbo
 plane("art_picture", (0.72, 0.44), (0.15, BACK_Y - 0.027, 1.68), art_m, rot=(math.radians(90), 0, 0))
 
 import_model("wall_clock", (1.42, BACK_Y, 2.02), 0, 1.0)
-import_model("standing_picture_frame_01", (HALF_W - 0.3, 0.38, 0.49), math.pi, 1.0)
+import_model("standing_picture_frame_01", (HALF_W - 0.3, -0.14, 0.49), math.pi, 1.0)
 # books on the coffee table
 for k, (col, sz) in enumerate([((0.55, 0.2, 0.12, 1), (0.26, 0.19, 0.035)), ((0.12, 0.25, 0.38, 1), (0.24, 0.17, 0.03)),
                                ((0.85, 0.8, 0.7, 1), (0.2, 0.15, 0.025))]):

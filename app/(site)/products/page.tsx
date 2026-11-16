@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ProductCard } from "@/components/catalog/ProductCard";
+import { reveal } from "@/components/ui/reveal";
+import { getPublicProducts } from "@/lib/store/products";
 import {
-  AirVent,
-  Cable,
-  ClipboardList,
-  Fan,
-  Plug,
+  Truck,
   ShieldCheck,
-  ToggleRight,
   Wrench,
-  Zap,
   type LucideIcon,
 } from "lucide-react";
-import data from "@/data/products.json";
-import { Card, CtaBand, PageHero, Section, SectionHeading, StatusBadge, type Status } from "@/components/ui";
+import { Card, CtaBand, PageHero, Section, SectionHeading } from "@/components/ui";
 import { IconTile } from "@/components/catalog";
 
 export const metadata: Metadata = {
@@ -22,23 +18,16 @@ export const metadata: Metadata = {
     "Smart relay, fan controller, power module and IR remote — installed inside your existing switchbox.",
 };
 
-const ICONS: Record<string, LucideIcon> = {
-  relay: ToggleRight,
-  fan: Fan,
-  power: Zap,
-  ir: AirVent,
-  "no-neutral": Cable,
-  plug: Plug,
-};
 
 const INFO: { icon: LucideIcon; text: string }[] = [
   { icon: Wrench, text: "All Homeasy modules are installed by our trained electricians after a free survey." },
   { icon: ShieldCheck, text: "3-year warranty on every Homeasy module." },
-  { icon: ClipboardList, text: "Full specifications will be published once certification and testing are complete." },
+  { icon: Truck, text: "Delivery across Bihar. We recommend a free survey first, to check your switchboxes." },
 ];
 
-/** PRD §8.3 / §26.2. No detail pages, specs or images until the modules are final. */
-export default function ProductsPage() {
+/** Product listing. Shows the PUBLISHED products (edited in /admin/products, live after Publish). */
+export default async function ProductsPage() {
+  const products = await getPublicProducts();
   return (
     <>
       <PageHero
@@ -60,27 +49,9 @@ export default function ProductsPage() {
           sub="Every module is installed by our trained electricians after a free survey. We confirm the right ones for your home at the survey."
         />
         <ul className="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-          {data.products.map((p) => (
-            <li key={p.slug} id={p.slug} className="min-w-0 scroll-mt-28">
-              <Card className="flex h-full flex-col">
-                <div className="flex items-start justify-between gap-3">
-                  <IconTile icon={ICONS[p.icon] ?? ToggleRight} large />
-                  <StatusBadge status={p.status as Status} />
-                </div>
-                <p className="mt-5 text-[13px] font-semibold uppercase tracking-[0.08em] text-slate">{p.headline}</p>
-                <h3 className="mt-1 text-h4 leading-snug">{p.name}</h3>
-                <p className="mt-2 text-[15px] text-body">{p.line}</p>
-                <div className="mt-auto pt-5">
-                  <p className="text-[13px] font-semibold text-ink">Controls</p>
-                  <ul className="mt-2 flex flex-wrap gap-2">
-                    {p.controls.map((c) => (
-                      <li key={c} className="rounded-full border border-line bg-cloud px-3 py-1 text-[13px] text-body">
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Card>
+          {products.map((p, i) => (
+            <li key={p.id} id={p.slug} {...reveal(i)} className="min-w-0 scroll-mt-28">
+              <ProductCard product={p} />
             </li>
           ))}
         </ul>

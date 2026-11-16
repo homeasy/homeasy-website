@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  // product photos are resized in the browser before upload, but allow some headroom
+  experimental: { serverActions: { bodySizeLimit: "4mb" } },
   partialPrefetching: true,
   turbopack: {
     rules: {

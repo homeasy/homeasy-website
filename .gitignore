@@ -39,3 +39,6 @@ assets-source/
 
 # Local lead storage used in development when Supabase keys are not set (contains personal data)
 .data/
+
+# Product photos uploaded in development without Supabase Storage
+public/uploads/
