@@ -41,7 +41,7 @@ export function CookieBanner() {
   return (
     <section
       aria-label="Cookie choices"
-      className="fixed inset-x-0 bottom-16 z-50 border-t border-line bg-white p-4 lg:bottom-0 lg:left-auto lg:right-6 lg:bottom-6 lg:w-[420px] lg:rounded-card lg:border"
+      className="fixed inset-x-0 bottom-16 z-50 border-t border-line bg-white p-4 lg:bottom-6 lg:left-6 lg:right-auto lg:w-[420px] lg:rounded-card lg:border"
     >
       <h2 className="text-[1.0625rem] font-semibold text-ink">Cookies</h2>
       {prefs ? (

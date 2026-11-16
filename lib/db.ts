@@ -173,7 +173,7 @@ export async function saveImage(folder: string, name: string, bytes: Buffer, con
 export function dbErrorHint(e: unknown): string {
   const m = e instanceof Error ? e.message : String(e);
   if (/PGRST205|\b404\b/.test(m)) {
-    return "A database table is missing. In Supabase, open the SQL Editor and run supabase/schema.sql, 02-store.sql, 03-content.sql and 04-enquiries.sql from the supabase folder. Use the same project as SUPABASE_URL.";
+    return "A database table is missing. In Supabase, open the SQL Editor and run supabase/schema.sql, 02-store.sql, 03-content.sql, 04-enquiries.sql and 05-chat.sql from the supabase folder. Use the same project as SUPABASE_URL.";
   }
   if (/\b413\b|too large/i.test(m)) return "The content is too large to save in one go.";
   if (/PGRST204|42703/.test(m)) {

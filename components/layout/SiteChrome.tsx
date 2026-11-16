@@ -5,6 +5,7 @@ import { getSite } from "@/lib/site-live";
 import { Analytics } from "./Analytics";
 import { AnnouncementBar } from "./AnnouncementBar";
 import { BookingModal } from "./BookingModal";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import { CookieBanner } from "./CookieBanner";
 import { FloatingWhatsApp } from "./FloatingWhatsApp";
 import { Footer } from "./Footer";
@@ -15,6 +16,7 @@ import { RevealObserver } from "@/components/ui/RevealObserver";
 /** Header, footer and floating actions for the public website (not used by /admin). */
 export async function SiteChrome({ children }: { children: ReactNode }) {
   const site = await getSite();
+  const chatOn = !!process.env.ANTHROPIC_API_KEY && process.env.CHAT_ENABLED !== "false";
   // Who Homeasy is, in the form search engines and AI assistants read (schema.org). Facts only: no ratings or counts.
   const organization = {
     "@context": "https://schema.org",
@@ -61,7 +63,12 @@ export async function SiteChrome({ children }: { children: ReactNode }) {
       <MobileActionBar />
       {/* both read the page address, which is only known per request on pages like /products/[slug] */}
       <Suspense fallback={null}>
-        <FloatingWhatsApp whatsappHref={site.whatsappHref("general")} showReplyPromise={usp("U2")} />
+        {/* the AI assistant takes the corner when it is switched on (ANTHROPIC_API_KEY); otherwise the WhatsApp button */}
+        {chatOn ? (
+          <ChatWidget whatsappNumber={site.contact.whatsappNumber} telHref={site.telHref} mailHref={site.mailHref} hours={site.contact.hours} />
+        ) : (
+          <FloatingWhatsApp whatsappHref={site.whatsappHref("general")} showReplyPromise={usp("U2")} />
+        )}
         <RevealObserver />
         <Analytics />
       </Suspense>

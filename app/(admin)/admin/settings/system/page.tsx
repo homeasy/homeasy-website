@@ -16,6 +16,7 @@ async function System() {
     { label: "Online payments (Razorpay)", ok: razorpayConfigured(), help: "RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET" },
     { label: "Payment webhook", ok: !!process.env.RAZORPAY_WEBHOOK_SECRET, help: "RAZORPAY_WEBHOOK_SECRET" },
     { label: "Page speed tests (Google)", ok: !!process.env.PAGESPEED_API_KEY, help: "PAGESPEED_API_KEY (optional: without it Google's shared quota is used)" },
+    { label: "AI assistant (Anthropic)", ok: !!process.env.ANTHROPIC_API_KEY, help: "ANTHROPIC_API_KEY (the website chat; without it the WhatsApp button shows)" },
     { label: "Sign-in secret", ok: !!process.env.ADMIN_SESSION_SECRET, help: "ADMIN_SESSION_SECRET (optional: without it the password signs the session)" },
   ];
   return (
