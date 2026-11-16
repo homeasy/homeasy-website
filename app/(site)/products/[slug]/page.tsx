@@ -88,7 +88,7 @@ async function ProductDetail({ params }: { params: Params }) {
           <div className="min-w-0">
             <div className="relative lg:sticky lg:top-24">
               <ProductVisual product={p} className="aspect-[4/3.6] rounded-section border border-line" sizes="(min-width: 1024px) 620px, 100vw" />
-              {p.featured && <span className="absolute left-4 top-4 rounded-full bg-navy px-3 py-1 text-[13px] font-semibold text-white">Bestseller</span>}
+              {p.featured && <span className="absolute left-4 top-4 rounded-full bg-navy px-3 py-1 text-[13px] font-semibold text-white">Featured</span>}
             </div>
           </div>
 

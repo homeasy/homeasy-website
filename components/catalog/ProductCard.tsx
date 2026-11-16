@@ -52,7 +52,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="relative">
         <ProductVisual product={product} className="aspect-[4/3]" sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw" />
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
-          {product.featured && <span className="rounded-full bg-navy px-2.5 py-1 text-[12px] font-semibold text-white">Bestseller</span>}
+          {product.featured && <span className="rounded-full bg-navy px-2.5 py-1 text-[12px] font-semibold text-white">Featured</span>}
           {product.status !== "available" && <StatusBadge status={product.status} />}
         </div>
       </div>

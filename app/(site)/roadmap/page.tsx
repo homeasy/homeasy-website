@@ -79,8 +79,8 @@ export default function RoadmapPage() {
         </p>
         <h2 className="mt-10 text-h4">How to read this roadmap</h2>
         <p className="mt-3 max-w-[760px] text-body">
-          Items marked as available can be surveyed, quoted and installed today. Items marked as planned are not available yet: we do not take orders for them or
-          promise a date, and we will only move them forward on this page when they are real. If something you need is still planned, tell us; it helps us decide
+          Items marked as done are finished. Items in progress are being built or tested now. Items marked as planned have not started: we do not take orders
+          for them or promise a date, and we only move an item forward on this page when it is real. If something you need is still planned, tell us; it helps us decide
           what to build next.
         </p>
         <p className="mt-6 text-body">

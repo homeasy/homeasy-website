@@ -4,6 +4,7 @@ import { DEFAULT_DESCRIPTION } from "@/lib/seo/meta";
 import { getSite } from "@/lib/site-live";
 import { Analytics } from "./Analytics";
 import { AnnouncementBar } from "./AnnouncementBar";
+import { BookingModal } from "./BookingModal";
 import { CookieBanner } from "./CookieBanner";
 import { FloatingWhatsApp } from "./FloatingWhatsApp";
 import { Footer } from "./Footer";
@@ -63,6 +64,7 @@ export async function SiteChrome({ children }: { children: ReactNode }) {
         <RevealObserver />
         <Analytics />
       </Suspense>
+      <BookingModal whatsappHref={site.whatsappHref("general")} telHref={site.telHref} leadResponse={site.contact.leadResponse} />
       <CookieBanner />
     </div>
   );

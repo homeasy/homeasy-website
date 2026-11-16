@@ -27,7 +27,7 @@ const same = (a: Edit, b: Edit) => a.price === b.price && a.mrp === b.mrp && a.s
 const digits = (v: string) => v.replace(/[^\d]/g, "").slice(0, 7);
 
 /**
- * "Products & prices": prices, availability, On sale and Bestseller are edited right in the table,
+ * "Products & prices": prices, availability, On sale and Featured are edited right in the table,
  * then saved together. Saving makes a draft; the website changes only after Publish.
  */
 export function ProductsTable({ products, editable }: { products: ProductRow[]; editable: boolean }) {
@@ -70,7 +70,7 @@ export function ProductsTable({ products, editable }: { products: ProductRow[]; 
               <th className="px-3 py-3 font-medium">List price (₹)</th>
               <th className="px-3 py-3 font-medium">Availability</th>
               <th className="px-3 py-3 text-center font-medium">On sale</th>
-              <th className="px-3 py-3 text-center font-medium">Bestseller</th>
+              <th className="px-3 py-3 text-center font-medium">Featured</th>
               <th className="px-4 py-3" />
             </tr>
           </thead>
@@ -113,7 +113,7 @@ export function ProductsTable({ products, editable }: { products: ProductRow[]; 
                     <input type="checkbox" disabled={!editable} checked={v.active} onChange={(e) => set(p, { active: e.target.checked })} aria-label={`${p.name} is on the website`} className="size-4 accent-[var(--brand-amber)]" />
                   </td>
                   <td className="px-3 py-3 text-center">
-                    <input type="checkbox" disabled={!editable} checked={v.featured} onChange={(e) => set(p, { featured: e.target.checked })} aria-label={`${p.name} is a bestseller`} className="size-4 accent-[var(--brand-amber)]" />
+                    <input type="checkbox" disabled={!editable} checked={v.featured} onChange={(e) => set(p, { featured: e.target.checked })} aria-label={`${p.name} is featured`} className="size-4 accent-[var(--brand-amber)]" />
                   </td>
                   <td className="px-4 py-3 text-right">
                     {editable && (

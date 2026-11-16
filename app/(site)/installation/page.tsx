@@ -101,14 +101,14 @@ export default async function InstallationPage() {
     {
       figure: live.reply ? "30 min" : hours.split(",")[0],
       label: live.reply ? "WhatsApp reply, during working hours" : "WhatsApp replies, every day",
-      note: live.reply ? `Working hours: ${hours}.` : "30-minute reply promise:",
+      note: live.reply ? `Working hours: ${hours}.` : "Reply-time promise:",
       on: live.reply,
       gated: true,
     },
     {
       figure: live.visit ? "24 hours" : "Patna",
       label: live.visit ? "Technician visit in Patna" : "Technician visits, arranged as soon as we can",
-      note: live.visit ? "Counted from when you raise the issue." : "24-hour visit promise in Patna:",
+      note: live.visit ? "Counted from when you raise the issue." : "Visit-time promise in Patna:",
       on: live.visit,
       gated: true,
     },

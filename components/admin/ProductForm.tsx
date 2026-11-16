@@ -155,7 +155,7 @@ export function ProductForm({ values }: { values: ProductFormValues }) {
             </label>
             <label className="flex min-h-10 cursor-pointer items-center gap-3 text-sm text-white">
               <input type="checkbox" name="featured" defaultChecked={values.featured} className="size-5 accent-[var(--brand-amber)]" />
-              Mark as bestseller
+              Mark as featured
             </label>
             <div>
               <label htmlFor="sort_order" className={label}>
