@@ -70,7 +70,7 @@ async function ArticleView({ params }: { params: Params }) {
       <article>
         <header className="bg-cloud">
           <div className="container-page py-10 lg:py-16">
-            <div className="mx-auto max-w-[760px]">
+            <div>
               <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-[14px] text-slate">
                 <Link href="/" className="link">
                   Home
@@ -95,7 +95,7 @@ async function ArticleView({ params }: { params: Params }) {
           </div>
         </header>
         <div className="container-page py-10 lg:py-14">
-          <div className="mx-auto max-w-[760px]">
+          <div>
             {a.cover_url && (
               <figure className="mb-10">
                 {/* eslint-disable-next-line @next/next/no-img-element -- photos are uploaded in the admin and served from storage as they are */}
