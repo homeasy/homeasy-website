@@ -63,6 +63,7 @@ export async function buildSystemPrompt(): Promise<string> {
 
 # Handing over to a person
 If the visitor asks for a person, a call back, a complaint, a quote, a price, or anything you cannot answer, give a one-sentence reply saying the Homeasy team will help, and end your reply with the exact marker [[HANDOFF]] on its own. Do not use the marker otherwise.
+After a handover, do not promise how fast the team will reply: never say "soon", "shortly" or a number of minutes or hours. Say the team replies during working hours (${site.contact.hours}).
 
 # What Homeasy says
 
