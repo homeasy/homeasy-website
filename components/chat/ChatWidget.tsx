@@ -93,17 +93,27 @@ export function ChatWidget({ whatsappNumber, telHref, mailHref, hours }: { whats
     if (id) store({ id, ...who, bubbles, handoff, lastTeamAt });
   }, [id, who, bubbles, handoff, lastTeamAt]);
 
-  // once a person has been asked for, look for their replies every few seconds while the window is open
+  // once a person has been asked for, look for their replies every couple of seconds while the window is open
   useEffect(() => {
     if (!open || !id || !handoff) return;
-    const timer = setInterval(async () => {
+    let stopped = false;
+    let timer: ReturnType<typeof setTimeout>;
+    // check now, then every 2.5 seconds; each check waits for the previous one, so slow networks never pile up requests
+    const check = async () => {
       const r = await pollChat(id, lastTeamAt).catch(() => null);
+      if (stopped) return;
       if (r?.ok && r.messages.length) {
         setBubbles((b) => say(b, ...r.messages.map((m) => ({ from: "team" as const, text: m.text }))));
         setLastTeamAt(r.messages[r.messages.length - 1].at);
+        return; // the state change restarts this effect
       }
-    }, 6000);
-    return () => clearInterval(timer);
+      timer = setTimeout(check, 2500);
+    };
+    timer = setTimeout(check, 400);
+    return () => {
+      stopped = true;
+      clearTimeout(timer);
+    };
   }, [open, id, handoff, lastTeamAt]);
 
   const firstName = who.name.trim().split(" ")[0];
