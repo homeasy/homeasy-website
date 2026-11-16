@@ -16,7 +16,7 @@ const SurveyForm = dynamic(() => import("@/components/forms/SurveyForm").then((m
  * modified click (new tab), on the /book-survey page itself, or for links that carry a prefilled list
  * (rooms, appliances), the link simply goes to /book-survey as before.
  */
-export function BookingModal({ whatsappHref, telHref, leadResponse }: { whatsappHref: string; telHref: string; leadResponse: string }) {
+export function BookingModal({ whatsappHref, telHref, leadResponse, launchNote }: { whatsappHref: string; telHref: string; leadResponse: string; launchNote?: string }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [source, setSource] = useState<string | null>(null);
 
@@ -52,7 +52,7 @@ export function BookingModal({ whatsappHref, telHref, leadResponse }: { whatsapp
           <X size={22} aria-hidden="true" />
         </button>
       </div>
-      <div className="p-4 sm:p-5">{source && <SurveyForm key={source} whatsappHref={whatsappHref} telHref={telHref} leadResponse={leadResponse} sourceCta={source} />}</div>
+      <div className="p-4 sm:p-5">{source && <SurveyForm key={source} whatsappHref={whatsappHref} telHref={telHref} leadResponse={leadResponse} launchNote={launchNote} sourceCta={source} />}</div>
     </dialog>
   );
 }

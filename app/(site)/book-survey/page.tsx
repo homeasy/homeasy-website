@@ -6,7 +6,7 @@ import { seoMetadata } from "@/lib/seo/meta";
 import { Check, Phone } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
-import { usp } from "@/lib/flags";
+import { flags, usp } from "@/lib/flags";
 import { getSite } from "@/lib/site-live";
 
 const pageMeta: Metadata = {
@@ -57,7 +57,12 @@ export default async function BookSurveyPage() {
 
       <Section>
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-          <SurveyForm whatsappHref={bookOnWhatsAppHref} telHref={site.telHref} leadResponse={site.contact.leadResponse} />
+          <SurveyForm
+            whatsappHref={bookOnWhatsAppHref}
+            telHref={site.telHref}
+            leadResponse={site.contact.leadResponse}
+            launchNote={flags.LAUNCHED ? undefined : `We plan to launch in ${site.launch.label}. Ask us about the early-access offer when we call.`}
+          />
           <div className="grid min-w-0 gap-4">
             <Card className="min-w-0">
               <h2 className="text-h4">Good to know</h2>

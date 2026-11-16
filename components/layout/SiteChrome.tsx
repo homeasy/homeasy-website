@@ -65,7 +65,9 @@ export async function SiteChrome({ children }: { children: ReactNode }) {
         <RevealObserver />
         <Analytics />
       </Suspense>
-      <BookingModal whatsappHref={site.whatsappHref("general")} telHref={site.telHref} leadResponse={site.contact.leadResponse} />
+      <BookingModal whatsappHref={site.whatsappHref("general")} telHref={site.telHref} leadResponse={site.contact.leadResponse}
+        launchNote={flags.LAUNCHED ? undefined : `We plan to launch in ${site.launch.label}. Ask us about the early-access offer when we call.`}
+      />
       <CookieBanner />
     </div>
   );

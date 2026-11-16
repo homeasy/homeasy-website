@@ -26,6 +26,8 @@ type Props = {
   whatsappHref: string;
   telHref: string;
   leadResponse: string;
+  /** extra line on the success screen (the early-access note, until launch) */
+  launchNote?: string;
   /** which button opened the form, for lead-source tracking */
   sourceCta?: string;
 };
@@ -81,7 +83,7 @@ function applyPrefill(form: HTMLFormElement, prefill: SurveyPrefill) {
  * "Next" saves step 1 as a partial lead; "Book free survey" finishes that same lead.
  * Can be opened prefilled: /book-survey?rooms=2-3&appliances=Lights,Fans&pincode=800001&brand=Anchor&source=estimator
  */
-export function SurveyForm({ whatsappHref, telHref, leadResponse, sourceCta = "book-survey-page" }: Props) {
+export function SurveyForm({ whatsappHref, telHref, leadResponse, launchNote, sourceCta = "book-survey-page" }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState<1 | 2>(1);
@@ -228,6 +230,7 @@ export function SurveyForm({ whatsappHref, telHref, leadResponse, sourceCta = "b
         <p className="mt-3 text-body">
           Your request number is <strong className="text-ink">{result.ref}</strong>.
         </p>
+        {result.inServiceArea && launchNote && <p className="mt-3 rounded-card bg-tint p-4 text-ink">{launchNote}</p>}
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-primary min-h-12 px-6">
             WhatsApp us now
