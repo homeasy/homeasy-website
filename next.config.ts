@@ -2,8 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
-  // product photos are resized in the browser before upload, but allow some headroom
-  experimental: { serverActions: { bodySizeLimit: "4mb" } },
+  // product photos are resized in the browser before upload; resumes on the careers form are capped at 3 MB
+  experimental: { serverActions: { bodySizeLimit: "5mb" } },
   partialPrefetching: true,
   turbopack: {
     rules: {

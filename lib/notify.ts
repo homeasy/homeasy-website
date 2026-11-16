@@ -10,3 +10,12 @@ export async function notify({ subject, html, replyTo }: { subject: string; html
   if (!to.length) return;
   await sendEmail(to, subject, html, replyTo);
 }
+
+/**
+ * A short confirmation to the person who filled in a form, when they gave an email. Needs a verified sender
+ * (LEAD_NOTIFY_FROM): Resend's test sender cannot write to customers, so without it nothing is sent.
+ */
+export async function confirmTo(email: string | null | undefined, subject: string, html: string, replyTo?: string): Promise<void> {
+  if (!email || !process.env.RESEND_API_KEY || !process.env.LEAD_NOTIFY_FROM) return;
+  await sendEmail([email], subject, html, replyTo);
+}

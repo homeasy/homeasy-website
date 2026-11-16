@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { startTransition, useActionState } from "react";
 import { CircleCheck } from "lucide-react";
 import { submitEnquiry } from "@/lib/enquiries/actions";
 import type { EnquiryKind, ExtraField } from "@/lib/enquiries/schema";
@@ -82,7 +82,14 @@ export function EnquiryFormBase({
   }
 
   return (
-    <form action={action} noValidate className="space-y-5 rounded-card border border-line bg-white p-5 sm:p-6">
+    <form
+      // sent by hand instead of through `action`, so a validation error does not wipe what the person typed
+      onSubmit={(e) => {
+        e.preventDefault();
+        const data = new FormData(e.currentTarget);
+        startTransition(() => action(data));
+      }}
+      noValidate className="space-y-5 rounded-card border border-line bg-white p-5 sm:p-6">
       <input type="hidden" name="kind" value={kind} />
       <input type="hidden" name="page" value={page} />
       <input type="hidden" name="required_fields" value={required.join(",")} />

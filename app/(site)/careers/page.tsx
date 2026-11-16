@@ -4,6 +4,7 @@ import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { Home, MapPin, UserCheck } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { ApplicationForm } from "@/components/forms/ApplicationForm";
 import { getContent } from "@/lib/content/store";
 import { getSite } from "@/lib/site-live";
 
@@ -39,7 +40,10 @@ export default async function CareersPage() {
         title="Help us make Indian homes smart."
         sub="We're a small, focused team in Patna building hardware, software and service that families can trust."
       >
-        <a href={careersMail} className="btn btn-primary min-h-12 px-6">
+        <a href="#apply" className="btn btn-primary min-h-12 px-6">
+          Apply now
+        </a>
+        <a href={careersMail} className="btn btn-outline min-h-12 px-6">
           Email your profile
         </a>
       </PageHero>
@@ -60,7 +64,7 @@ export default async function CareersPage() {
       </Section>
 
       <Section tone="cloud">
-        <SectionHeading title="Open roles" sub={jobs.length ? "Full-time roles and internships in Patna. Apply by email with your profile." : undefined} />
+        <SectionHeading title="Open roles" sub={jobs.length ? "Full-time roles and internships at our Patna office." : undefined} />
         {jobs.length === 0 ? (
           <Card className="mt-10 max-w-[720px]">
             <h3 className="text-h4">No open roles right now.</h3>
@@ -83,13 +87,9 @@ export default async function CareersPage() {
                   <h3 className="text-h4">{job.title}</h3>
                   <p className="mt-1 text-[15px] text-slate">{[job.type, job.duration, job.location].filter(Boolean).join(" · ")}</p>
                   {job.pay && <p className="mt-2 font-semibold text-ink">{job.pay}</p>}
-                  <p className="mt-3 text-body">{job.summary}</p>
-                  <a
-                    href={`${site.mailHref}?subject=${encodeURIComponent(`Application: ${job.title}`)}`}
-                    className="link mt-auto inline-flex min-h-11 items-center pt-3"
-                    aria-label={`Apply by email for ${job.title}`}
-                  >
-                    Apply by email
+                  <p className="mb-5 mt-3 text-body">{job.summary}</p>
+                  <a href="#apply" data-apply-role={job.title} className="btn btn-secondary mt-auto min-h-11 self-start px-5" aria-label={`Apply now for ${job.title}`}>
+                    Apply now
                   </a>
                 </Card>
               </li>
@@ -108,11 +108,20 @@ export default async function CareersPage() {
         </div>
       </Section>
 
+      <Section tone="tint" id="apply" className="scroll-mt-20">
+        <div className="max-w-[820px]">
+          <SectionHeading title="Apply now" sub="All roles and internships are at our Patna office. Choose a role, add your details and attach your resume." />
+          <div className="mt-8">
+            <ApplicationForm roles={jobs.map((j) => j.title)} />
+          </div>
+        </div>
+      </Section>
+
       <Section>
         <SectionHeading title="How to apply" />
         <div className="mt-8 max-w-[720px] space-y-4 text-body">
           <p>
-            Email your profile to{" "}
+            Use the form above, or email your profile to{" "}
             <a href={careersMail} className="link">
               {site.contact.email}
             </a>{" "}
@@ -123,8 +132,8 @@ export default async function CareersPage() {
             survey-to-support service around them.
           </p>
           <p>
-            <strong className="font-semibold text-ink">Jobs in Patna:</strong> Homeasy is based in Patna, Bihar. Smart home installation jobs are done in
-            customers&apos; homes across our service area.
+            <strong className="font-semibold text-ink">Jobs in Patna:</strong> every role and internship is based at our Patna office. Smart home installation
+            jobs are done in customers&apos; homes across our service area.
           </p>
         </div>
       </Section>

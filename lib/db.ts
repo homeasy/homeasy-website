@@ -169,11 +169,56 @@ export async function saveImage(folder: string, name: string, bytes: Buffer, con
   return `/uploads/${folder}/${name}`;
 }
 
+/**
+ * Private files (e.g. resumes): stored in a Supabase Storage bucket that is NOT public, or under .data/files
+ * locally. They can only be read back through the server with the service-role key (see the admin download route).
+ */
+export async function savePrivateFile(bucket: string, name: string, bytes: Buffer, contentType: string): Promise<boolean> {
+  const mode = dbMode();
+  if (mode === "supabase") {
+    const root = process.env.SUPABASE_URL!.replace(/\/$/, "");
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const res = await fetch(`${root}/storage/v1/object/${bucket}/${name}`, {
+      method: "POST",
+      headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": contentType, "x-upsert": "true" },
+      body: new Uint8Array(bytes),
+    });
+    if (!res.ok) console.error(`[db] file upload to ${bucket} failed: ${res.status} ${await res.text()}`);
+    return res.ok;
+  }
+  if (mode === "none") return false;
+  const target = path.join(process.cwd(), ".data", "files", bucket, name);
+  await mkdir(path.dirname(target), { recursive: true });
+  await writeFile(target, bytes);
+  return true;
+}
+
+export async function readPrivateFile(bucket: string, name: string): Promise<Buffer | null> {
+  const mode = dbMode();
+  if (mode === "supabase") {
+    const root = process.env.SUPABASE_URL!.replace(/\/$/, "");
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const headers = { apikey: key, Authorization: `Bearer ${key}` };
+    // Supabase serves private objects on either of these addresses depending on version
+    for (const prefix of ["object/authenticated", "object"]) {
+      const res = await fetch(`${root}/storage/v1/${prefix}/${bucket}/${name}`, { headers, cache: "no-store" });
+      if (res.ok) return Buffer.from(await res.arrayBuffer());
+    }
+    return null;
+  }
+  if (mode === "none") return null;
+  try {
+    return await readFile(path.join(process.cwd(), ".data", "files", bucket, name));
+  } catch {
+    return null;
+  }
+}
+
 /** Turns a storage error into advice the admin can act on. */
 export function dbErrorHint(e: unknown): string {
   const m = e instanceof Error ? e.message : String(e);
   if (/PGRST205|\b404\b/.test(m)) {
-    return "A database table is missing. In Supabase, open the SQL Editor and run supabase/schema.sql, 02-store.sql, 03-content.sql, 04-enquiries.sql and 05-chat.sql from the supabase folder. Use the same project as SUPABASE_URL.";
+    return "A database table is missing. In Supabase, open the SQL Editor and run supabase/schema.sql, 02-store.sql, 03-content.sql, 04-enquiries.sql, 05-chat.sql and 06-applications-inbox.sql from the supabase folder. Use the same project as SUPABASE_URL.";
   }
   if (/\b413\b|too large/i.test(m)) return "The content is too large to save in one go.";
   if (/PGRST204|42703/.test(m)) {

@@ -4,7 +4,7 @@ import { randomInt } from "node:crypto";
 import { headers } from "next/headers";
 import { dbMode } from "@/lib/db";
 import { allow } from "@/lib/rate-limit";
-import { notify } from "@/lib/notify";
+import { confirmTo, notify } from "@/lib/notify";
 import { getSite } from "@/lib/site-live";
 import { enquiryKindLabel, enquirySchema, type EnquiryResult } from "./schema";
 import { insertEnquiry, type Enquiry } from "./store";
@@ -84,5 +84,16 @@ export async function submitEnquiry(_prev: EnquiryResult, formData: FormData): P
     html: `<h2>New enquiry ${esc(row.ref)}</h2><table cellpadding="6">${lines.map(([k, v]) => `<tr><td><b>${esc(k)}</b></td><td>${esc(v)}</td></tr>`).join("")}</table><p><a href="${site.url}/admin/enquiries">Open in the admin</a></p>`,
     replyTo: row.email ?? undefined,
   });
+  // a short confirmation to the sender, when they gave an email
+  const first = esc(row.name.split(" ")[0]);
+  const sign = `<p>Questions? WhatsApp or call us on ${esc(site.contact.phoneDisplay)} (${esc(site.contact.hours)}).</p><p>Team Homeasy</p>`;
+  await confirmTo(
+    row.email,
+    row.kind === "early_access" ? "You are on the Homeasy early-access list" : "We have your message, Homeasy",
+    row.kind === "early_access"
+      ? `<div style="font-family:Arial,sans-serif;font-size:15px;color:#0B1220"><p>Hi ${first},</p><p>Thank you for joining Homeasy early access. Your request number is <strong>${esc(row.ref)}</strong>.</p><p>We plan to launch in ${esc(site.launch.label)}. Before that, our team will call or WhatsApp you during working hours with the next steps and your early-access offer. Joining is free and there is nothing to pay now.</p>${sign}</div>`
+      : `<div style="font-family:Arial,sans-serif;font-size:15px;color:#0B1220"><p>Hi ${first},</p><p>Thank you for writing to Homeasy. Your request number is <strong>${esc(row.ref)}</strong>.</p><p>Our team will call or WhatsApp you during working hours.</p>${sign}</div>`,
+    site.contact.email,
+  );
   return { ok: true, ref: row.ref };
 }
