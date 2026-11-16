@@ -1,0 +1,41 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+.pnpm-debug.log*
+
+# env files
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# Chillax font files: the ITF FFL forbids redistribution, so never publish them in a public repo.
+# public/fonts is filled from brand/fonts by `npm run fonts` (runs automatically before dev/build).
+# Before deploying from a PRIVATE repo, remove these two lines so the fonts ship with the build.
+brand/fonts/
+public/fonts/
+
+# Raw 3D/texture sources for the later 3D hero (PRD §30): large, keep out of the web repo
+assets-source/
+
+# Local lead storage used in development when Supabase keys are not set (contains personal data)
+.data/

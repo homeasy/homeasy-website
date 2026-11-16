@@ -1,0 +1,81 @@
+/* Homeasy design tokens: PRD §6.2–6.3 (v3.8) */
+@font-face { font-family: "Chillax"; src: url("/fonts/Chillax-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Chillax"; src: url("/fonts/Chillax-Semibold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Chillax"; src: url("/fonts/Chillax-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
+:root {
+  /* Brand */
+  --brand-navy: #0B1220;
+  --brand-blue: #3A9ADB;
+  --brand-amber: #F9B445;
+  --brand-white: #FFFFFF;
+
+  /* Neutrals */
+  --surface-primary: #FFFFFF;
+  --surface-secondary: #F5F8FC;   /* Cloud */
+  --surface-blue: #DCEFFA;        /* Blue Tint */
+  --surface-dark: #0B1220;
+  --surface-dark-raised: #16213A; /* Navy 800: cards inside dark sections */
+  --surface-dark-hover: #1E2B47;  /* Navy 700: raised/hover inside dark sections */
+  --border-default: #E5EAF0;
+  --text-primary: #0B1220;
+  --text-body: #344054;
+  --text-secondary: #667085;      /* min contrast on white: don't go lighter */
+  --text-on-dark: #FFFFFF;
+  --text-on-dark-secondary: #A3B1C6;
+
+  /* Scales */
+  --blue-50: #EFF7FC; --blue-100: #D8EBF8; --blue-200: #B0D7F1; --blue-300: #7FBDE8; --blue-400: #58A9E0;
+  --blue-500: #3A9ADB; --blue-600: #3080B8; --blue-700: #286998; --blue-800: #20547A;
+  --amber-50: #FEF8EC; --amber-100: #FEECD0; --amber-200: #FCDAA2; --amber-300: #FAC774; --amber-400: #F9B445;
+  --amber-500: #D39637; --amber-600: #B07B2B; --amber-700: #966621; --amber-800: #7D5218;
+
+  /* Interactive */
+  --link: #286998;
+  --button-primary-bg: #3A9ADB;
+  --button-primary-text: #0B1220;
+  --button-primary-hover: #58A9E0;
+  --button-secondary-bg: #0B1220;
+  --button-secondary-text: #FFFFFF;
+  --indicator-active: #F9B445;
+  --focus-ring: #286998;
+  --focus-ring-on-dark: #F9B445;
+
+  /* Status */
+  --success: #2E7D32;
+  --error: #C2352F;
+  --badge-soon-bg: #FEECD0;    --badge-soon-text: #7D5218;
+  --badge-planned-bg: #EFF7FC; --badge-planned-text: #286998;
+  --badge-available-bg: #E8F5E9; --badge-available-text: #2E7D32;
+
+  /* Type */
+  --font-primary: "Chillax", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-hindi: "Hind", "Noto Sans Devanagari", sans-serif;
+  --text-hero: clamp(2.375rem, 5vw, 4.5rem);
+  --text-h1: clamp(2.125rem, 4vw, 3.75rem);
+  --text-h2: clamp(1.75rem, 3vw, 2.75rem);
+  --text-h3: clamp(1.375rem, 2vw, 2rem);
+  --text-h4: clamp(1.1875rem, 1.6vw, 1.5rem);
+  --text-body-size: 1.0625rem;
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-button: 10px;
+  --radius-input: 10px;
+  --radius-card: 16px;
+  --radius-section: 24px;
+}
+
+/* Element defaults live in a cascade layer so utility classes (Tailwind) can override them. */
+@layer base {
+  body { font-family: var(--font-primary); color: var(--text-primary); background: var(--surface-primary); font-size: var(--text-body-size); line-height: 1.6; }
+  h1, .hero-title { font-weight: 700; letter-spacing: -0.03em; }
+  h2 { font-weight: 600; letter-spacing: -0.015em; }
+  h3, h4 { font-weight: 600; letter-spacing: 0; }
+  button, .btn, nav a { font-family: var(--font-primary); font-weight: 600; }
+  a { color: var(--link); }
+  :lang(hi) { font-family: var(--font-hindi); }
+  :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .on-dark :focus-visible { outline-color: var(--focus-ring-on-dark); }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

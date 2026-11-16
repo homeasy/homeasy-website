@@ -1,0 +1,334 @@
+{
+  "_sections_note": "Set a section to true/false to show or hide it on the homepage. Hidden ones keep their copy below.",
+  "sections": {
+    "problem": true,
+    "how": true,
+    "appliances": true,
+    "process": false,
+    "promise": true,
+    "switches": true,
+    "parents": false,
+    "indian": false,
+    "packages": true,
+    "app": true,
+    "business": true,
+    "area": true,
+    "founder": true,
+    "faq": true
+  },
+  "problem": {
+    "title": "Smart homes shouldn't mean breaking walls.",
+    "body": "Most smart-home solutions need new switchboards or fresh wiring. That is expensive, messy and slow. DIY modules sold online leave you to figure out the wiring yourself. Homeasy takes a simpler path.",
+    "options": [
+      {
+        "title": "New smart switchboards",
+        "points": [
+          "Costly",
+          "Replaces the switches and design you chose",
+          "Days of electrical work"
+        ],
+        "good": false
+      },
+      {
+        "title": "DIY online modules",
+        "points": [
+          "No installation",
+          "No one to call when it stops working",
+          "Wiring risk is yours"
+        ],
+        "good": false
+      },
+      {
+        "title": "Homeasy retrofit",
+        "points": [
+          "Keeps your switches",
+          "Installed by our trained electricians",
+          "Supported by a local team"
+        ],
+        "good": true
+      }
+    ]
+  },
+  "how": {
+    "title": "How Homeasy works",
+    "sub": "The smart part hides behind your switch.",
+    "steps": [
+      {
+        "title": "We open your switchbox",
+        "body": "Our electrician checks the wiring behind your existing switches."
+      },
+      {
+        "title": "We fit a Homeasy module",
+        "body": "A compact smart module goes inside the box, connected to your switches."
+      },
+      {
+        "title": "We close it up",
+        "body": "Your switchboard looks the same as before. Your switches work by hand as before."
+      },
+      {
+        "title": "You control from the app",
+        "body": "Lights, fans, geyser and AC from your phone, on schedules or with scenes."
+      }
+    ]
+  },
+  "appliances": {
+    "title": "What you can make smart",
+    "note": "Final module line-up is confirmed at your survey.",
+    "items": [
+      {
+        "icon": "light",
+        "name": "Lights",
+        "benefit": "Switch off forgotten lights from anywhere.",
+        "status": null
+      },
+      {
+        "icon": "fan",
+        "name": "Fans",
+        "benefit": "On, off and speed from the app.",
+        "status": null
+      },
+      {
+        "icon": "geyser",
+        "name": "Geyser",
+        "benefit": "Hot water on schedule, never left running.",
+        "status": null
+      },
+      {
+        "icon": "ac",
+        "name": "AC and TV",
+        "benefit": "Control through the Homeasy IR remote.",
+        "status": null
+      },
+      {
+        "icon": "motor",
+        "name": "Water motor",
+        "benefit": "Schedule it and switch it off automatically.",
+        "status": null
+      },
+      {
+        "icon": "night",
+        "name": "Outdoor and night lights",
+        "benefit": "On at sunset, off at sunrise.",
+        "status": null
+      }
+    ]
+  },
+  "process": {
+    "title": "From survey to support",
+    "steps": [
+      {
+        "title": "Free home survey",
+        "body": "We visit, check your switchboxes and wiring, and understand what you want to automate."
+      },
+      {
+        "title": "Clear quote",
+        "body": "You get a simple quote, room by room or as a package."
+      },
+      {
+        "title": "Professional installation",
+        "body": "Trained Homeasy electricians install everything and test every switch."
+      },
+      {
+        "title": "App setup",
+        "body": "We set up rooms and family members, and show you how it works."
+      },
+      {
+        "title": "Support and warranty",
+        "body": "3-year warranty on Homeasy modules, with a local team on WhatsApp and phone."
+      }
+    ]
+  },
+  "promise": {
+    "title": "What you get with Homeasy",
+    "cards": [
+      {
+        "icon": "survey",
+        "title": "Free home survey",
+        "body": "We check your switchboxes and wiring before you pay anything.",
+        "href": "/book-survey",
+        "cta": "Book a survey"
+      },
+      {
+        "icon": "photo",
+        "title": "WhatsApp photo check",
+        "body": "Not sure? Send a photo of your switchboard and we'll tell you if it can be made smart.",
+        "href": "whatsapp:photo",
+        "cta": "Send a photo"
+      },
+      {
+        "icon": "install",
+        "title": "Installed by our own team",
+        "body": "Trained electricians follow a safety checklist on every job.",
+        "href": "/installation",
+        "cta": "How we install"
+      },
+      {
+        "icon": "warranty",
+        "title": "3-year warranty",
+        "body": "Homeasy modules are covered against manufacturing defects for 3 years.",
+        "href": "/warranty",
+        "cta": "Warranty details"
+      },
+      {
+        "icon": "local",
+        "title": "Local support",
+        "body": "A Patna-based team you can reach on WhatsApp and phone.",
+        "href": "/contact",
+        "cta": "Contact us"
+      },
+      {
+        "icon": "switch",
+        "title": "Your switches keep working",
+        "body": "Every switch works by hand as before, even when the internet is down.",
+        "href": "/how-it-works",
+        "cta": "See how it works"
+      }
+    ],
+    "line": "Switches always work · Built for Indian homes · One easy app"
+  },
+  "switches": {
+    "title": "Works behind the switches you already have.",
+    "brands": [
+      "Anchor",
+      "Legrand",
+      "Schneider",
+      "Havells",
+      "Roma",
+      "GM",
+      "Goldmedal",
+      "Other / not sure"
+    ],
+    "result": "Homeasy modules are designed to fit behind standard Indian modular switchboards. Our free survey confirms your boxes.",
+    "note": "Brand names belong to their owners. No partnership is implied."
+  },
+  "parents": {
+    "title": "Far from home? Look after your parents' home from anywhere.",
+    "body": "Working in Delhi, Bengaluru or abroad? Turn off a forgotten geyser or switch on the night light for your parents, from your phone.",
+    "badges": [
+      {
+        "label": "Remote control",
+        "status": "coming-soon"
+      },
+      {
+        "label": "Inactivity alerts",
+        "status": "planned"
+      }
+    ],
+    "cta": "Book a survey for your parents' home"
+  },
+  "indian": {
+    "title": "Made for Indian homes",
+    "tiles": [
+      {
+        "title": "Ready-made Indian routines",
+        "body": "Morning geyser, puja lights, study time and a night path for parents.",
+        "status": "coming-soon"
+      },
+      {
+        "title": "Inverter-aware automation",
+        "body": "Heavy loads switch off in a power cut so your inverter lasts longer.",
+        "status": "planned"
+      },
+      {
+        "title": "Hindi and simple mode",
+        "body": "The app in Hindi, with large buttons for elders.",
+        "status": "planned"
+      }
+    ]
+  },
+  "packages": {
+    "title": "Simple packages",
+    "note": "Your exact price is confirmed after the free survey.",
+    "items": [
+      {
+        "name": "Smart Room",
+        "body": "One room's lights and fan.",
+        "price": null
+      },
+      {
+        "name": "Smart Essentials",
+        "body": "The rooms you use most, plus the geyser.",
+        "price": null
+      },
+      {
+        "name": "Full Smart Home",
+        "body": "Every room, with custom scenes.",
+        "price": "Custom quote"
+      }
+    ]
+  },
+  "app": {
+    "title": "Your whole home in one easy app.",
+    "body": "Control every room, create scenes like \"Good night\", schedule your geyser and share access with family. Free for every Homeasy customer.",
+    "features": [
+      "Rooms and dashboard",
+      "Fan speed control",
+      "Scenes",
+      "Schedules",
+      "Family sharing",
+      "Android and iOS"
+    ]
+  },
+  "business": {
+    "title": "For businesses and government",
+    "cards": [
+      {
+        "icon": "designers",
+        "title": "Interior designers",
+        "body": "Smart features without changing your design.",
+        "href": "/solutions/designers"
+      },
+      {
+        "icon": "builders",
+        "title": "Builders and commercial",
+        "body": "Smart-ready flats, offices and shops.",
+        "href": "/solutions/builders"
+      },
+      {
+        "icon": "electricians",
+        "title": "Electricians",
+        "body": "Join the Homeasy electrician network.",
+        "href": "/solutions/electricians"
+      },
+      {
+        "icon": "government",
+        "title": "Government and institutions",
+        "body": "Central control for public buildings, without rewiring.",
+        "href": "/solutions/government"
+      }
+    ]
+  },
+  "area": {
+    "title": "Now serving Bihar.",
+    "body": "We're based in Patna and survey homes across Bihar. Check if we cover your pincode."
+  },
+  "founder": {
+    "quote": "For over 13 years I've worked in interior design, automation and smart-home integration. Most families want a smarter home. They just don't want broken walls or new switchboards. Homeasy makes that possible, with the switches you already have."
+  },
+  "faq": [
+    {
+      "q": "Do I need to change my switches?",
+      "a": "No. Homeasy modules fit inside your existing switchbox, behind the switches you already have."
+    },
+    {
+      "q": "Is rewiring needed?",
+      "a": "Not in most homes. Our free survey checks your wiring first. If something needs a small fix, we tell you before you pay."
+    },
+    {
+      "q": "Will my switches still work?",
+      "a": "Yes. Your switches work by hand as before, even if the internet is down."
+    },
+    {
+      "q": "How long does installation take?",
+      "a": "It depends on the number of rooms and switchboards. We give you a time estimate with your quote."
+    },
+    {
+      "q": "What if the internet is down?",
+      "a": "Your switches always work. Control from the app needs Wi-Fi and internet."
+    },
+    {
+      "q": "Do you serve my area?",
+      "a": "We survey homes across Bihar. Use the pincode checker on this page, or send us a WhatsApp message."
+    }
+  ]
+}

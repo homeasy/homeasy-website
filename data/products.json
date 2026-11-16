@@ -1,0 +1,59 @@
+{
+  "note": "Working product names (PRD §8.3). No specs, dimensions, prices or certifications until datasheets and testing are final. status: available | coming-soon | planned. icon: key mapped in app/products/page.tsx.",
+  "products": [
+    {
+      "slug": "smart-relay",
+      "name": "Homeasy Smart Relay",
+      "headline": "Lights and small appliances",
+      "line": "Makes the switches for your lights and small appliances smart from one compact module.",
+      "controls": ["Lights", "Small appliances"],
+      "icon": "relay",
+      "status": "available"
+    },
+    {
+      "slug": "fan-controller",
+      "name": "Homeasy Fan Controller",
+      "headline": "Fans, with speed control",
+      "line": "Fan on/off and speed from the app. We confirm the fit with your regulator at the survey.",
+      "controls": ["Ceiling fans"],
+      "icon": "fan",
+      "status": "available"
+    },
+    {
+      "slug": "power-module",
+      "name": "Homeasy Power Module (16A)",
+      "headline": "Geyser, AC, water motor",
+      "line": "Built for heavy loads. Schedule your geyser so it is not left on by mistake.",
+      "controls": ["Geyser", "AC", "Water motor"],
+      "icon": "power",
+      "status": "available"
+    },
+    {
+      "slug": "ir-remote",
+      "name": "Homeasy IR Remote",
+      "headline": "AC and TV",
+      "line": "Works with most remote-controlled ACs and TVs; we check yours at the survey.",
+      "controls": ["AC", "TV"],
+      "icon": "ir",
+      "status": "available"
+    },
+    {
+      "slug": "no-neutral-module",
+      "name": "Homeasy No-Neutral Module",
+      "headline": "Older homes",
+      "line": "For switchboxes without a neutral wire.",
+      "controls": ["Homes without a neutral wire"],
+      "icon": "no-neutral",
+      "status": "planned"
+    },
+    {
+      "slug": "smart-plug",
+      "name": "Homeasy Smart Plug",
+      "headline": "Plug-in appliances",
+      "line": "App control for appliances that plug into a socket.",
+      "controls": ["Plug-in appliances"],
+      "icon": "plug",
+      "status": "planned"
+    }
+  ]
+}

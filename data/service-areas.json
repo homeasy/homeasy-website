@@ -1,0 +1,30 @@
+{
+  "_note": "Founder decision 16 Nov 2026: survey service covers all of Bihar. Matching is by the first 3 digits of the pincode (India Post sorting districts). Bihar and Jharkhand share the 80-85 range, so Jharkhand prefixes (814-816, 822, 825-829, 831-835) are deliberately NOT listed. VERIFY this list against the India Post pincode directory before launch. 'tier: patna' marks where the 24-hour technician visit promise applies.",
+  "regions": [
+    { "prefix": "800", "name": "Patna", "tier": "patna" },
+    { "prefix": "801", "name": "Patna (rural)", "tier": "patna" },
+    { "prefix": "802", "name": "Bhojpur / Buxar", "tier": "bihar" },
+    { "prefix": "803", "name": "Nalanda / Patna district", "tier": "bihar" },
+    { "prefix": "804", "name": "Gaya / Jehanabad / Aurangabad", "tier": "bihar" },
+    { "prefix": "805", "name": "Nawada", "tier": "bihar" },
+    { "prefix": "811", "name": "Munger / Lakhisarai / Jamui", "tier": "bihar" },
+    { "prefix": "812", "name": "Bhagalpur / Banka", "tier": "bihar" },
+    { "prefix": "813", "name": "Bhagalpur / Banka", "tier": "bihar" },
+    { "prefix": "821", "name": "Rohtas / Kaimur", "tier": "bihar" },
+    { "prefix": "823", "name": "Gaya", "tier": "bihar" },
+    { "prefix": "824", "name": "Aurangabad / Gaya", "tier": "bihar" },
+    { "prefix": "841", "name": "Saran / Siwan / Gopalganj", "tier": "bihar" },
+    { "prefix": "842", "name": "Muzaffarpur", "tier": "bihar" },
+    { "prefix": "843", "name": "Muzaffarpur / Sitamarhi", "tier": "bihar" },
+    { "prefix": "844", "name": "Vaishali", "tier": "bihar" },
+    { "prefix": "845", "name": "Champaran", "tier": "bihar" },
+    { "prefix": "846", "name": "Darbhanga", "tier": "bihar" },
+    { "prefix": "847", "name": "Darbhanga / Madhubani", "tier": "bihar" },
+    { "prefix": "848", "name": "Samastipur", "tier": "bihar" },
+    { "prefix": "851", "name": "Begusarai / Khagaria", "tier": "bihar" },
+    { "prefix": "852", "name": "Saharsa / Madhepura / Supaul", "tier": "bihar" },
+    { "prefix": "853", "name": "Bhagalpur (Naugachia)", "tier": "bihar" },
+    { "prefix": "854", "name": "Purnia / Katihar / Araria", "tier": "bihar" },
+    { "prefix": "855", "name": "Kishanganj / Araria", "tier": "bihar" }
+  ]
+}

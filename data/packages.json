@@ -1,0 +1,62 @@
+{
+  "note": "PRD §8.5 / §26.4. price: null until the founder confirms prices (number = 'From ₹x' when SHOW_PRICES=true). priceType: from | custom. An item with \"usp\" shows only when that USP flag is on.",
+  "packages": [
+    {
+      "slug": "smart-room",
+      "name": "Smart Room",
+      "tagline": "Start with one room",
+      "priceType": "from",
+      "price": null,
+      "includes": [
+        { "text": "Modules for one room's lights and fan" },
+        { "text": "Professional installation" },
+        { "text": "App setup" },
+        { "text": "3-year module warranty" }
+      ]
+    },
+    {
+      "slug": "smart-essentials",
+      "name": "Smart Essentials",
+      "tagline": "The rooms you use most",
+      "priceType": "from",
+      "price": null,
+      "includes": [
+        { "text": "Modules for 2–3 rooms, plus the geyser" },
+        { "text": "Professional installation" },
+        { "text": "App setup" },
+        { "text": "Ready-made Indian routines", "usp": "U9" },
+        { "text": "3-year module warranty" }
+      ]
+    },
+    {
+      "slug": "full-smart-home",
+      "name": "Full Smart Home",
+      "tagline": "Every room, every switch",
+      "priceType": "custom",
+      "price": null,
+      "includes": [
+        { "text": "All rooms, geyser and AC (by IR remote)" },
+        { "text": "Custom scenes" },
+        { "text": "Professional installation" },
+        { "text": "App setup" },
+        { "text": "3-year module warranty" }
+      ]
+    }
+  ],
+  "everyPackage": [
+    { "text": "Free home survey" },
+    { "text": "Written Smart Home Readiness Report", "usp": "U1" },
+    { "text": "Homeasy modules" },
+    { "text": "Professional installation" },
+    { "text": "App setup for your family" },
+    { "text": "\"Same look\" guarantee", "usp": "U3" },
+    { "text": "3-year module warranty" },
+    { "text": "WhatsApp support" }
+  ],
+  "addOns": [
+    { "name": "Extra module (any room)", "price": null, "status": null },
+    { "name": "Homeasy IR Remote (AC and TV)", "price": null, "status": "available" },
+    { "name": "Homeasy Smart Plug", "price": null, "status": "planned" },
+    { "name": "Homeasy Care plan", "price": null, "status": "planned" }
+  ]
+}

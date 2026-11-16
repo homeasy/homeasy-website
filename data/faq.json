@@ -1,0 +1,191 @@
+{
+  "_note": "FAQ content (PRD §8.13). Each answer is a list of parts joined with a space. A part with 'whenOn' shows only when that flag is true; 'whenOff' shows only when it is false. Flags: U1–U12 (USP_* env vars), APP_LIVE, SHOW_PRICES. Tokens: {phone}, {hours}, {legalName}, {foundedYear}, {founderName}, {founderRole} are filled from data/site.json. 'status' adds a Coming soon / Planned badge. Never add prices, durations or certifications here until they are final.",
+  "groups": [
+    {
+      "id": "retrofit-basics",
+      "title": "Retrofit basics",
+      "items": [
+        {
+          "q": "Do I need to change my switches?",
+          "parts": [
+            { "text": "No. Homeasy modules fit inside your existing switchbox, behind the switches you already have." }
+          ]
+        },
+        {
+          "q": "Is rewiring needed?",
+          "parts": [
+            { "text": "No rewiring in most homes. Our free survey checks your wiring first. If something needs a small fix, we'll tell you before you pay." }
+          ]
+        },
+        {
+          "q": "Will my switches still work?",
+          "parts": [
+            { "text": "Yes. Your switches work by hand exactly as before, even if the internet is down." }
+          ]
+        },
+        {
+          "q": "Will my switchboard look different?",
+          "parts": [
+            { "text": "No. From the outside, it looks the same. If a switchbox needs a visible change, we agree it with you in the quote first." }
+          ]
+        },
+        {
+          "q": "What is a neutral wire and do I need one?",
+          "parts": [
+            { "text": "It's one of the wires in your switchbox. Some modules need it, and our survey checks every box. A no-neutral option is planned." }
+          ],
+          "status": "planned"
+        },
+        {
+          "q": "Is it safe?",
+          "parts": [
+            { "text": "Installations are done by trained electricians following a safety checklist. If we find a wiring problem, we tell you first." }
+          ],
+          "link": { "href": "/installation", "label": "See our safety checklist" }
+        }
+      ]
+    },
+    {
+      "id": "installation-service",
+      "title": "Installation and service",
+      "items": [
+        {
+          "q": "How long does installation take?",
+          "parts": [
+            { "text": "It depends on the number of rooms and switchboxes. We'll confirm timing at your survey." }
+          ]
+        },
+        {
+          "q": "Is the survey really free?",
+          "parts": [{ "text": "Yes, within our service area." }]
+        },
+        {
+          "q": "Which areas do you serve?",
+          "parts": [
+            { "text": "We survey homes across Bihar. Our head office and pilot are in Patna." }
+          ],
+          "link": { "href": "/installation#service-area", "label": "Check your pincode" }
+        },
+        {
+          "q": "What warranty do I get?",
+          "parts": [
+            { "text": "3 years on Homeasy modules against manufacturing defects." }
+          ],
+          "link": { "href": "/warranty", "label": "Read our warranty policy" }
+        },
+        {
+          "q": "How fast do you fix problems?",
+          "parts": [
+            { "whenOn": "U2", "text": "We reply on WhatsApp within 30 minutes during working hours ({hours})." },
+            { "whenOff": "U2", "text": "We reply on WhatsApp during working hours, {hours}." },
+            { "whenOn": "U5", "text": "In Patna, a technician visits within 24 hours." },
+            { "whenOff": "U5", "text": "If a visit is needed, we arrange a technician as soon as we can. Our 24-hour visit promise for Patna launches after our pilot." }
+          ],
+          "link": { "href": "/guarantee", "label": "Read our promises" }
+        },
+        {
+          "q": "Who do I contact for support?",
+          "parts": [
+            { "text": "WhatsApp or call our support team on {phone}." }
+          ],
+          "link": { "href": "/contact", "label": "Contact us" }
+        },
+        {
+          "q": "Can I add more rooms later?",
+          "parts": [{ "text": "Yes, anytime." }]
+        },
+        {
+          "q": "Can I install it in a rented home?",
+          "parts": [
+            { "text": "Usually yes, as nothing visible changes. Check with your landlord first." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "app",
+      "title": "App",
+      "items": [
+        {
+          "q": "Is the app free?",
+          "parts": [
+            { "whenOn": "APP_LIVE", "text": "Yes, free for every Homeasy customer." },
+            { "whenOff": "APP_LIVE", "text": "Yes. The Homeasy app will be free for every Homeasy customer. It is coming soon." }
+          ],
+          "statusWhenOff": { "flag": "APP_LIVE", "status": "coming-soon" }
+        },
+        {
+          "q": "Android or iOS?",
+          "parts": [
+            { "whenOn": "APP_LIVE", "text": "Both." },
+            { "whenOff": "APP_LIVE", "text": "Both. The Android and iOS apps are coming soon." }
+          ],
+          "statusWhenOff": { "flag": "APP_LIVE", "status": "coming-soon" }
+        },
+        {
+          "q": "What if the internet goes down?",
+          "parts": [
+            { "text": "Your switches always work by hand. App control needs Wi-Fi and internet." }
+          ]
+        },
+        {
+          "q": "Does it work with Alexa or Google?",
+          "parts": [
+            { "text": "Not yet. Voice assistant support is planned. We'll announce it only when it is ready." }
+          ],
+          "status": "planned"
+        },
+        {
+          "q": "Can my family use it?",
+          "parts": [{ "text": "Yes, with family sharing in the app." }]
+        }
+      ]
+    },
+    {
+      "id": "pricing",
+      "title": "Pricing",
+      "items": [
+        {
+          "q": "How much does it cost?",
+          "parts": [
+            { "text": "It depends on your rooms and appliances. Your exact price is confirmed after the free survey." }
+          ],
+          "link": { "href": "/book-survey", "label": "Book a free home survey" }
+        },
+        {
+          "q": "Is GST included?",
+          "parts": [
+            { "whenOn": "U4", "text": "Yes. One price covers modules, installation, app setup and GST." },
+            { "whenOff": "U4", "text": "Your written quote shows the full amount, including taxes, before you decide." }
+          ]
+        },
+        {
+          "q": "How do I pay?",
+          "parts": [
+            { "text": "We share payment options with your quote. The survey is free." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "business-company",
+      "title": "Business and company",
+      "items": [
+        {
+          "q": "Do you work with interior designers, builders or government?",
+          "parts": [
+            { "text": "Yes. We work with interior designers, builders, electricians and government buildings." }
+          ],
+          "link": { "href": "/solutions", "label": "See Solutions" }
+        },
+        {
+          "q": "Who is behind Homeasy?",
+          "parts": [
+            { "text": "{legalName}, founded in {foundedYear} in Patna, led by {founderRole} {founderName}." }
+          ],
+          "link": { "href": "/about", "label": "About Homeasy" }
+        }
+      ]
+    }
+  ]
+}

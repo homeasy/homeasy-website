@@ -1,0 +1,15 @@
+asset,source file,source,licence,downloaded,used in
+Sofa 01,assets-source/polyhaven/models/Sofa_01,https://polyhaven.com/a/Sofa_01,CC0 1.0,2026-11-16,Hero render (Blender)
+Throw Pillows 01,assets-source/polyhaven/models/throw_pillows_01,https://polyhaven.com/a/throw_pillows_01,CC0 1.0,2026-11-16,Hero render
+Modern Coffee Table 01,assets-source/polyhaven/models/modern_coffee_table_01,https://polyhaven.com/a/modern_coffee_table_01,CC0 1.0,2026-11-16,Hero render
+Modern Wooden Cabinet,assets-source/polyhaven/models/modern_wooden_cabinet,https://polyhaven.com/a/modern_wooden_cabinet,CC0 1.0,2026-11-16,Hero render (TV unit)
+Potted Plant 02,assets-source/polyhaven/models/potted_plant_02,https://polyhaven.com/a/potted_plant_02,CC0 1.0,2026-11-16,Hero render
+Brass Vase 03,assets-source/polyhaven/models/brass_vase_03,https://polyhaven.com/a/brass_vase_03,CC0 1.0,2026-11-16,Hero render
+Brass Pot 01,assets-source/polyhaven/models/brass_pot_01,https://polyhaven.com/a/brass_pot_01,CC0 1.0,2026-11-16,Hero render
+Ceiling Fan,assets-source/polyhaven/models/ceiling_fan,https://polyhaven.com/a/ceiling_fan,CC0 1.0,2026-11-16,Hero render
+Side Table 01,assets-source/polyhaven/models/side_table_01,https://polyhaven.com/a/side_table_01,CC0 1.0,2026-11-16,Hero render
+Painted Plaster Wall (texture),assets-source/polyhaven/textures/painted_plaster_wall,https://polyhaven.com/a/painted_plaster_wall,CC0 1.0,2026-11-16,Hero render walls
+Modern Buildings Night (HDRI),assets-source/polyhaven/hdri/modern_buildings_night.hdr,https://polyhaven.com/a/modern_buildings_night,CC0 1.0,2026-11-16,Hero render (view through window + dusk light)
+Fabric008 (texture),assets-source/Fabric008_1K-JPG,https://ambientcg.com/view?id=Fabric008,CC0 1.0,2026-11-16,Hero render rug
+Custom models (split AC, tube light, TV, table lamp, modular switchboard, switchbox interior, illustrative module, vitrified floor),scripts/blender/build_scene.py,Homeasy (own work),Own,2026-11-16,Hero render
+Hero renders (light passes, depth, close-ups),public/hero/,Rendered with Blender Cycles from the assets above,Own,2026-11-16,Homepage hero

@@ -1,0 +1,30 @@
+[
+  { "period": "2025", "title": "Homeasy Automation Pvt. Ltd. incorporated in Patna", "status": "done" },
+  { "period": "2025–2026", "title": "Product research and app UX design", "status": "in-progress" },
+  { "period": "Nov 2026", "title": "Retrofit-first strategy adopted", "status": "done" },
+  {
+    "period": "Next",
+    "title": "Homeasy modules",
+    "detail": "Manufacturing partnership under way. Testing and certification are planned.",
+    "status": "in-progress"
+  },
+  { "period": "Next", "title": "Homeasy app MVP (Android and iOS)", "status": "in-progress" },
+  { "period": "Next", "title": "Pilot installations in Patna", "status": "planned" },
+  { "period": "Then", "title": "Patna launch: surveys and installations", "status": "planned" },
+  { "period": "Then", "title": "Designer, builder and electrician partner programmes", "status": "planned" },
+  { "period": "Then", "title": "Government and institutional projects", "status": "planned" },
+  {
+    "period": "Then",
+    "title": "Indian routines, parents' home inactivity alerts, Hindi app with simple mode",
+    "status": "planned"
+  },
+  {
+    "period": "Then",
+    "title": "Inverter-aware automation",
+    "detail": "Only after feasibility and safety validation.",
+    "status": "planned"
+  },
+  { "period": "Later", "title": "More cities in Bihar and across India", "status": "planned" },
+  { "period": "Later", "title": "Homeasy Care plan and \"Moves with you\" service", "status": "planned" },
+  { "period": "Later", "title": "Voice control, energy insights, other smart brands in the app", "status": "planned" }
+]

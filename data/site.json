@@ -1,0 +1,41 @@
+{
+  "brand": "Homeasy",
+  "legalName": "Homeasy Automation Private Limited",
+  "shortLegalName": "Homeasy Automation Pvt. Ltd.",
+  "tagline": "One App. Every Device. Easy.",
+  "url": "https://homeasy.io",
+  "foundedYear": 2025,
+  "copyrightYear": 2026,
+  "cin": "U74909BR2025PTC073219",
+  "gst": null,
+  "address": {
+    "street": "B Hub, Mauryalok Complex, A Block",
+    "city": "Patna",
+    "state": "Bihar",
+    "pincode": "800001",
+    "country": "IN"
+  },
+  "contact": {
+    "phoneDisplay": "+91 91173 79099",
+    "phoneE164": "+919117379099",
+    "whatsappNumber": "919117379099",
+    "email": "info@homeasy.io",
+    "hours": "9 am – 9 pm, every day",
+    "leadResponse": "within 2 working hours"
+  },
+  "whatsappMessages": {
+    "general": "Hi Homeasy, I'd like to know about making my home smart.",
+    "photo": "Hi Homeasy, here's a photo of my switchboard. Can it be made smart? My pincode: "
+  },
+  "founder": {
+    "name": "Vishwjeet Narayanan",
+    "role": "Founder & CEO",
+    "photo": "/images/founder-vishwjeet-narayanan.jpg"
+  },
+  "social": {
+    "linkedin": "https://www.linkedin.com/company/homeasyautomationiot/",
+    "facebook": "https://www.facebook.com/homeasyautomation/",
+    "instagram": "https://instagram.com/homeasyautomation/",
+    "youtube": "https://youtube.com/@homeasyautomation"
+  }
+}
