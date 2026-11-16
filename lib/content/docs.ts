@@ -1,6 +1,7 @@
 /** The editable website documents and their built-in (seed) versions. No server imports: safe anywhere. */
 import faqSeed from "@/data/faq.json";
 import homeSeed from "@/data/home.json";
+import jobsSeed from "@/data/jobs.json";
 import legalSeed from "@/data/legal.json";
 import packagesSeed from "@/data/packages.json";
 import siteJson from "@/data/site.json";
@@ -23,6 +24,9 @@ void _homeNote;
 const { _note: _legalNote, ...legal } = legalSeed;
 void _legalNote;
 
+const { _note: _jobsNote, ...jobs } = jobsSeed;
+void _jobsNote;
+
 const contact = {
   phone: siteJson.contact.phoneE164.replace(/^\+91/, ""),
   whatsapp: siteJson.contact.whatsappNumber.replace(/^91/, ""),
@@ -40,16 +44,17 @@ const seo: SeoDoc = {
   llmsSummary: "",
 };
 
-export const SEEDS = { home, faq, packages, legal, contact, seo };
+export const SEEDS = { home, faq, packages, legal, jobs, contact, seo };
 export type LegalId = keyof typeof legal;
 export type ContentKey = keyof typeof SEEDS;
 export type ContentDoc<K extends ContentKey> = (typeof SEEDS)[K];
 export const CONTENT_KEYS = Object.keys(SEEDS) as ContentKey[];
 
 /** Documents edited with the general content editor, with the names shown in the admin. */
-export const EDITABLE: Record<"home" | "faq" | "packages" | "legal", { label: string; description: string; view: string }> = {
+export const EDITABLE: Record<"home" | "faq" | "packages" | "legal" | "jobs", { label: string; description: string; view: string }> = {
   home: { label: "Homepage", description: "Every section below the hero: headings, text, cards, and which sections are shown.", view: "/" },
   faq: { label: "FAQ", description: "Question groups and answers on the FAQ page.", view: "/faq" },
   packages: { label: "Packages", description: "The three packages, what every package includes, and add-ons on the Pricing page.", view: "/pricing" },
   legal: { label: "Policies & terms", description: "Privacy policy, terms of service, refund, delivery and cookie policies.", view: "/terms-of-service" },
+  jobs: { label: "Job postings", description: "Open roles and internships on the Careers page. Remove every role to show “No open roles right now”.", view: "/careers" },
 };

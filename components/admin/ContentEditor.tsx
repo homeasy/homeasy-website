@@ -20,12 +20,13 @@ const LABELS: Record<string, string> = {
   early: "Early access band (shown until launch)", problem: "The problem", how: "How it works", promise: "What you get with Homeasy", switches: "Switch brands", parents: "For parents", indian: "Indian homes",
   app: "App", business: "Businesses and government", area: "Service area", founder: "Founder note", faq: "Short FAQ", process: "Survey to support",
   draft: "Draft: show the “under legal review” notice", dates: "Dates line (empty = “Last updated” with the site date)", intro: "Line under the title",
+  roles: "Open roles", pay: "Pay or stipend (leave empty to hide)", duration: "Duration (leave empty to hide)", location: "Location", summary: "What the role does",
   google: "Google Business Profile link",
   phone: "Phone (10 digits)", whatsapp: "WhatsApp number (10 digits)", hours: "Working hours", social: "Social links", sections: "Show or hide sections",
 };
 const SWITCHES = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "U9", "U10", "U11", "U12", "APP_LIVE", "SHOW_PRICES"];
 const SWITCH_KEYS = ["usp", "whenOn", "whenOff", "flag"];
-const LONG_KEYS = ["intro", "body", "text", "a", "line", "note", "quote", "sub", "benefit", "description", "result", "general", "photo", "tagline"];
+const LONG_KEYS = ["summary", "intro", "body", "text", "a", "line", "note", "quote", "sub", "benefit", "description", "result", "general", "photo", "tagline"];
 const TECH_KEYS = ["icon", "id", "slug", "href"];
 
 const human = (k: string) => LABELS[k] ?? k.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[-_]/g, " ").replace(/^./, (c) => c.toUpperCase());
@@ -84,6 +85,16 @@ function Field({ name, schema, value, onChange }: { name: string; schema: Schema
         <option value="available">Available</option>
         <option value="coming-soon">Coming soon</option>
         <option value="planned">Planned</option>
+      </select>
+    );
+  } else if (name === "type") {
+    control = (
+      <select value={text} onChange={(e) => onChange(e.target.value)} className="adm-control">
+        {["Full-time", "Part-time", "Internship", "Contract"].map((o) => (
+          <option key={o} value={o}>
+            {o}
+          </option>
+        ))}
       </select>
     );
   } else if (name === "priceType") {

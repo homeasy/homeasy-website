@@ -4,7 +4,7 @@ import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { Home, MapPin, UserCheck } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
-import jobsData from "@/data/jobs.json";
+import { getContent } from "@/lib/content/store";
 import { getSite } from "@/lib/site-live";
 
 const pageMeta: Metadata = {
@@ -17,28 +17,19 @@ export function generateMetadata() {
   return seoMetadata("/careers", pageMeta);
 }
 
-/** One open role in data/jobs.json. Leave the file as [] to show the empty state. */
-type Job = { title: string; location: string; type: string; summary: string };
-
-const jobs = jobsData as Job[];
-
 const WHY = [
   { icon: Home, title: "Real impact", body: "Your work goes into real homes." },
   { icon: UserCheck, title: "Ownership", body: "Small team, big responsibility." },
   { icon: MapPin, title: "Built in Bihar", body: "Made here, for India." },
 ];
 
-const FUTURE_ROLES = [
-  "Embedded / firmware engineer",
-  "Mobile app developer",
-  "Backend developer",
-  "Installation lead and electricians",
-  "Sales (B2B and B2G)",
-];
+const FUTURE_ROLES = ["Embedded / firmware engineer", "Backend developer", "Installation lead and electricians"];
 
 /** PRD §8.11 + §26.16 */
 export default async function CareersPage() {
   const site = await getSite();
+  // open roles come from Admin → Job postings (published copy); full-time roles first
+  const jobs = [...(await getContent("jobs")).roles].sort((a, b) => Number(a.type === "Internship") - Number(b.type === "Internship"));
   const careersMail = `${site.mailHref}?subject=Careers%20at%20Homeasy`;
   return (
     <>
@@ -69,7 +60,7 @@ export default async function CareersPage() {
       </Section>
 
       <Section tone="cloud">
-        <SectionHeading title="Open roles" />
+        <SectionHeading title="Open roles" sub={jobs.length ? "Full-time roles and internships in Patna. Apply by email with your profile." : undefined} />
         {jobs.length === 0 ? (
           <Card className="mt-10 max-w-[720px]">
             <h3 className="text-h4">No open roles right now.</h3>
@@ -88,15 +79,15 @@ export default async function CareersPage() {
           <ul className="mt-10 grid gap-4 md:grid-cols-2">
             {jobs.map((job) => (
               <li key={job.title} className="min-w-0">
-                <Card className="h-full">
+                <Card className="flex h-full flex-col">
                   <h3 className="text-h4">{job.title}</h3>
-                  <p className="mt-1 text-[15px] text-slate">
-                    {job.location} · {job.type}
-                  </p>
+                  <p className="mt-1 text-[15px] text-slate">{[job.type, job.duration, job.location].filter(Boolean).join(" · ")}</p>
+                  {job.pay && <p className="mt-2 font-semibold text-ink">{job.pay}</p>}
                   <p className="mt-3 text-body">{job.summary}</p>
                   <a
                     href={`${site.mailHref}?subject=${encodeURIComponent(`Application: ${job.title}`)}`}
-                    className="link mt-4 inline-flex min-h-11 items-center"
+                    className="link mt-auto inline-flex min-h-11 items-center pt-3"
+                    aria-label={`Apply by email for ${job.title}`}
                   >
                     Apply by email
                   </a>

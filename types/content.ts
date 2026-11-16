@@ -28,8 +28,9 @@ export type FaqFile = { groups: { id: string; title: string; items: FaqItem[] }[
 /** data/roadmap.json */
 export type RoadmapItem = { period: string; title: string; detail?: string; status: "done" | "now" | "available" | "planned" };
 
-/** data/jobs.json: leave as [] to show "No open roles right now". */
-export type Job = { title: string; location: string; type: string; summary: string };
+/** data/jobs.json: open roles on /careers (edited in Admin → Job postings). No roles = "No open roles right now". */
+export type Job = { title: string; type: string; duration: string; location: string; pay: string; summary: string };
+export type JobsFile = { roles: Job[] };
 
 /** data/legal.json: one entry per policy page. */
 export type LegalDoc = { title: string; intro: string; draft: boolean; dates: string; body: string };

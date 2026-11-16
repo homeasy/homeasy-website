@@ -13,7 +13,14 @@ import { getPublicProducts } from "@/lib/store/products";
 const isOn = (flag: string): boolean => (/^U\d+$/.test(flag) ? usp(flag as UspId) : flag in flags ? flags[flag as keyof typeof flags] : false);
 
 export async function buildSystemPrompt(): Promise<string> {
-  const [site, faq, home, packages, products] = await Promise.all([getSite(), getContent("faq"), getContent("home"), getContent("packages"), getPublicProducts()]);
+  const [site, faq, home, packages, products, jobs] = await Promise.all([
+    getSite(),
+    getContent("faq"),
+    getContent("home"),
+    getContent("packages"),
+    getPublicProducts(),
+    getContent("jobs"),
+  ]);
   const tokens: Record<string, string> = {
     phone: site.contact.phoneDisplay,
     hours: site.contact.hours,
@@ -98,6 +105,10 @@ ${productLines.join("\n")}
 
 ## Packages (no prices are published${flags.SHOW_PRICES ? " here" : "; price is confirmed after a free survey"})
 ${packageLines.join("\n")}
+
+## Careers (page: /careers; apply by email to ${site.contact.email})
+${jobs.roles.length ? jobs.roles.map((j) => `- ${j.title} (${[j.type, j.duration, j.location].filter(Boolean).join(", ")})${j.pay ? `, ${j.pay}` : ""}: ${j.summary}`).join("\n") : "- No open roles right now. Profiles can still be emailed."}
+- Pay or stipend is only what is written above; if none is written, say it is discussed with the team.
 
 ## Frequently asked questions
 ${faqLines.join("\n\n")}

@@ -1,1 +1,61 @@
-[]
+{
+  "_note": "Open roles on /careers. Edited in Admin → Job postings (draft, then Publish). Remove every role to show 'No open roles right now'. Leave 'pay' or 'duration' empty to hide that line. Never state a stipend or salary the founder has not confirmed.",
+  "roles": [
+    {
+      "title": "Business Development Executive",
+      "type": "Full-time",
+      "duration": "",
+      "location": "Patna, Bihar",
+      "pay": "From ₹10,000 per month",
+      "summary": "Own partner and customer outreach in Patna: meet interior designers, builders, electricians and home owners, follow up on leads from the website, arrange free home surveys and help close installations."
+    },
+    {
+      "title": "Website Developer Intern",
+      "type": "Internship",
+      "duration": "1–2 months",
+      "location": "Patna, Bihar",
+      "pay": "",
+      "summary": "Work on the Homeasy website (Next.js, TypeScript, Tailwind): build pages, fix bugs and improve speed, with guidance from the team."
+    },
+    {
+      "title": "App Developer Intern",
+      "type": "Internship",
+      "duration": "1–2 months",
+      "location": "Patna, Bihar",
+      "pay": "",
+      "summary": "Help build and test the Homeasy mobile app for Android and iOS: screens, device controls and bug fixes."
+    },
+    {
+      "title": "UI/UX Designer Intern",
+      "type": "Internship",
+      "duration": "1–2 months",
+      "location": "Patna, Bihar",
+      "pay": "",
+      "summary": "Design clear, simple screens for the Homeasy app and website, from wireframes to final designs, and test them with real users."
+    },
+    {
+      "title": "Social Media Marketing Intern",
+      "type": "Internship",
+      "duration": "1–2 months",
+      "location": "Patna, Bihar",
+      "pay": "",
+      "summary": "Plan and create posts, reels and stories for Homeasy on Instagram, Facebook, YouTube and LinkedIn, and track what works."
+    },
+    {
+      "title": "Business Development Intern",
+      "type": "Internship",
+      "duration": "1–2 months",
+      "location": "Patna, Bihar",
+      "pay": "",
+      "summary": "Reach out to interior designers, builders and electricians in Patna, explain Homeasy's retrofit approach and set up meetings for the team."
+    },
+    {
+      "title": "Lead Generation Intern",
+      "type": "Internship",
+      "duration": "1–2 months",
+      "location": "Patna, Bihar",
+      "pay": "",
+      "summary": "Find and qualify homes and businesses interested in smart retrofit, follow up on website enquiries and keep the lead list up to date."
+    }
+  ]
+}
