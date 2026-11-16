@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { flags } from "@/lib/flags";
 import { seoMetadata } from "@/lib/seo/meta";
@@ -40,6 +41,7 @@ export default async function ProductsPage() {
   const products = await getPublicProducts();
   return (
     <>
+      <BreadcrumbJsonLd path="/products" />
       <PageHero
         eyebrow="Products"
         title="Homeasy smart modules"

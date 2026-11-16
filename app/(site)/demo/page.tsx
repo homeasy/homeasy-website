@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Hand, House, Smartphone, Video } from "lucide-react";
@@ -46,6 +47,7 @@ export default async function DemoPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/demo" />
       <PageHero
         eyebrow="Demo"
         title="See Homeasy working before you decide."

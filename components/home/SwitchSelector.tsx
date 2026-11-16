@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { track } from "@/lib/analytics";
 import { Camera } from "lucide-react";
 
 type Props = {
@@ -22,7 +23,10 @@ export function SwitchSelector({ brands, result, note, photoHref }: Props) {
             key={b}
             type="button"
             aria-pressed={picked === b}
-            onClick={() => setPicked(b)}
+            onClick={() => {
+              setPicked(b);
+              track("switch_brand_select", { brand: b });
+            }}
             className={`min-h-11 rounded-full border px-4 text-[15px] font-semibold transition-colors ${
               picked === b ? "border-amber bg-amber text-navy" : "border-line bg-white text-ink hover:bg-cloud"
             }`}

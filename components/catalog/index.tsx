@@ -3,10 +3,8 @@
  * Server components, flat brand style. Built on the kit in "@/components/ui".
  */
 import type { ReactNode } from "react";
-import { Check, Mail, type LucideIcon } from "lucide-react";
+import { Check, type LucideIcon } from "lucide-react";
 import { Card, StatusBadge, type Status } from "@/components/ui";
-import { WhatsAppIcon } from "@/components/icons/brand-icons";
-import { getSite } from "@/lib/site-live";
 
 /** Neutral square icon tile, used where no product image or screenshot exists yet. */
 export function IconTile({ icon: Icon, large = false }: { icon: LucideIcon; large?: boolean }) {
@@ -92,41 +90,5 @@ export function StepList({ items }: { items: { title: string; body: string }[] }
         </li>
       ))}
     </ol>
-  );
-}
-
-/**
- * Enquiry block for the solutions pages. The enquiry forms arrive with the database (PRD §10.3);
- * until then this offers WhatsApp and email. Anchor: #enquire.
- */
-export async function EnquiryCard({ title, body }: { title: string; body: string }) {
-  const site = await getSite();
-  return (
-    <Card className="p-6 sm:p-8">
-      <div id="enquire" className="scroll-mt-28">
-        <h2 className="text-h3 leading-[1.2]">{title}</h2>
-        <p className="mt-3 max-w-[640px] text-body">{body}</p>
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <a
-            href={site.whatsappHref("general")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary min-h-12 px-6"
-          >
-            <WhatsAppIcon size={18} /> Enquire on WhatsApp
-          </a>
-          <a href={site.mailHref} className="btn btn-outline min-h-12 px-6">
-            <Mail aria-hidden="true" size={18} /> Email us
-          </a>
-        </div>
-        <p className="mt-4 text-[15px] text-slate">
-          Our founder replies within one working day. You can also write to{" "}
-          <a href={site.mailHref} className="link break-all">
-            {site.contact.email}
-          </a>
-          .
-        </p>
-      </div>
-    </Card>
   );
 }

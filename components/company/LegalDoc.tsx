@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import type { LegalId } from "@/lib/content/docs";
 import { getContent } from "@/lib/content/store";
 import { getSite } from "@/lib/site-live";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { LegalPage } from "./LegalPage";
 
 /** Only ordinary web, page, email and phone links are allowed in policy text. */
@@ -77,8 +78,11 @@ export async function LegalDoc({ id }: { id: LegalId }) {
   };
   const body = doc.body.replace(/\{(\w+)\}/g, (match, name: string) => tokens[name] ?? match);
   return (
-    <LegalPage title={doc.title} intro={doc.intro} draft={doc.draft} dates={doc.dates || undefined}>
-      <Body text={body} />
-    </LegalPage>
+    <>
+      <BreadcrumbJsonLd path={`/${id}`} name={doc.title} />
+      <LegalPage title={doc.title} intro={doc.intro} draft={doc.draft} dates={doc.dates || undefined}>
+        <Body text={body} />
+      </LegalPage>
+    </>
   );
 }

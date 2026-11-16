@@ -29,13 +29,13 @@ export async function Header() {
           {flags.SHOW_CART && <CartButton />}
           {flags.SHOW_CART ? (
             <HideOnPhoneWhenCartHasItems>
-              <Link href="/book-survey" className="btn btn-primary min-h-10 whitespace-nowrap px-3 text-[15px] lg:min-h-11 lg:px-5">
+              <Link href="/book-survey?source=header" className="btn btn-primary min-h-10 whitespace-nowrap px-3 text-[15px] lg:min-h-11 lg:px-5">
                 <span className="lg:hidden">Book survey</span>
                 <span className="hidden lg:inline">Book a free survey</span>
               </Link>
             </HideOnPhoneWhenCartHasItems>
           ) : (
-            <Link href="/book-survey" className="btn btn-primary min-h-10 whitespace-nowrap px-3 text-[15px] lg:min-h-11 lg:px-5">
+            <Link href="/book-survey?source=header" className="btn btn-primary min-h-10 whitespace-nowrap px-3 text-[15px] lg:min-h-11 lg:px-5">
                 <span className="lg:hidden">Book survey</span>
                 <span className="hidden lg:inline">Book a free survey</span>
               </Link>

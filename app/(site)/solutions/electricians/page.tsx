@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { Gift, GraduationCap, Headset, Wallet } from "lucide-react";
@@ -52,6 +53,7 @@ const FAQ = [
 export default function ElectriciansPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/solutions/electricians" />
       <PageHero
         eyebrow="Electricians"
         title="Grow your work with Homeasy."

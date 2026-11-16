@@ -4,6 +4,7 @@ import nav from "@/data/navigation.json";
 import { getSite } from "@/lib/site-live";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
 import { Logo } from "./Logo";
+import { CookieSettingsLink } from "./CookieBanner";
 import { SocialLinks } from "./SocialLinks";
 
 /** Navy footer, 4 columns on desktop, stacked accordions on mobile (PRD §7.2, §25.1). */
@@ -88,6 +89,7 @@ export async function Footer() {
           <p>
             © {site.copyrightYear} {site.legalName} · CIN {site.cin} · Incorporated {site.foundedYear}
           </p>
+          <CookieSettingsLink className="text-left underline underline-offset-2 hover:no-underline" />
           <p>Registered office: {site.fullAddress}, India</p>
         </div>
       </div>

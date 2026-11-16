@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import Link from "next/link";
 import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
 import { CtaBand } from "@/components/ui/CtaBand";
@@ -49,6 +50,7 @@ export default async function EstimatorPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/estimator" />
       <PageHero
         eyebrow="Estimator"
         title="Estimate your smart home"

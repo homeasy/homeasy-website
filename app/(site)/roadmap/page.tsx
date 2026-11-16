@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
@@ -41,6 +42,7 @@ const DOT: Record<RoadmapStatus, string> = {
 export default function RoadmapPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/roadmap" />
       <PageHero
         eyebrow="Roadmap"
         title="Where Homeasy is headed"

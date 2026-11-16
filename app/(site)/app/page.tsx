@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
@@ -73,6 +74,7 @@ export default function AppPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/app" />
       <PageHero
         eyebrow="The Homeasy app"
         title="One easy app for your whole home."

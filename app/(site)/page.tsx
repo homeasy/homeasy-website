@@ -30,6 +30,9 @@ export default async function Home() {
   const show = (await getContent("home")).sections; // switched on/off in Admin → Homepage
   return (
     <>
+      {/* the hero photo is the largest thing on screen: fetch it first */}
+      <link rel="preload" as="image" href="/hero/mobile/ambient.jpg" media="(max-width: 1023px)" fetchPriority="high" />
+      <link rel="preload" as="image" href="/hero/desktop/ambient.jpg" media="(min-width: 1024px)" fetchPriority="high" />
       <Hero tagline={site.tagline} photoHref={site.whatsappHref("photo")} />
       {show.problem && <Problem />}
       {show.how && <HowItWorks />}

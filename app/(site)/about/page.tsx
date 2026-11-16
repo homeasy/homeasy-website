@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import type { ReactNode } from "react";
@@ -109,6 +110,7 @@ export default async function AboutPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/about" />
       <PageHero
         eyebrow="About Homeasy"
         title="Making Indian homes smart — the easy way."

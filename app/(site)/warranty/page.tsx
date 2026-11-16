@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
@@ -30,6 +31,7 @@ export default async function WarrantyPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/warranty" />
       <PageHero
         eyebrow="Warranty"
         title="Homeasy warranty policy"

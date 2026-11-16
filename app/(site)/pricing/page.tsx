@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
@@ -59,6 +60,7 @@ export default async function PricingPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/pricing" />
       <PageHero
         eyebrow="Pricing"
         title="Simple packages. Exact price after a free survey."
@@ -80,7 +82,7 @@ export default async function PricingPage() {
         />
         <ul className="mt-10 grid gap-4 sm:gap-6 lg:grid-cols-3">
           {data.packages.map((p) => (
-            <li key={p.slug} className="min-w-0">
+            <li key={p.slug} className="min-w-0" data-track-view={`package_view:${p.slug}`}>
               <Card className="flex h-full flex-col">
                 <h3 className="text-h4 leading-snug">{p.name}</h3>
                 <p className="mt-1 text-body">{p.tagline}</p>

@@ -22,7 +22,7 @@ export async function CtaBand({
           <p className="mt-3 text-lg text-mist">{body}</p>
         </div>
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-          <Link href="/book-survey" className="btn btn-primary min-h-12 whitespace-nowrap px-6">
+          <Link href="/book-survey?source=cta-band" className="btn btn-primary min-h-12 whitespace-nowrap px-6">
             Book a free home survey
           </Link>
           <a

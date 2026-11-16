@@ -2,7 +2,9 @@ import { Suspense, type ReactNode } from "react";
 import { flags, usp } from "@/lib/flags";
 import { DEFAULT_DESCRIPTION } from "@/lib/seo/meta";
 import { getSite } from "@/lib/site-live";
+import { Analytics } from "./Analytics";
 import { AnnouncementBar } from "./AnnouncementBar";
+import { CookieBanner } from "./CookieBanner";
 import { FloatingWhatsApp } from "./FloatingWhatsApp";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -59,7 +61,9 @@ export async function SiteChrome({ children }: { children: ReactNode }) {
       <Suspense fallback={null}>
         <FloatingWhatsApp whatsappHref={site.whatsappHref("general")} showReplyPromise={usp("U2")} />
         <RevealObserver />
+        <Analytics />
       </Suspense>
+      <CookieBanner />
     </div>
   );
 }

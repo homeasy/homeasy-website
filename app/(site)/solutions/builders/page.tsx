@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import {
@@ -82,6 +83,7 @@ const FAQ = [
 export default function BuildersPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/solutions/builders" />
       <PageHero
         eyebrow="Builders and commercial"
         title="Smart-ready homes and spaces, without redesign."

@@ -22,7 +22,7 @@ export async function MobileActionBar() {
           <Phone size={20} aria-hidden="true" />
           Call
         </a>
-        <Link href="/book-survey" className={`${item} bg-blue text-navy`}>
+        <Link href="/book-survey?source=sticky-bar" className={`${item} bg-blue text-navy`}>
           <CalendarCheck size={20} aria-hidden="true" />
           Book survey
         </Link>

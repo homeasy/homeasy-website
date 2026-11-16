@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { CalendarClock, Gem, Hammer, Headset, MonitorPlay, PencilRuler, Wallet, Wrench } from "lucide-react";
@@ -67,6 +68,7 @@ export default function DesignersPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/solutions/designers" />
       <PageHero
         eyebrow="Interior designers and architects"
         title="Smart homes without changing your design."

@@ -122,6 +122,21 @@ void main() {
   gl_FragColor = vec4(pow(c, vec3(1.0 / 2.2)), 1.0);
 }`;
 
+/**
+ * Loads a render as an ImageBitmap, which the browser decodes off the main thread (a plain <img> is decoded
+ * on it when uploaded to WebGL, which freezes slow phones for a moment). `flip` turns it upside down at decode
+ * time, because WebGL's UNPACK_FLIP_Y setting is ignored for ImageBitmaps. Falls back to <img> on old browsers.
+ */
+async function loadBitmap(src: string, flip: boolean): Promise<ImageBitmap | HTMLImageElement> {
+  try {
+    const blob = await (await fetch(src)).blob();
+    return await createImageBitmap(blob, flip ? { imageOrientation: "flipY" } : undefined);
+  } catch {
+    return loadImage(src);
+  }
+}
+const nextTask = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+
 function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const img = new Image();
@@ -154,19 +169,19 @@ export async function createPhotoScene({ canvas, base, label, onToggle, anchorX 
     meta.fanspin.files.tv,
   ];
   const [fullImages, atlasImages] = await Promise.all([
-    Promise.all(Object.entries(fullFiles).map(async ([k, f]) => [k, await loadImage(base + f)] as const)),
-    Promise.all(atlasFiles.map((f) => loadImage(base + f))),
+    Promise.all(Object.entries(fullFiles).map(async ([k, f]) => [k, await loadBitmap(base + f, true)] as const)),
+    Promise.all(atlasFiles.map((f) => loadBitmap(base + f, false))),
   ]);
   const PAD = 2;
   const atlasCanvas = document.createElement("canvas");
-  atlasCanvas.width = Math.max(...atlasImages.map((i) => i.naturalWidth)) + PAD * 2;
-  atlasCanvas.height = atlasImages.reduce((h, i) => h + i.naturalHeight + PAD * 2, 0);
+  atlasCanvas.width = Math.max(...atlasImages.map((i) => i.width)) + PAD * 2;
+  atlasCanvas.height = atlasImages.reduce((h, i) => h + i.height + PAD * 2, 0);
   const actx = atlasCanvas.getContext("2d")!;
   const atlasRects: number[][] = [];
   let ay = 0;
   for (const img of atlasImages) {
-    const w = img.naturalWidth;
-    const h = img.naturalHeight;
+    const w = img.width;
+    const h = img.height;
     actx.drawImage(img, PAD, ay + PAD);
     // uv rect (origin bottom-left because textures are uploaded flipped), inset by half a texel
     atlasRects.push([
@@ -206,7 +221,8 @@ export async function createPhotoScene({ canvas, base, label, onToggle, anchorX 
   const textures: WebGLTexture[] = [];
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
   const sources: (readonly [string, TexImageSource])[] = [...fullImages, ["tAtlas", atlasCanvas]];
-  sources.forEach(([name, img], i) => {
+  for (const [i, [name, img]] of sources.entries()) {
+    if (i) await nextTask(); // one upload per task, so the page stays responsive while the scene loads
     const t = gl.createTexture()!;
     textures.push(t);
     gl.activeTexture(gl.TEXTURE0 + i);
@@ -217,7 +233,7 @@ export async function createPhotoScene({ canvas, base, label, onToggle, anchorX 
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.uniform1i(U(name), i);
-  });
+  }
   const cropKeys = ["ac", "sw1", "sw2", "sw3", "sw4"] as const;
   gl.uniform4fv(U("uRc[0]"), new Float32Array(cropKeys.flatMap((k) => meta.crops[k].rect)));
   gl.uniform4fv(U("uAc[0]"), new Float32Array(atlasRects.slice(0, 5).flat()));

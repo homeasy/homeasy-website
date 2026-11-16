@@ -144,7 +144,7 @@ export function Hero({ tagline, photoHref }: Props) {
             broken walls. Control lights, fans, TV and AC from your phone, and your switches still work.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Link href="/book-survey" className="btn btn-primary min-h-12 whitespace-nowrap px-6">
+            <Link href="/book-survey?source=hero" className="btn btn-primary min-h-12 whitespace-nowrap px-6">
               Book a free home survey
             </Link>
             <a
@@ -159,7 +159,7 @@ export function Hero({ tagline, photoHref }: Props) {
           </div>
           <p className="mt-4 text-sm text-slate lg:text-mist">
             Free survey · Installed by trained electricians ·{" "}
-            <a href="#service-area" className="underline underline-offset-2 hover:no-underline">
+            <a href="#service-area" className="text-current underline underline-offset-2 hover:no-underline">
               Now serving Bihar
             </a>
           </p>
@@ -182,6 +182,7 @@ export function Hero({ tagline, photoHref }: Props) {
               <source media={DESKTOP} srcSet="/hero/desktop/ambient.jpg" />
               <img
                 src="/hero/mobile/ambient.jpg"
+                fetchPriority="high"
                 alt="A living room at dusk with a sofa, table lamp, TV, AC, ceiling fan and a modular switchboard"
                 className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700 lg:object-right ${
                   live ? "opacity-0" : "opacity-100"

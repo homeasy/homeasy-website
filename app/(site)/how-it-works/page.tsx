@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
@@ -66,6 +67,7 @@ export default async function HowItWorksPage() {
       title: "App setup",
       body: (
         <>
+      <BreadcrumbJsonLd path="/how-it-works" />
           We set up rooms, scenes and family access, and show you how it works.
           {!flags.APP_LIVE && (
             <span className="mt-2 block">

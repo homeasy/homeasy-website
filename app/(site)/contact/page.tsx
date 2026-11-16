@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
@@ -34,6 +35,7 @@ export default async function ContactPage() {
   )}`;
   return (
     <>
+      <BreadcrumbJsonLd path="/contact" />
       <PageHero
         eyebrow="Contact"
         title="Get in touch"

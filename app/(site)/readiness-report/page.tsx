@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import Link from "next/link";
 import { Cable, Camera, Gauge, ListChecks, ReceiptText, ShieldCheck } from "lucide-react";
 import report from "@/data/readiness-report.json";
@@ -70,6 +71,7 @@ export default async function ReadinessReportPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/readiness-report" />
       <PageHero
         eyebrow={report.sampleLabel}
         title={live.report ? "Your Smart Home Readiness Report" : "What our free survey tells you"}

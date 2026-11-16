@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import {
@@ -94,6 +95,7 @@ export default async function GovernmentPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/solutions/government" />
       <PageHero
         eyebrow="Government and institutions"
         title="Smarter, energy-efficient public buildings — without rewiring."

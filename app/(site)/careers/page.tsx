@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { Home, MapPin, UserCheck } from "lucide-react";
@@ -41,6 +42,7 @@ export default async function CareersPage() {
   const careersMail = `${site.mailHref}?subject=Careers%20at%20Homeasy`;
   return (
     <>
+      <BreadcrumbJsonLd path="/careers" />
       <PageHero
         eyebrow="Careers at Homeasy"
         title="Help us make Indian homes smart."

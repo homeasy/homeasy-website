@@ -1,4 +1,5 @@
 import { SurveyForm } from "@/components/forms/SurveyForm";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import type { Metadata } from "next";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
@@ -47,6 +48,7 @@ export default async function BookSurveyPage() {
   const bookOnWhatsAppHref = `https://wa.me/${site.contact.whatsappNumber}?text=${encodeURIComponent(BOOKING_MESSAGE)}`;
   return (
     <>
+      <BreadcrumbJsonLd path="/book-survey" />
       <PageHero
         eyebrow="Free home survey"
         title="Book your free home survey"

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
@@ -48,6 +49,7 @@ const SOLUTIONS: { href: string; icon: LucideIcon; title: string; body: string }
 export default function SolutionsPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/solutions" />
       <PageHero
         eyebrow="Solutions"
         title="Homeasy for business"

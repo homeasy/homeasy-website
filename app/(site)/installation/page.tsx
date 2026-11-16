@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
@@ -45,6 +46,7 @@ export default async function InstallationPage() {
       title: "Survey",
       body: (
         <>
+      <BreadcrumbJsonLd path="/installation" />
           Switchbox, wiring, load and Wi-Fi checks.
           <Who>Homeasy technician</Who>
         </>

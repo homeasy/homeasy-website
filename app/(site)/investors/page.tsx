@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
@@ -68,6 +69,7 @@ export default async function InvestorsPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/investors" />
       <PageHero
         eyebrow="Homeasy for investors"
         title="Bringing smart living to India's traditional homes."

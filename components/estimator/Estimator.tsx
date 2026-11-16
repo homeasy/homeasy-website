@@ -55,7 +55,7 @@ export function Estimator({ data, products, showPrices, whatsappHref }: Props) {
   function used(action: string, roomsCount: number) {
     if (!started.current) {
       started.current = true;
-      track("estimator_use", { action: "start", rooms_count: roomsCount });
+      track("estimator_start", { rooms_count: roomsCount });
     }
     if (action !== "start") track("estimator_use", { action, rooms_count: roomsCount });
   }
@@ -361,7 +361,10 @@ export function Estimator({ data, products, showPrices, whatsappHref }: Props) {
             <Link
               href={hasList ? surveyHref : "/book-survey?source=estimator"}
               className="btn btn-primary min-h-12 w-full px-4 text-center leading-tight"
-              onClick={() => track("estimator_cta", { cta: "book_survey", ...ctaParams() })}
+              onClick={() => {
+                track("estimator_complete", ctaParams());
+                track("estimator_to_survey", ctaParams());
+              }}
             >
               {hasList ? copy.ctaPrimary : "Book a free survey"}
             </Link>
@@ -370,7 +373,7 @@ export function Estimator({ data, products, showPrices, whatsappHref }: Props) {
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-outline min-h-12 w-full px-4 text-center leading-tight"
-              onClick={() => track("estimator_cta", { cta: "whatsapp", ...ctaParams() })}
+              onClick={() => track("estimator_complete", ctaParams())}
             >
               <WhatsAppIcon size={18} aria-hidden="true" />
               {hasList ? copy.ctaWhatsapp : "Ask on WhatsApp"}
