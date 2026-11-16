@@ -20,19 +20,19 @@ const activeMark =
  * The page address is only known per request on pages with a variable address (e.g. /products/[slug]),
  * so the part that reads it sits in <Suspense>; until it is known the menu shows with no item marked.
  */
-export function DesktopNav() {
+export function DesktopNav({ earlyAccess = false }: { earlyAccess?: boolean }) {
   return (
-    <Suspense fallback={<NavList pathname="" />}>
-      <CurrentNav />
+    <Suspense fallback={<NavList pathname="" earlyAccess={earlyAccess} />}>
+      <CurrentNav earlyAccess={earlyAccess} />
     </Suspense>
   );
 }
 
-function CurrentNav() {
-  return <NavList pathname={usePathname()} />;
+function CurrentNav({ earlyAccess }: { earlyAccess: boolean }) {
+  return <NavList pathname={usePathname()} earlyAccess={earlyAccess} />;
 }
 
-function NavList({ pathname }: { pathname: string }) {
+function NavList({ pathname, earlyAccess }: { pathname: string; earlyAccess: boolean }) {
   return (
     <nav aria-label="Main" className="hidden lg:block">
       <ul className="flex items-center gap-3 xl:gap-6">
@@ -52,6 +52,14 @@ function NavList({ pathname }: { pathname: string }) {
               </Link>
             </li>
           ),
+        )}
+        {/* a seventh item does not fit beside the buttons on the narrowest desktop widths */}
+        {earlyAccess && (
+          <li className="hidden min-[1100px]:block">
+            <Link href="/early-access" aria-current={isActive(pathname, "/early-access") ? "page" : undefined} className={`${linkBase} ${isActive(pathname, "/early-access") ? activeMark : ""}`}>
+              Early access
+            </Link>
+          </li>
         )}
       </ul>
     </nav>

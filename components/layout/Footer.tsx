@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { flags } from "@/lib/flags";
 import { Mail, Phone } from "lucide-react";
 import nav from "@/data/navigation.json";
 import { getSite } from "@/lib/site-live";
@@ -8,6 +9,9 @@ import { CookieSettingsLink } from "./CookieBanner";
 import { SocialLinks } from "./SocialLinks";
 
 /** Navy footer, 4 columns on desktop, stacked accordions on mobile (PRD §7.2, §25.1). */
+/** Refund and delivery policies belong to online buying: their links show only while the cart is on. */
+const shown = (l: { href: string }) => flags.SHOW_CART || !["/refund-policy", "/delivery-policy"].includes(l.href);
+
 export async function Footer() {
   const site = await getSite();
   return (
@@ -26,7 +30,7 @@ export async function Footer() {
               <div key={col.title}>
                 <h2 className="text-sm font-semibold tracking-normal text-white">{col.title}</h2>
                 <ul className="mt-3 space-y-2">
-                  {col.links.map((l) => (
+                  {col.links.filter(shown).map((l) => (
                     <li key={l.href}>
                       <Link href={l.href} className="inline-flex min-h-6 items-center text-sm text-mist no-underline hover:text-white hover:underline">
                         {l.label}
@@ -49,7 +53,7 @@ export async function Footer() {
                   </span>
                 </summary>
                 <ul className="space-y-1 pb-3">
-                  {col.links.map((l) => (
+                  {col.links.filter(shown).map((l) => (
                     <li key={l.href}>
                       <Link href={l.href} className="flex min-h-10 items-center text-mist no-underline hover:text-white">
                         {l.label}

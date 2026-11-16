@@ -15,7 +15,7 @@ export async function Header() {
     <header className="sticky top-0 z-40 border-b border-line bg-white">
       <div className="container-page flex h-14 items-center justify-between gap-4 lg:h-[72px]">
         <Logo priority />
-        <DesktopNav />
+        <DesktopNav earlyAccess={!flags.LAUNCHED} />
         <div className="flex items-center gap-2">
           <a
             href={site.whatsappHref("general")}

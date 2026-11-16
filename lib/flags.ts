@@ -23,8 +23,8 @@ export const flags = {
   SHOW_PRICES: bool(env.SHOW_PRICES, false),
   // Online buying (cart, checkout). On from launch; before that the site shows survey → quote → install only.
   SHOW_CART: bool(env.SHOW_CART, launched),
-  // "Delivery across Bihar" wording and delivery of online orders.
-  DELIVERY_ENABLED: bool(env.DELIVERY_ENABLED, true),
+  // "Delivery across Bihar" wording and delivery of online orders: on from launch.
+  DELIVERY_ENABLED: bool(env.DELIVERY_ENABLED, launched),
   SHOW_INSTALLS: bool(env.SHOW_INSTALLS, false),
   // The app goes live with the launch.
   APP_LIVE: bool(env.APP_LIVE, launched),
