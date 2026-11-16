@@ -34,6 +34,10 @@ export const SEO_ROUTES: SeoRoute[] = [
   { path: "/solutions/electricians", label: "Electricians", kind: "page", keyword: "smart home installation training", keywords: ["smart home installation jobs", "electrician network"], summary: "Join the Homeasy electrician network in Bihar and learn smart-home installation." },
   { path: "/solutions/government", label: "Government", kind: "page", keyword: "smart retrofit for government buildings", keywords: ["home automation for government buildings", "central control for lights and fans"], summary: "Central control and schedules for lights and fans in public buildings, without rewiring." },
   { path: "/about", label: "About", kind: "page", keyword: "home automation company in patna", keywords: ["home automation company in bihar", "smart home company", "home automation companies"], summary: "Who we are, and why we retrofit homes instead of replacing switchboards." },
+  // the blog list; single articles are added to the sitemap and /llms.txt from the published articles
+  ...(flags.SHOW_BLOG
+    ? [{ path: "/blog", label: "Blog", kind: "page" as const, keyword: "smart home guide", keywords: ["home automation guide", "smart home blog", "smart home tips india", "retrofit smart switch guide"], summary: "Plain guides on retrofit smart switches, surveys and living with a smart home." }]
+    : []),
   { path: "/contact", label: "Contact", kind: "page", keyword: "contact homeasy", keywords: ["home automation near me", "smart home patna"], summary: "Call, WhatsApp or email the Homeasy team in Patna." },
   { path: "/faq", label: "FAQ", kind: "page", keyword: "homeasy faq", keywords: ["smart switch vs normal switch", "how to convert normal switch to smart switch", "smart home without wiring", "smart switch alexa", "does smart switch work with alexa", "google home smart switch"], summary: "Straight answers on switches, wiring, the app, pricing and support." },
   { path: "/guarantee", label: "Guarantee", kind: "page", keyword: "homeasy guarantee", keywords: ["smart home installation services"], summary: "The promises Homeasy makes to customers, written down." },

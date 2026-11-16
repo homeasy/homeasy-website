@@ -1,6 +1,6 @@
 /**
- * "N changes waiting to go live" and Publish, for everything at once: products, store settings and
- * website content. Reads the four tables side by side (not one after another) and writes each changed
+ * "N changes waiting to go live" and Publish, for everything at once: products, store settings, website
+ * content and blog articles. Reads the tables side by side (not one after another) and writes each changed
  * live copy in a single request, so Publish stays fast even when the database is far from the server.
  */
 import "server-only";
@@ -9,14 +9,16 @@ import { dbList, type Row } from "@/lib/db";
 import { DEFAULT_SETTINGS } from "./pricing";
 import { countChanges, saveSnapshot } from "./publish";
 
-type Change = { key: string; label: string; data: unknown; tag: "products" | "store" | "content" };
+type Change = { key: string; label: string; data: unknown; tag: "products" | "store" | "content" | "articles" };
 
 async function findChanges(): Promise<{ changes: Change[]; count: number; publishedAt: string | null }> {
-  const [live, products, settings, content] = await Promise.all([
+  const [live, products, settings, content, articles] = await Promise.all([
     dbList<Row>("published_content", "key.asc"),
     dbList<Row>("products", "sort_order.asc"),
     dbList<Row>("store_settings", "key.asc"),
     dbList<Row>("site_content", "key.asc"),
+    // the blog table is newer (supabase/07-blog.sql): until it exists, publishing everything else must still work
+    dbList<Row>("articles", "created_at.asc").catch(() => null),
   ]);
   const snap = new Map((live ?? []).map((r) => [String(r.key), r]));
   const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
@@ -50,6 +52,13 @@ async function findChanges(): Promise<{ changes: Change[]; count: number; publis
       changes.push({ key: `content:${name}`, label: name, data: row.data, tag: "content" });
       count++;
     }
+  }
+
+  const liveArticles = (snap.get("articles")?.data as Row[] | undefined) ?? null;
+  if (articles && (articles.length || liveArticles?.length)) {
+    const n = countChanges(articles, liveArticles);
+    if (n) changes.push({ key: "articles", label: "Blog articles", data: articles, tag: "articles" });
+    count += n;
   }
 
   const dates = (live ?? []).map((r) => String(r.published_at)).sort();

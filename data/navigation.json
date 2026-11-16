@@ -76,12 +76,8 @@
   ],
   "footer": [
     {
-      "title": "Homes",
+      "title": "Smart home",
       "links": [
-        {
-          "label": "Early access",
-          "href": "/early-access"
-        },
         {
           "label": "How it works",
           "href": "/how-it-works"
@@ -91,16 +87,29 @@
           "href": "/products"
         },
         {
+          "label": "Homeasy app",
+          "href": "/app"
+        },
+        {
           "label": "Installation",
           "href": "/installation"
         },
         {
           "label": "Pricing",
           "href": "/pricing"
+        }
+      ]
+    },
+    {
+      "title": "Get started",
+      "links": [
+        {
+          "label": "Book a free survey",
+          "href": "/book-survey"
         },
         {
-          "label": "Homeasy app",
-          "href": "/app"
+          "label": "Early access",
+          "href": "/early-access"
         },
         {
           "label": "Estimator",
@@ -109,15 +118,11 @@
         {
           "label": "Sample Readiness Report",
           "href": "/readiness-report"
-        },
-        {
-          "label": "Book a free survey",
-          "href": "/book-survey"
         }
       ]
     },
     {
-      "title": "Business",
+      "title": "For business",
       "links": [
         {
           "label": "Interior designers",
@@ -145,21 +150,25 @@
           "href": "/about"
         },
         {
+          "label": "Blog",
+          "href": "/blog"
+        },
+        {
+          "label": "Careers",
+          "href": "/careers"
+        },
+        {
           "label": "Roadmap",
           "href": "/roadmap"
         },
         {
           "label": "Investors",
           "href": "/investors"
-        },
-        {
-          "label": "Careers",
-          "href": "/careers"
         }
       ]
     },
     {
-      "title": "Help & legal",
+      "title": "Help",
       "links": [
         {
           "label": "FAQ",
@@ -176,28 +185,30 @@
         {
           "label": "Warranty",
           "href": "/warranty"
-        },
-        {
-          "label": "Privacy policy",
-          "href": "/privacy-policy"
-        },
-        {
-          "label": "Terms of service",
-          "href": "/terms-of-service"
-        },
-        {
-          "label": "Refund policy",
-          "href": "/refund-policy"
-        },
-        {
-          "label": "Delivery policy",
-          "href": "/delivery-policy"
-        },
-        {
-          "label": "Cookie policy",
-          "href": "/cookie-policy"
         }
       ]
+    }
+  ],
+  "footerLegal": [
+    {
+      "label": "Privacy policy",
+      "href": "/privacy-policy"
+    },
+    {
+      "label": "Terms of service",
+      "href": "/terms-of-service"
+    },
+    {
+      "label": "Refund policy",
+      "href": "/refund-policy"
+    },
+    {
+      "label": "Delivery policy",
+      "href": "/delivery-policy"
+    },
+    {
+      "label": "Cookie policy",
+      "href": "/cookie-policy"
     }
   ]
 }

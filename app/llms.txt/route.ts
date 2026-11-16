@@ -1,3 +1,4 @@
+import { getPublicArticles } from "@/lib/blog/store";
 import { getContent } from "@/lib/content/store";
 import { flags } from "@/lib/flags";
 import { DEFAULT_DESCRIPTION } from "@/lib/seo/meta";
@@ -12,7 +13,8 @@ const TEXT = { "Content-Type": "text/plain; charset=utf-8" };
  * Facts only, taken from the same published data as the site. The opening summary is edited in Admin → SEO → Search tools.
  */
 export async function GET() {
-  const [seo, site, products] = await Promise.all([getContent("seo"), getSite(), getPublicProducts()]);
+  const [seo, site, products, posts] = await Promise.all([getContent("seo"), getSite(), getPublicProducts(), flags.SHOW_BLOG ? getPublicArticles() : []]);
+  const articles = posts.filter((a) => !a.noindex);
   const url = (path: string) => `${site.url}${path === "/" ? "" : path}`;
   const pages = SEO_ROUTES.filter((r) => !seo.pages[r.path]?.noindex);
   const list = (kind: string) => pages.filter((r) => r.kind === kind).map((r) => `- [${r.label}](${url(r.path)}): ${r.summary}`);
@@ -43,6 +45,7 @@ export async function GET() {
     ...list("home"),
     ...list("page"),
     "",
+    ...(articles.length ? ["## Articles", ...articles.map((a) => `- [${a.title}](${url(`/blog/${a.slug}`)})${a.excerpt ? `: ${a.excerpt}` : ""}`), ""] : []),
     "## Policies",
     ...list("legal"),
     "",

@@ -6,7 +6,10 @@ import "server-only";
 import { headers } from "next/headers";
 import type { SeoDoc } from "@/lib/content/docs";
 import { isProductionHost } from "@/lib/site";
+import { keywordMatch, keywordWords, phraseCount } from "./keyword-match";
 import { SEO_ROUTES, type SeoRoute } from "./routes";
+
+export { keywordMatch, keywordWords };
 
 export type Level = "good" | "ok" | "bad";
 export type Check = { label: string; level: Level; detail: string };
@@ -29,25 +32,6 @@ const strip = (html: string) => decode(html.replace(/<(script|style|noscript|tem
 const metaTag = (html: string, attr: string, name: string) => {
   const tag = html.match(new RegExp(`<(?:meta|link)[^>]*${attr}="${name}"[^>]*>`, "i"))?.[0] ?? "";
   return decode(tag.match(/(?:content|href)="([^"]*)"/i)?.[1] ?? "");
-};
-
-// "near me" is answered by the place names on the page, and "vs"/"how" carry no meaning of their own
-const STOP = new Set(["a", "an", "the", "in", "on", "for", "of", "to", "and", "or", "with", "your", "my", "is", "at", "by", "near", "me", "vs", "how"]);
-const stem = (w: string) => (w.length > 3 ? w.replace(/ies$/, "y").replace(/(ch|sh|s|x|z)es$/, "$1").replace(/s$/, "") : w);
-/** One spelling for words people write two ways: Wi-Fi / wifi, switchboard / switch board, switchbox / switch box. */
-const spell = (t: string) => t.toLowerCase().replace(/wi[-\s]fi/g, "wifi").replace(/switch(board|box)/g, "switch $1");
-export const keywordWords = (k: string) => spell(k).split(/[^a-z0-9]+/).filter((w) => w && !STOP.has(w)).map(stem);
-/** Share of the keyword's words found in the text (0–1). */
-export function keywordMatch(keyword: string, text: string): number {
-  const words = keywordWords(keyword);
-  if (!words.length) return 0;
-  const hay = new Set(spell(text).split(/[^a-z0-9]+/).map(stem));
-  return words.filter((w) => hay.has(w)).length / words.length;
-}
-/** How many times the whole phrase appears. */
-const phraseCount = (keyword: string, text: string) => {
-  const k = keyword.toLowerCase().trim();
-  return k ? text.split(k).length - 1 : 0;
 };
 
 const MIN_WORDS = { home: 400, page: 250, legal: 0 };
