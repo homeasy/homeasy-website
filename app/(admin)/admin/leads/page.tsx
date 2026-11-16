@@ -53,6 +53,16 @@ async function Leads({ searchParams }: { searchParams: Search }) {
         }
       />
       <LeadsFilters />
+      {filters.district && (
+        <p className="mb-4 flex flex-wrap items-center gap-3 text-sm text-mist">
+          <span>
+            Showing leads from <span className="font-medium text-white">{filters.district}</span> district (by pincode).
+          </span>
+          <Link href="/admin/leads" className="text-mist underline underline-offset-2 hover:text-white">
+            Show all districts
+          </Link>
+        </p>
+      )}
       {loadError && <ErrorBanner title="Could not load leads.">{loadError}</ErrorBanner>}
       <Card bodyClassName="p-0">
         {items.length === 0 ? (

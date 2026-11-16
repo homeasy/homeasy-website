@@ -10,7 +10,7 @@ import { Card, StatusBadge, type Status } from "@/components/ui";
 export function IconTile({ icon: Icon, large = false }: { icon: LucideIcon; large?: boolean }) {
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center rounded-xl bg-tint text-navy ${large ? "size-14" : "size-11"}`}
+      className={`fx-pop inline-flex shrink-0 items-center justify-center rounded-xl bg-tint text-navy ${large ? "size-14" : "size-11"}`}
     >
       <Icon aria-hidden="true" size={large ? 28 : 22} strokeWidth={1.75} />
     </span>

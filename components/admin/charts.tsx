@@ -63,8 +63,8 @@ export function DailyBars({ data, label = "Leads" }: { data: { date: string; cou
           const y = 8 + plotH - (t / top) * plotH;
           return (
             <g key={t}>
-              <line x1={padL} x2={W} y1={y} y2={y} stroke="#fff" strokeOpacity={0.07} strokeWidth={1} />
-              <text x={padL - 6} y={y + 3} textAnchor="end" fill="#7C8AA5" fontSize={10}>
+              <line x1={padL} x2={W} y1={y} y2={y} className="stroke-white" strokeOpacity={0.09} strokeWidth={1} />
+              <text x={padL - 6} y={y + 3} textAnchor="end" className="fill-ash" fontSize={10}>
                 {t}
               </text>
             </g>
@@ -82,11 +82,13 @@ export function DailyBars({ data, label = "Leads" }: { data: { date: string; cou
                 <path
                   d={`M${x},${y + h} V${y + r} Q${x},${y} ${x + r},${y} H${x + barW - r} Q${x + barW},${y} ${x + barW},${y + r} V${y + h} Z`}
                   fill="#F9B445"
+                  className="adm-bar"
+                  style={{ animationDelay: `${Math.min(i * 14, 500)}ms` }}
                   opacity={hover === null || hover === i ? 1 : 0.4}
                 />
               )}
               {i % labelEvery === 0 && (
-                <text x={padL + i * slot + slot / 2} y={H - 6} textAnchor="middle" fill="#7C8AA5" fontSize={10}>
+                <text x={padL + i * slot + slot / 2} y={H - 6} textAnchor="middle" className="fill-ash" fontSize={10}>
                   {fmtDay(d.date)}
                 </text>
               )}
@@ -128,7 +130,7 @@ export function HBarList({ data, empty = "No data yet" }: { data: { label: strin
             </span>
           </div>
           <div className="h-1.5 rounded-full bg-white/5">
-            <div className="h-1.5 rounded-full bg-amber" style={{ width: `${Math.max(2, (d.count / max) * 100)}%` }} />
+            <div className="adm-grow h-1.5 rounded-full bg-amber" style={{ width: `${Math.max(2, (d.count / max) * 100)}%` }} />
           </div>
         </li>
       ))}

@@ -41,10 +41,11 @@ export function Analytics() {
     document.head.appendChild(script);
   }, [on]);
 
-  // page views on navigation, plus the two page-specific events
+  // the two page-specific events
   useEffect(() => {
     if (!on) return;
-    track("page_view", { page_path: pathname });
+    // page views are NOT sent from here: the Google tag counts the first page and every later page change by
+    // itself (its "page changes based on browser history events" setting is on), so sending one here counted each view twice
     if (pathname === "/guarantee") track("guarantee_view", { source: document.referrer ? new URL(document.referrer).pathname : "direct" });
     if (pathname === "/readiness-report") track("report_sample_view");
   }, [on, pathname]);

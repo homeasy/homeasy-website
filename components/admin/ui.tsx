@@ -5,6 +5,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { TriangleAlert } from "lucide-react";
+import { CountUp } from "./CountUp";
 import { statusLabel } from "@/lib/leads/schema";
 import { orderStatusLabel } from "@/lib/store/order-statuses";
 
@@ -22,7 +23,7 @@ export function Card({
   bodyClassName?: string;
 }) {
   return (
-    <section className={`min-w-0 rounded-xl border border-navy-700 bg-navy ${className}`}>
+    <section className={`adm-card min-w-0 rounded-xl border border-navy-700 bg-navy ${className}`}>
       {title && (
         <header className="flex items-center justify-between gap-3 border-b border-navy-700 px-5 py-3.5">
           <h2 className="text-sm font-semibold text-white">{title}</h2>
@@ -38,16 +39,16 @@ export function Kpi({ label, value, sub, href }: { label: string; value: ReactNo
   const body = (
     <div className="h-full min-w-0 rounded-xl border border-navy-700 bg-navy p-5 transition-colors hover:border-mist/40">
       <p className="text-xs font-medium uppercase tracking-wider text-mist">{label}</p>
-      <p className="mt-2 text-3xl font-semibold tabular-nums tracking-tight text-white">{value}</p>
+      <p className="mt-2 text-3xl font-semibold tabular-nums tracking-tight text-white">{typeof value === "number" ? <CountUp value={value} /> : value}</p>
       {sub && <div className="mt-1.5 text-xs text-mist">{sub}</div>}
     </div>
   );
   return href ? (
-    <Link href={href} className="block h-full no-underline">
+    <Link href={href} className="adm-card block h-full no-underline">
       {body}
     </Link>
   ) : (
-    body
+    <div className="adm-card h-full">{body}</div>
   );
 }
 

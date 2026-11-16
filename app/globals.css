@@ -7,8 +7,8 @@
   --font-sans: var(--font-primary);
   --font-hindi: var(--font-hindi);
 
-  --color-deep: #070B14; /* admin page background: one step deeper than navy */
-  --color-ash: #7C8AA5; /* admin: quiet labels on dark */
+  --color-deep: var(--adm-deep, #070B14); /* admin page background: one step deeper than navy */
+  --color-ash: var(--adm-ash, #7C8AA5); /* admin: quiet labels on dark */
   --color-navy: var(--brand-navy);
   --color-navy-800: var(--surface-dark-raised);
   --color-navy-700: var(--surface-dark-hover);
@@ -123,14 +123,14 @@
   .article-prose pre code { background: none; padding: 0; }
 
   /* the same text inside the dark admin editor */
-  .adm-editor.article-prose { color: #D5DCE8; font-size: 1rem; }
+  .adm-editor.article-prose { color: color-mix(in srgb, var(--color-white) 86%, transparent); font-size: 1rem; }
   .adm-editor.article-prose h2, .adm-editor.article-prose h3, .adm-editor.article-prose h4,
-  .adm-editor.article-prose strong, .adm-editor.article-prose blockquote { color: #fff; }
+  .adm-editor.article-prose strong, .adm-editor.article-prose blockquote { color: var(--color-white); }
   .adm-editor.article-prose a { color: var(--blue-300); }
   .adm-editor.article-prose blockquote { border-left-color: var(--brand-amber); }
   .adm-editor.article-prose hr { border-top-color: var(--surface-dark-hover); }
   .adm-editor.article-prose code { background: var(--surface-dark-raised); }
-  .adm-editor.article-prose pre { background: #070B14; }
+  .adm-editor.article-prose pre { background: #070B14; color: #fff; }
   .adm-editor img.ProseMirror-selectednode { outline: 2px solid var(--brand-amber); }
   .adm-editor p.is-editor-empty:first-child::before { content: attr(data-placeholder); float: left; height: 0; pointer-events: none; color: #7C8AA5; }
 }
@@ -146,9 +146,9 @@
     min-height: 40px;
     padding-block: 8px;
     font-size: 14px;
-    color: #fff;
+    color: var(--color-white);
   }
-  .adm-control::placeholder { color: #7C8AA5; }
+  .adm-control::placeholder { color: var(--adm-ash, #7C8AA5); }
   .adm-control:focus-visible { outline: 2px solid var(--brand-amber); outline-offset: 1px; }
   select.adm-control { cursor: pointer; }
   .adm-btn {
@@ -167,14 +167,62 @@
   }
   .adm-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .adm-btn-sm { height: 32px; padding-inline: 10px; font-size: 13px; }
-  .adm-btn-primary { background: var(--brand-amber); color: var(--brand-navy); }
+  .adm-btn-primary { background: #F9B445; color: #0B1220; }
   .adm-btn-primary:hover:not(:disabled) { background: var(--amber-300); }
-  .adm-btn-secondary { border: 1px solid var(--surface-dark-hover); background: var(--surface-dark-raised); color: #fff; }
+  .adm-btn-secondary { border: 1px solid var(--surface-dark-hover); background: var(--surface-dark-raised); color: var(--color-white); }
   .adm-btn-secondary:hover:not(:disabled) { background: var(--surface-dark-hover); }
   .adm-btn-ghost { color: var(--text-on-dark-secondary); }
-  .adm-btn-ghost:hover:not(:disabled) { background: rgb(255 255 255 / 0.06); color: #fff; }
-  .adm-btn-danger { border: 1px solid rgb(248 113 113 / 0.4); background: rgb(248 113 113 / 0.1); color: #FCA5A5; }
+  .adm-btn-ghost:hover:not(:disabled) { background: color-mix(in srgb, var(--color-white) 6%, transparent); color: var(--color-white); }
+  .adm-btn-danger { border: 1px solid rgb(248 113 113 / 0.4); background: rgb(248 113 113 / 0.1); color: var(--color-red-300); }
   .adm-btn-danger:hover:not(:disabled) { background: rgb(248 113 113 / 0.2); }
+}
+
+/* ---------- Admin: light theme and movement ---------- */
+/*
+ * The admin is drawn with the dark tokens (bg-navy, text-white, border-navy-700 …). The light theme swaps what those
+ * tokens mean inside .adm-root, so no page needs its own light classes. The theme is chosen in the sidebar
+ * (light / dark / system) and set on <html data-adm-theme> by a small script in the admin layout.
+ */
+.adm-root { color-scheme: dark; }
+:root[data-adm-theme="light"] .adm-root {
+  color-scheme: light;
+  --adm-deep: #F2F5FA;                 /* page */
+  --adm-ash: #667085;                  /* quiet labels */
+  --brand-navy: #FFFFFF;               /* cards, sidebar, inputs */
+  --surface-dark-raised: #F5F8FC;      /* raised rows, table heads */
+  --surface-dark-hover: #DDE3EC;       /* borders and hover */
+  --text-on-dark-secondary: #475467;   /* secondary text */
+  --color-white: #0B1220;              /* main text */
+  --focus-ring-on-dark: #286998;
+  --color-emerald-300: #067647;
+  --color-red-300: #B42318;
+  --color-red-200: #912018;
+  --color-blue-300: #286998;
+  --blue-300: #286998;
+}
+/* amber is a fill in both themes; as text on white it needs the darker shade */
+:root[data-adm-theme="light"] .adm-root :is(.text-amber, .hover\:text-amber:hover, .group:hover .group-hover\:text-amber) { color: var(--amber-700); }
+:root[data-adm-theme="light"] .adm-root .adm-editor.article-prose a { color: var(--link); }
+:root[data-adm-theme="light"] .adm-root .adm-editor.article-prose code { background: #E9EEF5; }
+
+@layer components {
+  /* cards rise into place when a page opens; neighbours in a grid follow one after another */
+  .adm-card { animation: adm-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .adm-card:nth-child(2) { animation-delay: 50ms; }
+  .adm-card:nth-child(3) { animation-delay: 100ms; }
+  .adm-card:nth-child(4) { animation-delay: 150ms; }
+  .adm-card:nth-child(n + 5) { animation-delay: 200ms; }
+  /* bars grow from zero */
+  .adm-grow { transform-origin: left; animation: adm-grow-x 700ms cubic-bezier(0.22, 1, 0.36, 1) 150ms both; }
+  .adm-bar { transform-box: fill-box; transform-origin: bottom; animation: adm-grow-y 600ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .adm-map-area { transition: fill-opacity 350ms ease-out, fill 350ms ease-out; }
+}
+@keyframes adm-rise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes adm-grow-x { from { transform: scaleX(0); } }
+@keyframes adm-grow-y { from { transform: scaleY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .adm-card, .adm-grow, .adm-bar { animation: none; }
+  .adm-map-area { transition: none; }
 }
 
 /* ---------- Motion (flat brand: movement and colour only, no glows or shadows) ---------- */
@@ -197,6 +245,26 @@
     background-color 200ms ease-out;
 }
 .reveal-on [data-reveal]:not(.is-visible) { opacity: 0; transform: translateY(16px); }
+
+/* Inside a revealed block: number badges and icon tiles pop in just after it, and the short "wire" line
+   above a section heading draws from left to right (PRD §29.6 wire motif: flat, no glow). */
+.fx-pop { transition: scale 450ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 70ms + 180ms), opacity 300ms ease-out calc(var(--i, 0) * 70ms + 180ms); }
+.reveal-on [data-reveal]:not(.is-visible) .fx-pop { scale: 0.5; opacity: 0; }
+.fx-wire { display: block; width: 44px; height: 3px; border-radius: 2px; background: var(--brand-blue); transform-origin: left; transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1) 150ms; }
+.reveal-on [data-reveal]:not(.is-visible) .fx-wire { transform: scaleX(0); }
+.text-center > .fx-wire { margin-inline: auto; transform-origin: center; }
+
+/* Blog: the cover photo eases in closer on hover, and a thin bar at the top of an article fills as it is read
+   (browsers without scroll-driven animation simply show no bar). */
+.fx-zoom { transition: scale 400ms ease-out; }
+@media (hover: hover) { .group:hover .fx-zoom { scale: 1.04; } }
+.read-progress { position: fixed; inset: 0 0 auto 0; z-index: 60; height: 3px; background: var(--brand-blue); transform-origin: left; transform: scaleX(0); pointer-events: none; display: none; }
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .read-progress { display: block; animation: read-progress linear both; animation-timeline: scroll(root block); }
+  }
+}
+@keyframes read-progress { to { transform: scaleX(1); } }
 
 /* Buttons: slight lift on hover, press-in on tap */
 .btn { transition-property: background-color, border-color, color, translate, scale; }
@@ -221,3 +289,11 @@ details[open]::details-content { height: auto; }
 .site-chrome:has(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus, textarea:focus, select:focus) nav[aria-label="Quick actions"] {
   display: none;
 }
+
+/* App demo on /app (components/app-demo): screens, tiles and rows fade and rise in, staggered by --i.
+   Reduced motion is already covered by the global rule in brand/tokens.css. */
+@keyframes appdemo-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.appdemo-in { animation: appdemo-in 240ms ease-out calc(var(--i, 0) * 60ms) both; }

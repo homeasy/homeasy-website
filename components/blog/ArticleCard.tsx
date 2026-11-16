@@ -7,8 +7,10 @@ export function ArticleCard({ article: a, heading: Heading = "h2" }: { article: 
   return (
     <Link href={`/blog/${a.slug}`} className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-white no-underline transition-colors hover:border-navy focus-visible:outline-offset-4">
       {a.cover_url ? (
-        // eslint-disable-next-line @next/next/no-img-element -- photos are uploaded in the admin and served from storage as they are
-        <img src={a.cover_url} alt={a.cover_alt} loading="lazy" decoding="async" className="aspect-[16/9] w-full bg-cloud object-cover" />
+        <span className="block overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element -- photos are uploaded in the admin and served from storage as they are */}
+          <img src={a.cover_url} alt={a.cover_alt} loading="lazy" decoding="async" className="fx-zoom aspect-[16/9] w-full bg-cloud object-cover" />
+        </span>
       ) : (
         <span aria-hidden="true" className="flex aspect-[16/9] w-full items-end bg-tint p-5 text-[13px] font-semibold uppercase tracking-[0.1em] text-navy">
           {a.category || "Homeasy blog"}

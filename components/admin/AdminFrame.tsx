@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { Activity, Bot, Briefcase, Users, CircleHelp, ExternalLink, FileText, Gauge, Globe, Home, Inbox, Layers, MessageSquare, Phone, Search, Type, LayoutDashboard, LogOut, Menu, MessageCircle, Package, Server, Settings, ShoppingBag, X, type LucideIcon, PenLine } from "lucide-react";
 import { logout } from "@/app/(admin)/admin/actions";
+import { ThemeSwitch } from "./ThemeSwitch";
 import { ToastProvider } from "./toast";
 
 /** Sidebar navigation, grouped like the Kynyx admin. Add new sections here. */
@@ -103,6 +104,7 @@ function Sidebar({ email, publishBox, onNavigate }: { email: string; publishBox:
       </nav>
       <div className="space-y-3 border-t border-navy-700 p-3">
         {publishBox}
+        <ThemeSwitch />
         <a href="/" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-2 text-sm text-mist no-underline hover:text-white">
           View website <ExternalLink size={14} aria-hidden="true" />
         </a>
@@ -131,7 +133,7 @@ export function AdminFrame({ email, publishBox, banner, children }: { email: str
   const [open, setOpen] = useState(false);
   return (
     <ToastProvider>
-    <div className="on-dark min-h-dvh [color-scheme:dark] bg-deep text-white">
+    <div className="on-dark min-h-dvh bg-deep text-white">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-navy-700 bg-navy lg:block">
         <Sidebar email={email} publishBox={publishBox} />
       </aside>

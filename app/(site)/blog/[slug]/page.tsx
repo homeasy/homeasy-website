@@ -66,6 +66,7 @@ async function ArticleView({ params }: { params: Params }) {
     <>
       <BreadcrumbJsonLd path={`/blog/${a.slug}`} name={a.title} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+      <div aria-hidden="true" className="read-progress" />
       <article>
         <header className="bg-cloud">
           <div className="container-page py-10 lg:py-16">

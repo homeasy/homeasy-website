@@ -49,6 +49,7 @@ export function SectionHeading({
 }) {
   return (
     <div {...reveal()} className={`max-w-[720px] ${center ? "mx-auto text-center" : ""}`}>
+      {Tag === "h2" && <span aria-hidden="true" className="fx-wire mb-5" />}
       <Tag className={`${Tag === "h2" ? "text-h2" : "text-h3"} leading-[1.15]`}>{title}</Tag>
       {sub && <p className={`mt-4 text-lg ${onDark ? "text-mist" : "text-body"}`}>{sub}</p>}
     </div>
@@ -116,7 +117,7 @@ export function Steps({ items, onDark = false }: { items: { title: string; body:
             onDark ? "fx-card-dark border-navy-700 bg-navy-800" : "border-line bg-white"
           }`}
         >
-          <span className="inline-flex size-9 items-center justify-center rounded-full bg-amber text-[15px] font-bold text-navy">
+          <span className="fx-pop inline-flex size-9 items-center justify-center rounded-full bg-amber text-[15px] font-bold text-navy">
             {i + 1}
           </span>
           <h3 className="mt-4 text-[1.1875rem] leading-snug">{s.title}</h3>

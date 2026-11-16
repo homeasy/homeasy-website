@@ -19,6 +19,8 @@ import {
 import { PageHero, Section, SectionHeading, StatusBadge } from "@/components/ui";
 import { CtaBand } from "@/components/ui/CtaBand";
 import { FeatureGrid, IconTile, type Feature } from "@/components/catalog";
+import { AppDemo } from "@/components/app-demo/AppDemo";
+import { site } from "@/lib/site";
 import { flags, usp } from "@/lib/flags";
 
 const pageMeta: Metadata = {
@@ -96,7 +98,23 @@ export default function AppPage() {
         )}
       </PageHero>
 
-      <Section>
+      <Section id="try-the-app">
+        <SectionHeading
+          title="Try the app"
+          sub="An interactive preview, not the real app. Tap the switches, press a scene, or play an example day of schedules."
+        />
+        <div className="mt-10">
+          <AppDemo
+            launchNote={
+              live
+                ? undefined
+                : `The Homeasy app launches with our public launch, planned for ${site.launch.label}.`
+            }
+          />
+        </div>
+      </Section>
+
+      <Section className="pt-0 lg:pt-0">
         <SectionHeading
           title="What you can do with it"
           sub={

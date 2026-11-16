@@ -2,11 +2,14 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, CreditCard, Database, Mail } from "lucide-react";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { BiharMap } from "@/components/admin/BiharMap";
+import { CountUp } from "@/components/admin/CountUp";
 import { DailyBars, HBarList } from "@/components/admin/charts";
 import { RangeSelect } from "@/components/admin/RangeSelect";
 import { Card, ErrorBanner, Kpi, LeadStatusBadge, OrderStatusBadge, PageHeader, PriorityBadge, timeAgo } from "@/components/admin/ui";
 import { requestTime, requireAdmin } from "@/lib/admin/session";
 import { dbErrorHint, dbMode } from "@/lib/db";
+import { districtId } from "@/lib/leads/districts";
 import { istDay } from "@/lib/leads/filter";
 import { LEAD_STATUSES, OPEN_LEAD_STATUSES } from "@/lib/leads/schema";
 import { listLeads, type Lead } from "@/lib/leads/store";
@@ -90,6 +93,17 @@ async function Dashboard({ searchParams }: { searchParams: Promise<{ days?: stri
     return { date, count: perDay.get(date) ?? 0 };
   });
 
+  // for the map: where each lead of the period came from, and on which day
+  const dayIndex = new Map(daily.map((d, i) => [d.date, i]));
+  const mapPoints: { d: number; t: number }[] = [];
+  let offMap = 0;
+  for (const l of inPeriod) {
+    const d = districtId(l.pincode);
+    const t = dayIndex.get(istDay(l.created_at));
+    if (d === null || t === undefined) offMap++;
+    else mapPoints.push({ d, t });
+  }
+
   const byStatus = LEAD_STATUSES.map((s) => ({ id: s.id, count: leads.filter((l) => l.status === s.id).length }));
   const funnelMax = Math.max(1, ...byStatus.map((s) => s.count));
 
@@ -117,7 +131,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<{ days?: stri
           <Kpi label="Open pipeline" value={open} sub="New to quoted" href="/admin/leads" />
           <Kpi
             label="Conversion rate"
-            value={`${leads.length ? ((converted / leads.length) * 100).toFixed(1) : "0.0"}%`}
+            value={<CountUp value={leads.length ? (converted / leads.length) * 100 : 0} decimals={1} suffix="%" />}
             sub={`${converted} of ${leads.length} all-time`}
           />
         </div>
@@ -125,8 +139,8 @@ async function Dashboard({ searchParams }: { searchParams: Promise<{ days?: stri
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <Kpi label={`Orders · ${days}d`} value={ordersInPeriod} sub={`${orders.length} all-time`} href="/admin/orders" />
           <Kpi label="Orders to process" value={toProcess} sub="New, booking paid or paid" href="/admin/orders" />
-          <Kpi label="Money received" value={inr(received)} sub="All orders, refunds excluded" />
-          <Kpi label="Balance to collect" value={inr(balance)} sub="On paid and booked orders" />
+          <Kpi label="Money received" value={<CountUp value={received} prefix="₹" />} sub="All orders, refunds excluded" />
+          <Kpi label="Balance to collect" value={<CountUp value={balance} prefix="₹" />} sub="On paid and booked orders" />
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -143,7 +157,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<{ days?: stri
                       <span className="text-sm tabular-nums text-white group-hover:text-amber">{s.count}</span>
                     </div>
                     <div className="h-1.5 rounded-full bg-white/5">
-                      <div className="h-1.5 rounded-full bg-amber/70" style={{ width: `${Math.max(s.count ? 2 : 0, (s.count / funnelMax) * 100)}%` }} />
+                      <div className="adm-grow h-1.5 rounded-full bg-amber/70" style={{ width: `${Math.max(s.count ? 2 : 0, (s.count / funnelMax) * 100)}%` }} />
                     </div>
                   </Link>
                 </li>
@@ -151,6 +165,10 @@ async function Dashboard({ searchParams }: { searchParams: Promise<{ days?: stri
             </ul>
           </Card>
         </div>
+
+        <Card title={`Leads across Bihar · last ${days} days`}>
+          <BiharMap points={mapPoints} dates={daily.map((d) => d.date)} offMap={offMap} />
+        </Card>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card title="Most wanted controls">

@@ -1,8 +1,9 @@
 /** Lead list filters, shared by the admin list and the CSV export. */
 import { LEAD_PRIORITIES, LEAD_STATUSES } from "./schema";
+import { DISTRICT_NAMES, districtName } from "./districts";
 import type { Lead } from "./store";
 
-export type LeadFilters = { status: string; priority: string; home: string; q: string; from: string; to: string; sort: string };
+export type LeadFilters = { status: string; priority: string; home: string; district: string; q: string; from: string; to: string; sort: string };
 type Params = Record<string, string | string[] | undefined>;
 
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? "";
@@ -19,6 +20,7 @@ export function parseLeadFilters(sp: Params): LeadFilters {
     status: LEAD_STATUSES.some((s) => s.id === status) ? status : "",
     priority: (LEAD_PRIORITIES as readonly string[]).includes(priority) ? priority : "",
     home: one(sp.home).slice(0, 40),
+    district: DISTRICT_NAMES.includes(one(sp.district)) ? one(sp.district) : "",
     q: one(sp.q).trim().slice(0, 80),
     from: day(one(sp.from)),
     to: day(one(sp.to)),
@@ -32,6 +34,7 @@ export function filterLeads(all: Lead[], f: LeadFilters): Lead[] {
     if (f.status && l.status !== f.status) return false;
     if (f.priority && l.priority !== f.priority) return false;
     if (f.home && l.home_type !== f.home) return false;
+    if (f.district && districtName(l.pincode) !== f.district) return false;
     const d = istDay(l.created_at);
     if (f.from && d < f.from) return false;
     if (f.to && d > f.to) return false;
