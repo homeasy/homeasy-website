@@ -38,5 +38,8 @@
     "facebook": "https://www.facebook.com/homeasyautomation/",
     "instagram": "https://instagram.com/homeasyautomation/",
     "youtube": "https://youtube.com/@homeasyautomation"
+  },
+  "analytics": {
+    "ga4": "G-CDVCNJQLVJ"
   }
 }

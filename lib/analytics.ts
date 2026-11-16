@@ -15,8 +15,14 @@ declare global {
   }
 }
 
-/** GA4 measurement ID (public). Analytics stays off when this is not set. */
-export const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
+import siteJson from "@/data/site.json";
+
+/**
+ * GA4 measurement ID (public, not a secret): NEXT_PUBLIC_GA_ID if set, otherwise the one in data/site.json.
+ * Set NEXT_PUBLIC_GA_ID=off to switch analytics and the cookie banner off completely.
+ */
+const configured = process.env.NEXT_PUBLIC_GA_ID || siteJson.analytics.ga4;
+export const GA_ID = configured === "off" ? "" : configured;
 
 export function getConsent(): ConsentChoice | null {
   if (typeof window === "undefined") return null;
