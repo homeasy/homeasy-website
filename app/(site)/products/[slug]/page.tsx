@@ -44,6 +44,48 @@ async function ProductDetail({ params }: { params: Params }) {
       ? [{ q: "About this module", a: <div className="space-y-3">{paragraphs.map((t) => <p key={t.slice(0, 40)}>{t}</p>)}</div> }]
       : []),
     {
+      q: "Specifications",
+      a: p.specs.length ? (
+        <dl className="divide-y divide-line">
+          {p.specs.map((line) => {
+            const [label, ...rest] = line.split(":");
+            return (
+              <div key={line} className="flex justify-between gap-4 py-2">
+                <dt className="text-body">{rest.length ? label.trim() : line}</dt>
+                {rest.length > 0 && <dd className="text-right font-semibold text-ink">{rest.join(":").trim()}</dd>}
+              </div>
+            );
+          })}
+        </dl>
+      ) : (
+        "Detailed specifications will be published once certification and testing are complete."
+      ),
+    },
+    {
+      q: "Where it is used",
+      a: (
+        <ul className="list-disc space-y-1 pl-5">
+          {(p.used_for.length ? p.used_for : p.controls).map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
+      ),
+    },
+    ...(p.in_box.length
+      ? [
+          {
+            q: "In the box",
+            a: (
+              <ul className="list-disc space-y-1 pl-5">
+                {p.in_box.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            ),
+          },
+        ]
+      : []),
+    {
       q: "Installation",
       a: "Homeasy modules go inside your existing switchbox, behind your switches. We recommend installation by our trained electricians, after a free survey that checks your switchboxes and wiring.",
     },

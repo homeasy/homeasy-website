@@ -14,6 +14,9 @@ export type ProductFormValues = {
   description: string;
   controls: string;
   highlights: string;
+  specs: string;
+  in_box: string;
+  used_for: string;
   icon: string;
   image_url: string;
   price: string;
@@ -109,6 +112,29 @@ export function ProductForm({ values }: { values: ProductFormValues }) {
             </label>
             <textarea id="highlights" name="highlights" defaultValue={values.highlights} rows={4} className={field} />
             <p className={hint}>One per line. Shown as a tick list.</p>
+          </div>
+          <div>
+            <label htmlFor="specs" className={label}>
+              Specifications
+            </label>
+            <textarea id="specs" name="specs" defaultValue={values.specs} rows={5} placeholder={"Rated load: …\nDimensions: …"} className={field} />
+            <p className={hint}>
+              One per line, as &ldquo;Label: value&rdquo;. Only tested, final figures. Left empty, the page says specifications will be published after testing.
+            </p>
+          </div>
+          <div>
+            <label htmlFor="used_for" className={label}>
+              Where it is used
+            </label>
+            <textarea id="used_for" name="used_for" defaultValue={values.used_for} rows={3} className={field} />
+            <p className={hint}>One per line, for example &ldquo;Bedroom lights&rdquo;. Left empty, &ldquo;What it controls&rdquo; is shown.</p>
+          </div>
+          <div>
+            <label htmlFor="in_box" className={label}>
+              In the box
+            </label>
+            <textarea id="in_box" name="in_box" defaultValue={values.in_box} rows={3} className={field} />
+            <p className={hint}>One per line. Left empty, this section is hidden.</p>
           </div>
           <div>
             <label htmlFor="controls" className={label}>

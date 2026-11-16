@@ -17,7 +17,7 @@ async function NewProduct() {
       <h1 className="mb-6 text-2xl font-semibold tracking-tight text-white">Add product</h1>
       <ProductForm
         values={{
-          id: "", name: "", slug: "", headline: "", line: "", description: "", controls: "", highlights: "", icon: "relay",
+          id: "", name: "", slug: "", headline: "", line: "", description: "", controls: "", highlights: "", specs: "", in_box: "", used_for: "", icon: "relay",
           image_url: "", price: "", mrp: "", status: "available", active: true, featured: false, sort_order: "100",
         }}
       />

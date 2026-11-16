@@ -19,6 +19,10 @@ export type Product = {
   description: string; // longer text, blank lines separate paragraphs
   controls: string[];
   highlights: string[];
+  /** product page: specifications as "Label: value" lines, what is in the box, where it is used (may be missing on older rows) */
+  specs: string[];
+  in_box: string[];
+  used_for: string[];
   icon: string;
   image_url: string | null;
   price: number | null; // rupees; null = price on request
@@ -44,6 +48,9 @@ function seedRows(): Product[] {
     description: "",
     controls: p.controls,
     highlights: [],
+    specs: [],
+    in_box: [],
+    used_for: [],
     icon: p.icon,
     image_url: null,
     price: null,
@@ -82,6 +89,8 @@ export async function getPublicProducts(): Promise<Product[]> {
   return (live ?? seedRows())
     .filter((p) => p.active)
     // before the public launch nothing is "available" yet: it shows as launching (LAUNCHED flag)
+    // rows published before these fields existed have none: give them empty lists
+    .map((p) => ({ ...p, specs: p.specs ?? [], in_box: p.in_box ?? [], used_for: p.used_for ?? [] }))
     .map((p) => (!flags.LAUNCHED && p.status === "available" ? { ...p, status: "coming-soon" as const } : p))
     .sort((a, b) => a.sort_order - b.sort_order);
 }

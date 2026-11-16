@@ -80,6 +80,13 @@ export async function sendToTeam(text: string, who = "Website chat"): Promise<st
   return ids;
 }
 
+/** A reply from the admin to a customer who wrote to the business number. Free text only works within 24 hours of their last message. */
+export async function sendToCustomer(phone: string, text: string): Promise<{ id: string | null; error: string }> {
+  if (!env.WHATSAPP_TOKEN || !env.WHATSAPP_PHONE_NUMBER_ID) return { id: null, error: "The WhatsApp connection is not set up." };
+  const sent = await post({ to: phone.replace(/\D/g, ""), type: "text", text: { body: text.slice(0, 3500), preview_url: false } });
+  return { id: sent.id, error: sent.id ? "" : `Meta said (code ${sent.code ?? "?"}): ${sent.message ?? "no message"}. ${explain(sent.code, sent.status)}` };
+}
+
 /** Checks that a webhook call really comes from Meta: HMAC-SHA256 of the raw body with the app secret. */
 export function validSignature(rawBody: string, header: string | null): boolean {
   const secret = env.WHATSAPP_APP_SECRET;
@@ -92,7 +99,7 @@ export function validSignature(rawBody: string, header: string | null): boolean 
 /** What Meta's error numbers mean, in plain words (for the admin's test button). */
 function explain(code: number | null, status?: number): string {
   if (code === 190 || status === 401) return "Meta rejected the access token (wrong, expired or revoked). Generate a new system-user token with whatsapp_business_messaging and whatsapp_business_management, put it in WHATSAPP_TOKEN and redeploy.";
-  if (code === 131047) return "Outside the 24-hour window: send any WhatsApp message from this phone to the business number first, or set an approved template in WHATSAPP_TEMPLATE.";
+  if (code === 131047) return "Outside the 24-hour window: WhatsApp only allows a free reply within 24 hours of that person's last message to the business number (for team numbers, an approved template in WHATSAPP_TEMPLATE also works).";
   if (code === 131030) return "This number is not on the test number's allowed list. In Meta, add it under \"Send to\" → Manage recipients and verify it.";
   if (code === 10 || code === 200 || code === 3) return "The token does not have permission for this WhatsApp account. Assign the WhatsApp account to the system user with full control, then generate the token again.";
   if (code === 100) return "Either WHATSAPP_PHONE_NUMBER_ID is not the ID Meta shows under \"Phone number ID\", or (more often) this token has no access to the WhatsApp account that owns the number: in Business settings > Accounts > WhatsApp accounts, give the system user full control of that account (test numbers live in a \"Test WhatsApp Business Account\"), then generate the token again.";

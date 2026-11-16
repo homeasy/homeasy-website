@@ -1,8 +1,14 @@
 import { getChat, listChats, updateChat } from "@/lib/chat/store";
+import { insertWaMessage, listWaMessages } from "@/lib/chat/wa-inbox";
+import { notify } from "@/lib/notify";
+import { site } from "@/lib/site";
 import { sendToTeam, teamNumbers, validSignature, verifyToken } from "@/lib/chat/whatsapp";
 
+const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+
 type Incoming = { from?: string; id?: string; type?: string; text?: { body?: string }; context?: { id?: string } };
-type Payload = { entry?: { changes?: { value?: { messages?: Incoming[] } }[] }[] };
+type Value = { messages?: Incoming[]; contacts?: { wa_id?: string; profile?: { name?: string } }[] };
+type Payload = { entry?: { changes?: { value?: Value }[] }[] };
 
 /**
  * Meta checks the address once when the webhook is saved: it sends the phrase from WHATSAPP_VERIFY_TOKEN and
@@ -15,7 +21,8 @@ export async function GET(request: Request) {
 }
 
 /**
- * Messages sent to the business number. Only replies from the team's own numbers are accepted: each is added
+ * Messages sent to the business number. A message from anyone else is a customer: it is stored for
+ * Admin → WhatsApp inbox and the team is emailed. Replies from the team's own numbers are chat replies: each is added
  * to the website chat it answers (matched by the message it swipe-replies to, otherwise the most recent chat
  * that asked for a person), where the visitor sees it. The AI then stays quiet in that chat for 15 minutes.
  */
@@ -38,9 +45,27 @@ export async function POST(request: Request) {
     return new Response("bad json", { status: 400 });
   }
   const team = teamNumbers();
-  const messages = (payload.entry ?? []).flatMap((e) => e.changes ?? []).flatMap((c) => c.value?.messages ?? []);
+  const values = (payload.entry ?? []).flatMap((e) => e.changes ?? []).map((c) => c.value ?? {});
+  const names = new Map(values.flatMap((v) => v.contacts ?? []).map((c) => [c.wa_id ?? "", c.profile?.name ?? ""]));
+  const messages = values.flatMap((v) => v.messages ?? []);
   for (const m of messages) {
-    if (!m.from || !team.includes(m.from.replace(/\D/g, ""))) continue; // not from the team: ignored
+    if (!m.from || !m.id) continue;
+    if (!team.includes(m.from.replace(/\D/g, ""))) {
+      // a customer wrote to the business number: keep it for Admin → WhatsApp inbox, and tell the team
+      const phone = m.from.replace(/\D/g, "");
+      const body = m.type === "text" ? (m.text?.body ?? "").slice(0, 3500) : `[${m.type ?? "message"}: open WhatsApp on the business phone to see it]`;
+      const earlier = (await listWaMessages()).filter((x) => x.phone === phone && x.direction === "in");
+      if (earlier.some((x) => x.id === m.id)) continue; // Meta sometimes delivers the same message twice
+      await insertWaMessage({ id: m.id, phone, name: names.get(m.from) || null, direction: "in", body, at: new Date().toISOString() });
+      const quiet = !earlier.length || Date.parse(earlier[0].at) < Date.now() - 30 * 60 * 1000;
+      if (quiet) {
+        await notify({
+          subject: `WhatsApp message from ${names.get(m.from) || `+${phone}`}`,
+          html: `<p><b>${esc(names.get(m.from) || "Customer")}</b> (+${esc(phone)}) wrote on WhatsApp:</p><p>${esc(body)}</p><p><a href="${site.url}/admin/whatsapp?phone=${phone}">Reply from the admin</a></p>`,
+        });
+      }
+      continue;
+    }
     const text = m.type === "text" ? (m.text?.body ?? "").trim() : "";
     if (!text) {
       await sendToTeam("Only text replies can be passed on to the website chat.");

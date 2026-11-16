@@ -62,6 +62,9 @@ export async function saveProduct(_prev: ProductFormState, formData: FormData): 
     description: String(formData.get("description") ?? "").trim().slice(0, 4000),
     controls: lines(formData.get("controls"), /,|\n/),
     highlights: lines(formData.get("highlights"), /\n/),
+    specs: lines(formData.get("specs"), /\n/),
+    in_box: lines(formData.get("in_box"), /\n/),
+    used_for: lines(formData.get("used_for"), /\n/),
     icon: (PRODUCT_ICONS as readonly string[]).includes(icon) ? icon : "relay",
     image_url,
     price,
@@ -72,8 +75,17 @@ export async function saveProduct(_prev: ProductFormState, formData: FormData): 
     sort_order: Math.max(0, Math.min(9999, Math.round(Number(formData.get("sort_order")) || 100))),
   };
 
-  const ok = id ? await updateProduct(id, input) : !!(await createProduct(input));
-  if (!ok) return { error: "Could not save. The link name may already be used by another product." };
+  let ok = id ? await updateProduct(id, input) : !!(await createProduct(input));
+  if (!ok) {
+    // the three product-page lists need newer database columns: save the rest and say what is missing
+    const { specs: _s, in_box: _b, used_for: _u, ...basic } = input;
+    void _s;
+    void _b;
+    void _u;
+    ok = id ? await updateProduct(id, basic) : !!(await createProduct(basic as ProductInput));
+    if (ok) return { error: "Saved, except Specifications, In the box and Where it is used: in Supabase, run supabase/06-applications-inbox.sql once, then save again." };
+    return { error: "Could not save. The link name may already be used by another product." };
+  }
   redirect("/admin/products?saved=1"); // saved as a draft: it goes live on Publish
 }
 
