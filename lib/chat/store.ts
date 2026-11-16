@@ -12,6 +12,8 @@ export type ChatSession = {
   messages: ChatMessage[];
   handoff: boolean;
   live_until: string | null;
+  /** WhatsApp message IDs of this chat's messages forwarded to the team, to match their replies */
+  wa_ids?: string[];
   page: string | null;
   created_at: string;
   updated_at: string;

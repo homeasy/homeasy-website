@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/admin/session";
 import { dbMode } from "@/lib/db";
 import { onTestAddress } from "@/lib/seo/audit";
 import { site } from "@/lib/site";
+import { whatsappConfigured } from "@/lib/chat/whatsapp";
 import { razorpayConfigured } from "@/lib/store/razorpay";
 
 async function System() {
@@ -17,6 +18,7 @@ async function System() {
     { label: "Payment webhook", ok: !!process.env.RAZORPAY_WEBHOOK_SECRET, help: "RAZORPAY_WEBHOOK_SECRET" },
     { label: "Page speed tests (Google)", ok: !!process.env.PAGESPEED_API_KEY, help: "PAGESPEED_API_KEY (optional: without it Google's shared quota is used)" },
     { label: "AI assistant (Anthropic)", ok: !!process.env.ANTHROPIC_API_KEY, help: "ANTHROPIC_API_KEY (the website chat; without it the WhatsApp button shows)" },
+    { label: "WhatsApp bridge for chats (Meta)", ok: whatsappConfigured() && !!process.env.WHATSAPP_APP_SECRET, help: "WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_TEAM_NUMBERS, WHATSAPP_APP_SECRET, WHATSAPP_VERIFY_TOKEN" },
     { label: "Sign-in secret", ok: !!process.env.ADMIN_SESSION_SECRET, help: "ADMIN_SESSION_SECRET (optional: without it the password signs the session)" },
   ];
   return (

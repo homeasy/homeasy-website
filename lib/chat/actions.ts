@@ -11,6 +11,7 @@ import { site } from "@/lib/site";
 import { buildSystemPrompt } from "./knowledge";
 import { allowChatMessage, MAX_MESSAGE_CHARS, MAX_USER_MESSAGES_PER_CHAT } from "./limits";
 import { getChat, insertChat, updateChat, type ChatMessage, type ChatSession } from "./store";
+import { sendToTeam } from "./whatsapp";
 
 /** The assistant is on only when an Anthropic API key is set (ANTHROPIC_API_KEY). */
 const MODEL = process.env.CHAT_MODEL || "claude-haiku-5-5";
@@ -82,9 +83,13 @@ export async function sendChat(id: string, text: string): Promise<SendResult> {
   const now = new Date().toISOString();
   const history: ChatMessage[] = [...session.messages, { role: "user", text: message, at: now }];
 
+  // once a person has been asked for, every visitor message also goes to the team's WhatsApp (if the bridge is set up)
+  const forwarded = session.handoff ? await sendToTeam(`${session.name}: ${message}`, session.name) : [];
+  const wa_ids = [...(session.wa_ids ?? []), ...forwarded].slice(-60);
+
   // a team member replied recently: keep the AI quiet so two voices do not answer at once
   if (session.live_until && session.live_until > now) {
-    await updateChat(id, { messages: history });
+    await updateChat(id, { messages: history, wa_ids });
     return { ok: true, reply: null, handoff: true, live: true };
   }
 
@@ -129,7 +134,7 @@ export async function sendChat(id: string, text: string): Promise<SendResult> {
   }
 
   history.push({ role: "assistant", text: reply, at: new Date().toISOString() });
-  await updateChat(id, { messages: history, handoff });
+  await updateChat(id, { messages: history, handoff, wa_ids });
   return { ok: true, reply, handoff, live: false };
 }
 
@@ -141,6 +146,12 @@ export async function requestHuman(id: string): Promise<{ ok: boolean }> {
   const first = !session.handoff || !session.messages.some((m) => m.text === "(Asked to talk to a person)");
   await updateChat(id, { handoff: true, messages: [...session.messages, { role: "user", text: "(Asked to talk to a person)", at: new Date().toISOString() }] });
   if (first) {
+    const recent = session.messages.slice(-6).map((m) => `${m.role === "user" ? session.name : m.role === "agent" ? "Team" : "Assistant"}: ${m.text}`);
+    const sent = await sendToTeam(
+      `New website chat: ${session.name} wants to talk to a person.\nMobile: +91 ${session.mobile}${session.email ? `\nEmail: ${session.email}` : ""}\nPrefers: ${session.mode}\n\n${recent.join("\n")}\n\nSwipe-reply to this message to answer in their chat window.`,
+      session.name,
+    );
+    if (sent.length) await updateChat(id, { wa_ids: [...(session.wa_ids ?? []), ...sent].slice(-60) });
     const lines = session.messages.slice(-12).map((m) => `<p><b>${m.role === "user" ? esc(session.name) : m.role === "agent" ? "Team" : "Assistant"}:</b> ${esc(m.text)}</p>`);
     await notify({
       subject: `Chat: ${session.name} wants to talk to a person (${session.mode})`,

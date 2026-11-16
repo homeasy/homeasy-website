@@ -15,5 +15,7 @@ create table if not exists public.chat_sessions (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+-- WhatsApp bridge: IDs of the messages forwarded to the team, so a reply there finds its chat. Safe to run again.
+alter table public.chat_sessions add column if not exists wa_ids jsonb not null default '[]'::jsonb;
 create index if not exists chat_sessions_updated_at_idx on public.chat_sessions (updated_at desc);
 alter table public.chat_sessions enable row level security;
