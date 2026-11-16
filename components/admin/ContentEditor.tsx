@@ -20,6 +20,7 @@ const LABELS: Record<string, string> = {
   problem: "The problem", how: "How it works", promise: "What you get with Homeasy", switches: "Switch brands", parents: "For parents", indian: "Indian homes",
   app: "App", business: "Businesses and government", area: "Service area", founder: "Founder note", faq: "Short FAQ", process: "Survey to support",
   draft: "Draft: show the “under legal review” notice", dates: "Dates line (empty = “Last updated” with the site date)", intro: "Line under the title",
+  google: "Google Business Profile link",
   phone: "Phone (10 digits)", whatsapp: "WhatsApp number (10 digits)", hours: "Working hours", social: "Social links", sections: "Show or hide sections",
 };
 const SWITCHES = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "U9", "U10", "U11", "U12", "APP_LIVE", "SHOW_PRICES"];

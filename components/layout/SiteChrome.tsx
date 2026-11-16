@@ -40,6 +40,7 @@ export async function SiteChrome({ children }: { children: ReactNode }) {
     },
     areaServed: { "@type": "State", name: site.serviceAreaLabel },
     knowsAbout: ["Home automation", "Smart home retrofit", "Smart switch modules", "Smart home installation"],
+    hasMap: site.social.google,
     sameAs: Object.values(site.social),
   };
   return (

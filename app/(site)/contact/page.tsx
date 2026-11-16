@@ -30,9 +30,8 @@ const TILE =
  */
 export default async function ContactPage() {
   const site = await getSite();
-  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    `${site.shortLegalName}, ${site.fullAddress}`,
-  )}`;
+  // the company's Google Business Profile (editable in Admin → Contact & socials)
+  const mapsHref = site.social.google;
   return (
     <>
       <BreadcrumbJsonLd path="/contact" />
@@ -102,7 +101,7 @@ export default async function ContactPage() {
               rel="noopener noreferrer"
               className="link mt-3 inline-flex min-h-11 items-center"
             >
-              Open in Google Maps
+              See Homeasy on Google Maps
             </a>
           </Card>
         </div>
