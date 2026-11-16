@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { CompanyIdentity, GrievanceContact, LegalPage } from "@/components/company/LegalPage";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Cookie Policy — Homeasy",
   description:
     "Which cookies the Homeasy website uses, why, for how long, and how you can refuse or remove them.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/cookie-policy", pageMeta);
+}
 
 /** PRD §8.16 + §15. First draft: must be reviewed by a lawyer before go-live. */
 export default function CookiePolicyPage() {

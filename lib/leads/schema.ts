@@ -83,3 +83,7 @@ export const LEAD_STATUSES = [
 ] as const;
 export type LeadStatus = (typeof LEAD_STATUSES)[number]["id"];
 export const statusLabel = (id: string) => LEAD_STATUSES.find((s) => s.id === id)?.label ?? id;
+
+export const LEAD_PRIORITIES = ["high", "medium", "low"] as const;
+/** Statuses still being worked on (not won, lost or out of area). */
+export const OPEN_LEAD_STATUSES = ["new", "contacted", "survey_scheduled", "surveyed", "quoted"];

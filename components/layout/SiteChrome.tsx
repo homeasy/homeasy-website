@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { flags, usp } from "@/lib/flags";
+import { getSite } from "@/lib/site-live";
 import { AnnouncementBar } from "./AnnouncementBar";
 import { FloatingWhatsApp } from "./FloatingWhatsApp";
 import { Footer } from "./Footer";
@@ -8,7 +9,8 @@ import { MobileActionBar } from "./MobileActionBar";
 import { RevealObserver } from "@/components/ui/RevealObserver";
 
 /** Header, footer and floating actions for the public website (not used by /admin). */
-export function SiteChrome({ children }: { children: ReactNode }) {
+export async function SiteChrome({ children }: { children: ReactNode }) {
+  const site = await getSite();
   return (
     <div className="site-chrome flex min-h-dvh flex-col">
       <a
@@ -24,7 +26,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       </main>
       <Footer />
       <MobileActionBar />
-      <FloatingWhatsApp showReplyPromise={usp("U2")} />
+      <FloatingWhatsApp whatsappHref={site.whatsappHref("general")} showReplyPromise={usp("U2")} />
       <RevealObserver />
     </div>
   );

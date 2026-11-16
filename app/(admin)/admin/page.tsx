@@ -1,140 +1,271 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { AdminShell, formatWhen, StatusChip } from "@/components/admin/AdminShell";
-import { requireAdmin } from "@/lib/admin/session";
-import { LEAD_STATUSES, statusLabel } from "@/lib/leads/schema";
-import { listLeads, storageMode, type Lead } from "@/lib/leads/store";
+import { ArrowDownRight, ArrowRight, ArrowUpRight, CreditCard, Database, Mail } from "lucide-react";
+import { AdminShell } from "@/components/admin/AdminShell";
+import { DailyBars, HBarList } from "@/components/admin/charts";
+import { RangeSelect } from "@/components/admin/RangeSelect";
+import { Card, ErrorBanner, Kpi, LeadStatusBadge, OrderStatusBadge, PageHeader, PriorityBadge, timeAgo } from "@/components/admin/ui";
+import { requestTime, requireAdmin } from "@/lib/admin/session";
+import { dbErrorHint, dbMode } from "@/lib/db";
+import { istDay } from "@/lib/leads/filter";
+import { LEAD_STATUSES, OPEN_LEAD_STATUSES } from "@/lib/leads/schema";
+import { listLeads, type Lead } from "@/lib/leads/store";
+import { listOrders, type Order } from "@/lib/store/orders";
+import { inr } from "@/lib/store/pricing";
+import { listAllProducts } from "@/lib/store/products";
+import { razorpayConfigured } from "@/lib/store/razorpay";
 
-type Search = Promise<{ status?: string; q?: string }>;
+const RANGES = [7, 30, 90, 180];
+const DAY = 24 * 60 * 60 * 1000;
+const PAID = ["booking_paid", "paid", "processing", "delivered", "installed"];
 
-const OPEN = ["new", "contacted", "survey_scheduled", "surveyed", "quoted"];
-
-function matches(l: Lead, q: string) {
-  const hay = [l.ref, l.full_name, l.mobile, l.whatsapp, l.locality, l.pincode, l.email].join(" ").toLowerCase();
-  return hay.includes(q.toLowerCase());
+function Delta({ now, prev }: { now: number; prev: number }) {
+  if (prev === 0) return <span>{now > 0 ? "No data for the previous period" : "No leads yet"}</span>;
+  const pct = Math.round(((now - prev) / prev) * 100);
+  const up = pct >= 0;
+  return (
+    <span className="inline-flex items-center gap-1">
+      {up ? <ArrowUpRight size={14} aria-hidden="true" className="text-emerald-300" /> : <ArrowDownRight size={14} aria-hidden="true" className="text-red-300" />}
+      <span className="text-white">
+        {up ? "+" : ""}
+        {pct}%
+      </span>{" "}
+      vs previous period
+    </span>
+  );
 }
 
-function countSince(leads: Lead[], days: number) {
-  const since = Date.now() - days * 24 * 60 * 60 * 1000;
-  return leads.filter((l) => new Date(l.created_at).getTime() > since).length;
+/** Counts by label, biggest first. */
+function tally(values: string[], limit = 6) {
+  const m = new Map<string, number>();
+  for (const v of values) m.set(v, (m.get(v) ?? 0) + 1);
+  return [...m].map(([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count).slice(0, limit);
 }
 
-async function Dashboard({ searchParams }: { searchParams: Search }) {
+function SystemRow({ icon, label, ok, okText, badText }: { icon: React.ReactNode; label: string; ok: boolean; okText: string; badText: string }) {
+  return (
+    <li className="flex items-center justify-between gap-3">
+      <span className="flex items-center gap-2 text-mist">
+        {icon} {label}
+      </span>
+      <span className={`inline-flex items-center gap-1.5 text-xs ${ok ? "text-emerald-300" : "text-amber"}`}>
+        <span aria-hidden="true" className="size-1.5 rounded-full bg-current" /> {ok ? okText : badText}
+      </span>
+    </li>
+  );
+}
+
+async function Dashboard({ searchParams }: { searchParams: Promise<{ days?: string }> }) {
   await requireAdmin();
-  const { status = "", q = "" } = await searchParams;
-  let all: Lead[] = [];
-  let loadError = false;
+  const asked = Number((await searchParams).days);
+  const days = RANGES.includes(asked) ? asked : 30;
+  const now = await requestTime();
+
+  let leads: Lead[] = [];
+  let orders: Order[] = [];
+  let loadError = "";
   try {
-    all = await listLeads();
-  } catch {
-    loadError = true;
+    [leads, orders] = await Promise.all([listLeads(), listOrders()]);
+  } catch (e) {
+    console.error(e);
+    loadError = dbErrorHint(e);
   }
-  const stats = [
-    { label: "New, not yet contacted", value: all.filter((l) => l.status === "new").length, href: "/admin?status=new" },
-    { label: "Open (in progress)", value: all.filter((l) => OPEN.includes(l.status)).length, href: "/admin" },
-    { label: "Last 7 days", value: countSince(all, 7), href: "/admin" },
-    { label: "Won or installed", value: all.filter((l) => l.status === "won" || l.status === "installed").length, href: "/admin?status=won" },
+  let products: Awaited<ReturnType<typeof listAllProducts>>["products"] = [];
+  try {
+    products = (await listAllProducts()).products;
+  } catch (e) {
+    console.error(e);
+  }
+
+  const at = (l: { created_at: string }) => new Date(l.created_at).getTime();
+  const inPeriod = leads.filter((l) => at(l) > now - days * DAY);
+  const prevPeriod = leads.filter((l) => at(l) <= now - days * DAY && at(l) > now - 2 * days * DAY).length;
+  const converted = leads.filter((l) => l.status === "won" || l.status === "installed").length;
+  const open = leads.filter((l) => OPEN_LEAD_STATUSES.includes(l.status)).length;
+
+  const perDay = new Map<string, number>();
+  for (const l of inPeriod) perDay.set(istDay(l.created_at), (perDay.get(istDay(l.created_at)) ?? 0) + 1);
+  const daily = Array.from({ length: days }, (_, i) => {
+    const date = istDay(now - (days - 1 - i) * DAY);
+    return { date, count: perDay.get(date) ?? 0 };
+  });
+
+  const byStatus = LEAD_STATUSES.map((s) => ({ id: s.id, count: leads.filter((l) => l.status === s.id).length }));
+  const funnelMax = Math.max(1, ...byStatus.map((s) => s.count));
+
+  const paidOrders = orders.filter((o) => PAID.includes(o.status));
+  const ordersInPeriod = orders.filter((o) => at(o) > now - days * DAY && o.status !== "awaiting_payment").length;
+  const received = orders.reduce((n, o) => n + (o.status === "refunded" ? 0 : o.amount_paid), 0);
+  const balance = paidOrders.reduce((n, o) => n + Math.max(0, o.total - o.amount_paid), 0);
+  const toProcess = orders.filter((o) => ["new", "booking_paid", "paid"].includes(o.status)).length;
+
+  const live = products.filter((p) => p.active).length;
+  const content = [
+    { label: "Products on the website", value: live, extra: products.length - live ? `+${products.length - live} hidden` : "", href: "/admin/products" },
+    { label: "Products with a price", value: products.filter((p) => p.price).length, extra: "", href: "/admin/products" },
   ];
-  const leads = all.filter((l) => (!status || l.status === status) && (!q || matches(l, q)));
 
   return (
-    <AdminShell mode={storageMode()}>
-      <h1 className="sr-only">Leads dashboard</h1>
-      <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {stats.map((s) => (
-          <li key={s.label}>
-            <Link href={s.href} className="block rounded-card border border-line bg-white p-4 no-underline hover:border-blue">
-              <span className="block text-[2rem] font-bold leading-none text-ink">{s.value}</span>
-              <span className="mt-2 block text-[14px] text-body">{s.label}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+    <AdminShell mode={dbMode()}>
+      <PageHeader title="Dashboard" description="Leads, orders and the website at a glance." actions={<RangeSelect days={days} options={RANGES} />} />
+      {loadError && <ErrorBanner title="Could not load the data.">{loadError}</ErrorBanner>}
 
-      <form method="get" className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <label className="sr-only" htmlFor="q">
-          Search leads
-        </label>
-        <input
-          id="q"
-          name="q"
-          defaultValue={q}
-          placeholder="Search name, mobile, area, request no."
-          className="h-11 min-w-0 flex-1 rounded-input border border-line bg-white px-4"
-        />
-        <label className="sr-only" htmlFor="status">
-          Status
-        </label>
-        <select id="status" name="status" defaultValue={status} className="h-11 rounded-input border border-line bg-white px-3">
-          <option value="">All statuses</option>
-          {LEAD_STATUSES.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.label}
-            </option>
-          ))}
-        </select>
-        <button type="submit" className="btn btn-secondary min-h-11 px-5">
-          Filter
-        </button>
-        {(status || q) && (
-          <Link href="/admin" className="btn btn-outline min-h-11 px-5">
-            Clear
-          </Link>
-        )}
-      </form>
+      <div className="space-y-6">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <Kpi label={`Leads · ${days}d`} value={inPeriod.length} sub={<Delta now={inPeriod.length} prev={prevPeriod} />} href="/admin/leads" />
+          <Kpi label="Awaiting reply" value={leads.filter((l) => l.status === "new").length} sub="Status: new" href="/admin/leads?status=new" />
+          <Kpi label="Open pipeline" value={open} sub="New to quoted" href="/admin/leads" />
+          <Kpi
+            label="Conversion rate"
+            value={`${leads.length ? ((converted / leads.length) * 100).toFixed(1) : "0.0"}%`}
+            sub={`${converted} of ${leads.length} all-time`}
+          />
+        </div>
 
-      {loadError && (
-        <p role="alert" className="mt-6 rounded-card bg-tint p-4">
-          Could not load leads from Supabase. Check the keys and that the table exists (supabase/schema.sql).
-        </p>
-      )}
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <Kpi label={`Orders · ${days}d`} value={ordersInPeriod} sub={`${orders.length} all-time`} href="/admin/orders" />
+          <Kpi label="Orders to process" value={toProcess} sub="New, booking paid or paid" href="/admin/orders" />
+          <Kpi label="Money received" value={inr(received)} sub="All orders, refunds excluded" />
+          <Kpi label="Balance to collect" value={inr(balance)} sub="On paid and booked orders" />
+        </div>
 
-      <p className="mt-6 text-[14px] text-body">
-        {leads.length} {leads.length === 1 ? "lead" : "leads"}
-        {status || q ? " match" : ""}
-      </p>
-      {leads.length === 0 ? (
-        <p className="mt-3 rounded-card border border-line bg-white p-8 text-center text-body">
-          {all.length === 0 ? "No leads yet. New survey requests will appear here." : "No leads match this filter."}
-        </p>
-      ) : (
-        <ul className="mt-3 divide-y divide-line overflow-hidden rounded-card border border-line bg-white">
-          {leads.map((l) => (
-            <li key={l.ref}>
-              <Link
-                href={`/admin/leads/${l.ref}`}
-                className="grid gap-x-4 gap-y-1 p-4 text-ink no-underline hover:bg-cloud sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1.2fr)_auto_auto] sm:items-center"
-              >
-                <span className="min-w-0">
-                  <span className="block truncate font-semibold">{l.full_name}</span>
-                  <span className="block text-[14px] text-body">+91 {l.mobile}</span>
-                </span>
-                <span className="min-w-0 text-[14px] text-body">
-                  <span className="block truncate">
-                    {l.locality}, {l.pincode}
-                  </span>
-                  <span className="block truncate">
-                    {l.home_type}
-                    {l.appliances?.length ? ` · ${l.appliances.join(", ")}` : ""}
-                  </span>
-                </span>
-                <StatusChip status={l.status} label={statusLabel(l.status)} />
-                <span className="text-[13px] text-slate sm:text-right">
-                  {formatWhen(l.created_at)}
-                  <span className="block">{l.ref}</span>
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <Card title="Leads per day" className="lg:col-span-2">
+            <DailyBars data={daily} label="Leads" />
+          </Card>
+          <Card title="Pipeline">
+            <ul className="space-y-2.5">
+              {byStatus.map((s) => (
+                <li key={s.id}>
+                  <Link href={`/admin/leads?status=${s.id}`} className="group block no-underline">
+                    <div className="mb-1 flex items-center justify-between">
+                      <LeadStatusBadge status={s.id} />
+                      <span className="text-sm tabular-nums text-white group-hover:text-amber">{s.count}</span>
+                    </div>
+                    <div className="h-1.5 rounded-full bg-white/5">
+                      <div className="h-1.5 rounded-full bg-amber/70" style={{ width: `${Math.max(s.count ? 2 : 0, (s.count / funnelMax) * 100)}%` }} />
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <Card title="Most wanted controls">
+            <HBarList data={tally(leads.flatMap((l) => l.appliances ?? []))} />
+          </Card>
+          <Card title="Lead sources">
+            <HBarList data={tally(leads.map((l) => l.heard_from || (l.utm_source ? `Campaign: ${l.utm_source}` : "Not said")))} />
+          </Card>
+          <Card title="Home types">
+            <HBarList data={tally(leads.map((l) => l.home_type))} />
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="min-w-0 space-y-6 lg:col-span-2">
+            <Card
+              title="New leads"
+              bodyClassName="p-0"
+              action={
+                <Link href="/admin/leads" className="inline-flex items-center gap-1 text-xs text-mist no-underline hover:text-amber">
+                  View all <ArrowRight size={14} aria-hidden="true" />
+                </Link>
+              }
+            >
+              {leads.length === 0 ? (
+                <p className="px-5 py-10 text-center text-sm text-mist">No leads yet. They appear here as soon as someone books a free survey.</p>
+              ) : (
+                <ul className="divide-y divide-navy-700">
+                  {leads.slice(0, 8).map((l) => (
+                    <li key={l.ref}>
+                      <Link href={`/admin/leads/${l.ref}`} className="flex items-center gap-4 px-5 py-3 no-underline hover:bg-white/[0.03]">
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-medium text-white">
+                            {l.full_name} <span className="font-normal text-mist">· {l.locality}</span>
+                          </span>
+                          <span className="block truncate text-xs text-mist">{l.appliances?.join(", ") || l.home_type}</span>
+                        </span>
+                        <span className="hidden sm:block">
+                          <PriorityBadge priority={l.priority} />
+                        </span>
+                        <LeadStatusBadge status={l.status} />
+                        <span className="w-16 shrink-0 text-right text-xs text-ash">{timeAgo(l.created_at, now)}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+
+            <Card
+              title="Latest orders"
+              bodyClassName="p-0"
+              action={
+                <Link href="/admin/orders" className="inline-flex items-center gap-1 text-xs text-mist no-underline hover:text-amber">
+                  View all <ArrowRight size={14} aria-hidden="true" />
+                </Link>
+              }
+            >
+              {orders.length === 0 ? (
+                <p className="px-5 py-10 text-center text-sm text-mist">No orders yet. Orders placed on the website appear here.</p>
+              ) : (
+                <ul className="divide-y divide-navy-700">
+                  {orders.slice(0, 5).map((o) => (
+                    <li key={o.ref}>
+                      <Link href={`/admin/orders/${o.ref}`} className="flex items-center gap-4 px-5 py-3 no-underline hover:bg-white/[0.03]">
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-medium text-white">
+                            {o.contact.name} <span className="font-normal text-mist">· {o.ref}</span>
+                          </span>
+                          <span className="block truncate text-xs text-mist">{o.items.map((i) => `${i.name} × ${i.qty}`).join(", ")}</span>
+                        </span>
+                        <span className="hidden text-sm tabular-nums text-white sm:block">{inr(o.total)}</span>
+                        <OrderStatusBadge status={o.status} />
+                        <span className="w-16 shrink-0 text-right text-xs text-ash">{timeAgo(o.created_at, now)}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+          </div>
+
+          <div className="min-w-0 space-y-6">
+            <Card title="Website content">
+              <ul className="space-y-2.5 text-sm">
+                {content.map((c) => (
+                  <li key={c.label}>
+                    <Link href={c.href} className="flex items-center justify-between gap-3 no-underline hover:text-amber">
+                      <span className="text-mist">{c.label}</span>
+                      <span className="tabular-nums text-white">
+                        {c.value}
+                        {c.extra && <span className="ml-1.5 text-xs text-mist">{c.extra}</span>}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+            <Card title="System">
+              <ul className="space-y-2.5 text-sm">
+                <SystemRow icon={<Database size={16} aria-hidden="true" />} label="Database" ok={dbMode() === "supabase"} okText="Connected" badText={dbMode() === "local" ? "Test mode" : "Not connected"} />
+                <SystemRow icon={<Mail size={16} aria-hidden="true" />} label="Email (Resend)" ok={!!process.env.RESEND_API_KEY} okText="Configured" badText="Not configured" />
+                <SystemRow icon={<CreditCard size={16} aria-hidden="true" />} label="Payments (Razorpay)" ok={razorpayConfigured()} okText="Configured" badText="Not configured" />
+              </ul>
+            </Card>
+          </div>
+        </div>
+      </div>
     </AdminShell>
   );
 }
 
-export default function AdminPage({ searchParams }: { searchParams: Search }) {
+export default function AdminPage({ searchParams }: { searchParams: Promise<{ days?: string }> }) {
   return (
-    <Suspense fallback={<p className="p-8 text-body">Loading leads…</p>}>
+    <Suspense fallback={<p className="p-8 text-mist">Loading dashboard…</p>}>
       <Dashboard searchParams={searchParams} />
     </Suspense>
   );

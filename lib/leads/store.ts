@@ -76,9 +76,26 @@ export type Lead = {
   utm_campaign: string | null;
   status: string;
   assigned_to: string | null;
-  notes: string | null;
+  notes: string | null; // older free-text note, shown at the bottom of the activity list
+  priority: string; // high | medium | low
+  activity: LeadNote[]; // notes and status changes, oldest first
   created_at: string;
+  updated_at: string;
 };
+
+export type LeadNote = { id: string; text: string; author: string; at: string; system?: boolean };
+
+/** Fills in fields that older rows (or a table without the newer columns) do not have. */
+function normalise(r: Partial<Lead>): Lead {
+  return {
+    assigned_to: null,
+    notes: null,
+    ...r,
+    priority: r.priority || "medium",
+    activity: Array.isArray(r.activity) ? r.activity : [],
+    updated_at: r.updated_at || r.created_at,
+  } as Lead;
+}
 
 const LOCAL_FILE = path.join(process.cwd(), ".data", "leads.json");
 const localEnabled = () => process.env.NODE_ENV !== "production" || process.env.LEADS_LOCAL_FILE === "true";
@@ -96,7 +113,7 @@ function supabase() {
 async function readLocal(): Promise<Lead[]> {
   try {
     const rows = JSON.parse(await readFile(LOCAL_FILE, "utf8")) as Partial<Lead>[];
-    return rows.map((r) => ({ assigned_to: null, notes: null, ...r }) as Lead);
+    return rows.map(normalise);
   } catch {
     return [];
   }
@@ -112,8 +129,8 @@ export async function listLeads(): Promise<Lead[]> {
   const sb = supabase();
   if (sb) {
     const res = await fetch(`${sb.base}?select=*&order=created_at.desc&limit=1000`, { headers: sb.headers, cache: "no-store" });
-    if (!res.ok) throw new Error(`Supabase list failed: ${res.status}`);
-    return (await res.json()) as Lead[];
+    if (!res.ok) throw new Error(`[db] list survey_requests failed: ${res.status} ${await res.text()}`);
+    return ((await res.json()) as Partial<Lead>[]).map(normalise);
   }
   if (!localEnabled()) return [];
   return (await readLocal()).sort((a, b) => b.created_at.localeCompare(a.created_at));
@@ -124,12 +141,17 @@ export async function getLead(ref: string): Promise<Lead | null> {
   if (sb) {
     const res = await fetch(`${sb.base}?select=*&ref=eq.${encodeURIComponent(ref)}&limit=1`, { headers: sb.headers, cache: "no-store" });
     if (!res.ok) throw new Error(`Supabase get failed: ${res.status}`);
-    return ((await res.json()) as Lead[])[0] ?? null;
+    const row = ((await res.json()) as Partial<Lead>[])[0];
+    return row ? normalise(row) : null;
   }
   return (await readLocal()).find((l) => l.ref === ref) ?? null;
 }
 
-export async function updateLead(ref: string, patch: Partial<Pick<Lead, "status" | "assigned_to" | "notes">>): Promise<boolean> {
+export async function updateLead(
+  ref: string,
+  changes: Partial<Pick<Lead, "status" | "assigned_to" | "notes" | "priority" | "activity">>,
+): Promise<boolean> {
+  const patch = { ...changes, updated_at: new Date().toISOString() };
   const sb = supabase();
   if (sb) {
     const res = await fetch(`${sb.base}?ref=eq.${encodeURIComponent(ref)}`, {
@@ -153,4 +175,26 @@ export async function updateLead(ref: string, patch: Partial<Pick<Lead, "status"
   Object.assign(row, patch);
   await writeFile(LOCAL_FILE, JSON.stringify(rows, null, 2));
   return true;
+}
+
+/** Permanently deletes leads. Returns how many were asked to be removed, or 0 on failure. */
+export async function deleteLeads(refs: string[]): Promise<number> {
+  if (!refs.length) return 0;
+  const sb = supabase();
+  if (sb) {
+    const list = refs.map((r) => `"${r}"`).join(",");
+    const res = await fetch(`${sb.base}?ref=in.(${encodeURIComponent(list)})`, { method: "DELETE", headers: sb.headers, cache: "no-store" });
+    if (!res.ok) console.error(`[leads] Supabase delete failed: ${res.status} ${await res.text()}`);
+    return res.ok ? refs.length : 0;
+  }
+  if (!localEnabled()) return 0;
+  let rows: Record<string, unknown>[] = [];
+  try {
+    rows = JSON.parse(await readFile(LOCAL_FILE, "utf8"));
+  } catch {
+    return 0;
+  }
+  const keep = rows.filter((r) => !refs.includes(String(r.ref)));
+  await writeFile(LOCAL_FILE, JSON.stringify(keep, null, 2));
+  return rows.length - keep.length;
 }

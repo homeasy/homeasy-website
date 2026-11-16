@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import { Home, MapPin, UserCheck } from "lucide-react";
-import { Card, CtaBand, PageHero, Section, SectionHeading } from "@/components/ui";
+import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import jobsData from "@/data/jobs.json";
-import { mailHref, site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Careers at Homeasy",
   description: "Join Homeasy and help make Indian homes smart.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/careers", pageMeta);
+}
 
 /** One open role in data/jobs.json. Leave the file as [] to show the empty state. */
 type Job = { title: string; location: string; type: string; summary: string };
 
 const jobs = jobsData as Job[];
-const careersMail = `${mailHref}?subject=Careers%20at%20Homeasy`;
 
 const WHY = [
   { icon: Home, title: "Real impact", body: "Your work goes into real homes." },
@@ -30,7 +35,9 @@ const FUTURE_ROLES = [
 ];
 
 /** PRD §8.11 + §26.16 */
-export default function CareersPage() {
+export default async function CareersPage() {
+  const site = await getSite();
+  const careersMail = `${site.mailHref}?subject=Careers%20at%20Homeasy`;
   return (
     <>
       <PageHero
@@ -81,7 +88,7 @@ export default function CareersPage() {
                   </p>
                   <p className="mt-3 text-body">{job.summary}</p>
                   <a
-                    href={`${mailHref}?subject=${encodeURIComponent(`Application: ${job.title}`)}`}
+                    href={`${site.mailHref}?subject=${encodeURIComponent(`Application: ${job.title}`)}`}
                     className="link mt-4 inline-flex min-h-11 items-center"
                   >
                     Apply by email

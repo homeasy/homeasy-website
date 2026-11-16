@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CartView } from "@/components/shop/CartView";
 import { PageHero, Section } from "@/components/ui";
-import { whatsappHref } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 import { getPublicProducts } from "@/lib/store/products";
 import { razorpayConfigured } from "@/lib/store/razorpay";
 import { getPublicSettings } from "@/lib/store/settings";
@@ -10,6 +10,7 @@ export const metadata: Metadata = { title: "Your cart — Homeasy", robots: { in
 
 /** Cart and checkout. Only products with a price and "Available" status can be bought. */
 export default async function CartPage() {
+  const site = await getSite();
   const [products, settings] = await Promise.all([getPublicProducts(), getPublicSettings()]);
   const buyable = products
     .filter((p) => p.price && p.status === "available")
@@ -18,7 +19,7 @@ export default async function CartPage() {
     <>
       <PageHero eyebrow="Checkout" title="Your cart" sub="Review your modules, tell us where to deliver, and pay securely." />
       <Section className="!pt-10">
-        <CartView products={buyable} settings={settings} whatsappHref={whatsappHref("general")} online={razorpayConfigured()} />
+        <CartView products={buyable} settings={settings} whatsappHref={site.whatsappHref("general")} online={razorpayConfigured()} />
       </Section>
     </>
   );

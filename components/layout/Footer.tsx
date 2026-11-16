@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
 import nav from "@/data/navigation.json";
-import { fullAddress, mailHref, site, telHref, whatsappHref } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
 import { Logo } from "./Logo";
 import { SocialLinks } from "./SocialLinks";
 
 /** Navy footer, 4 columns on desktop, stacked accordions on mobile (PRD §7.2, §25.1). */
-export function Footer() {
+export async function Footer() {
+  const site = await getSite();
   return (
     <footer className="on-dark bg-navy text-white">
       <div className="container-page py-12 lg:py-16">
@@ -62,13 +63,13 @@ export function Footer() {
 
         <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
           <li>
-            <a href={telHref} className="inline-flex min-h-11 items-center gap-2 text-white no-underline hover:underline">
+            <a href={site.telHref} className="inline-flex min-h-11 items-center gap-2 text-white no-underline hover:underline">
               <Phone size={16} aria-hidden="true" /> {site.contact.phoneDisplay}
             </a>
           </li>
           <li>
             <a
-              href={whatsappHref("general")}
+              href={site.whatsappHref("general")}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-11 items-center gap-2 text-white no-underline hover:underline"
@@ -77,7 +78,7 @@ export function Footer() {
             </a>
           </li>
           <li>
-            <a href={mailHref} className="inline-flex min-h-11 items-center gap-2 text-white no-underline hover:underline">
+            <a href={site.mailHref} className="inline-flex min-h-11 items-center gap-2 text-white no-underline hover:underline">
               <Mail size={16} aria-hidden="true" /> {site.contact.email}
             </a>
           </li>
@@ -87,7 +88,7 @@ export function Footer() {
           <p>
             © {site.copyrightYear} {site.legalName} · CIN {site.cin} · Incorporated {site.foundedYear}
           </p>
-          <p>Registered office: {fullAddress}, India</p>
+          <p>Registered office: {site.fullAddress}, India</p>
         </div>
       </div>
     </footer>

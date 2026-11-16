@@ -14,6 +14,7 @@ import {
   updateProduct,
   type ProductInput,
 } from "@/lib/store/products";
+import { publishContent } from "@/lib/content/store";
 import { publishSettings } from "@/lib/store/settings";
 
 export type ProductFormState = { error?: string; fields?: Record<string, string> } | undefined;
@@ -22,7 +23,7 @@ const slugify = (s: string) =>
   s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
 const lines = (v: FormDataEntryValue | null, sep: RegExp) =>
   String(v ?? "").split(sep).map((x) => x.trim()).filter(Boolean).slice(0, 12);
-const money = (v: FormDataEntryValue | null) => {
+const money = (v: FormDataEntryValue | string | null) => {
   const n = Math.round(Number(String(v ?? "").replace(/[₹,\s]/g, "")));
   return Number.isFinite(n) && n > 0 ? n : null;
 };
@@ -84,10 +85,31 @@ export async function removeProduct(formData: FormData) {
   redirect("/admin/products");
 }
 
-export async function setProductActive(formData: FormData) {
+export type ProductRowChange = { id: string; price: string; mrp: string; status: string; active: boolean; featured: boolean };
+
+/** Saves the rows edited in the "Products & prices" table. Drafts only: live after Publish. */
+export async function saveProductTable(rows: ProductRowChange[]): Promise<{ ok: boolean; error?: string }> {
   await requireAdmin();
-  await updateProduct(String(formData.get("id") ?? ""), { active: formData.get("active") === "true" });
+  const list = rows.slice(0, 200);
+  for (const r of list) {
+    const price = money(r.price);
+    const mrp = money(r.mrp);
+    if (!(PRODUCT_STATUSES as readonly string[]).includes(r.status)) return { ok: false, error: "Choose an availability for every product." };
+    if (price && mrp && mrp <= price) return { ok: false, error: "A list price must be higher than the selling price." };
+  }
+  for (const r of list) {
+    const price = money(r.price);
+    const saved = await updateProduct(String(r.id), {
+      price,
+      mrp: price ? money(r.mrp) : null,
+      status: r.status as ProductInput["status"],
+      active: !!r.active,
+      featured: !!r.featured,
+    });
+    if (!saved) return { ok: false, error: "Could not save every row. Check that storage is connected, then try again." };
+  }
   refresh();
+  return { ok: true };
 }
 
 export async function importStarters() {
@@ -101,5 +123,6 @@ export async function publishNow() {
   await requireAdmin();
   if (await publishProducts()) updateTag("products");
   if (await publishSettings()) updateTag("store");
+  if (await publishContent()) updateTag("content");
   refresh();
 }

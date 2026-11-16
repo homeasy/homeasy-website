@@ -29,10 +29,11 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
-import home from "@/data/home.json";
+import { getContent } from "@/lib/content/store";
 import { flags, usp } from "@/lib/flags";
-import { site, whatsappHref } from "@/lib/site";
-import { Card, CtaBand, Faq, Section, SectionHeading, StatusBadge, Steps, type Status } from "@/components/ui";
+import { getSite } from "@/lib/site-live";
+import { Card, Faq, Section, SectionHeading, StatusBadge, Steps, type Status } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { reveal } from "@/components/ui/reveal";
 import { PincodeChecker } from "./PincodeChecker";
 import { SwitchSelector } from "./SwitchSelector";
@@ -69,7 +70,8 @@ function IconTile({ name, onDark = false }: { name: string; onDark?: boolean }) 
   );
 }
 
-export function Problem() {
+export async function Problem() {
+  const home = await getContent("home");
   const p = home.problem;
   return (
     <Section>
@@ -101,7 +103,8 @@ export function Problem() {
   );
 }
 
-export function HowItWorks() {
+export async function HowItWorks() {
+  const home = await getContent("home");
   const h = home.how;
   return (
     <Section tone="navy">
@@ -116,7 +119,8 @@ export function HowItWorks() {
   );
 }
 
-export function Appliances() {
+export async function Appliances() {
+  const home = await getContent("home");
   const a = home.appliances;
   return (
     <Section tone="cloud">
@@ -138,7 +142,8 @@ export function Appliances() {
   );
 }
 
-export function Process() {
+export async function Process() {
+  const home = await getContent("home");
   const p = home.process;
   return (
     <Section>
@@ -167,9 +172,11 @@ export function Process() {
   );
 }
 
-export function PromiseSection() {
+export async function PromiseSection() {
+  const home = await getContent("home");
+  const site = await getSite();
   const p = home.promise;
-  const photoHref = whatsappHref("photo");
+  const photoHref = site.whatsappHref("photo");
   const cards = p.cards.map((c) => ({ ...c }));
   if (usp("U2")) {
     const photo = cards.find((c) => c.icon === "photo");
@@ -245,19 +252,22 @@ export function PromiseSection() {
   );
 }
 
-export function Switches() {
+export async function Switches() {
+  const home = await getContent("home");
+  const site = await getSite();
   const s = home.switches;
   return (
     <Section tone="cloud">
       <SectionHeading title={s.title} sub="Tap the brand on your switchboard." />
       <div className="mt-8">
-        <SwitchSelector brands={s.brands} result={s.result} note={s.note} photoHref={whatsappHref("photo")} />
+        <SwitchSelector brands={s.brands} result={s.result} note={s.note} photoHref={site.whatsappHref("photo")} />
       </div>
     </Section>
   );
 }
 
-export function Parents() {
+export async function Parents() {
+  const home = await getContent("home");
   const p = home.parents;
   return (
     <Section>
@@ -303,7 +313,8 @@ export function Parents() {
   );
 }
 
-export function IndianHomes() {
+export async function IndianHomes() {
+  const home = await getContent("home");
   const d = home.indian;
   return (
     <Section tone="cloud">
@@ -323,7 +334,8 @@ export function IndianHomes() {
   );
 }
 
-export function Packages() {
+export async function Packages() {
+  const home = await getContent("home");
   const p = home.packages;
   return (
     <Section>
@@ -348,7 +360,8 @@ export function Packages() {
   );
 }
 
-export function AppSection() {
+export async function AppSection() {
+  const home = await getContent("home");
   const a = home.app;
   return (
     <Section tone="navy">
@@ -375,7 +388,8 @@ export function AppSection() {
   );
 }
 
-export function Business() {
+export async function Business() {
+  const home = await getContent("home");
   const b = home.business;
   return (
     <Section>
@@ -395,19 +409,23 @@ export function Business() {
   );
 }
 
-export function ServiceArea() {
+export async function ServiceArea() {
+  const home = await getContent("home");
+  const site = await getSite();
   const a = home.area;
   return (
     <Section tone="tint" id="service-area">
       <SectionHeading title={a.title} sub={a.body} />
       <div className="mt-8">
-        <PincodeChecker whatsappHref={whatsappHref("general")} />
+        <PincodeChecker whatsappHref={site.whatsappHref("general")} />
       </div>
     </Section>
   );
 }
 
-export function FounderNote() {
+export async function FounderNote() {
+  const home = await getContent("home");
+  const site = await getSite();
   return (
     <Section>
       <figure className="mx-auto flex max-w-[860px] flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
@@ -430,7 +448,8 @@ export function FounderNote() {
   );
 }
 
-export function HomeFaq() {
+export async function HomeFaq() {
+  const home = await getContent("home");
   return (
     <Section tone="cloud">
       <div className="mx-auto max-w-[820px]">

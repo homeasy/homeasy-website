@@ -1,15 +1,20 @@
 import { SurveyForm } from "@/components/forms/SurveyForm";
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import { Check, Phone } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
-import { site, telHref } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Book a Free Home Survey — Homeasy",
   description:
     "Book a free Homeasy home survey anywhere in Bihar. We check your switchboxes and wiring and give you a fixed quote. No obligation.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/book-survey", pageMeta);
+}
 
 /*
  * INTERIM PAGE. This is replaced later by the survey booking form and global modal
@@ -19,7 +24,6 @@ export const metadata: Metadata = {
 
 const BOOKING_MESSAGE =
   "Hi Homeasy, I'd like to book a free home survey. My name: ___ My area/pincode: ___ Rooms I want to make smart: ___";
-const bookOnWhatsAppHref = `https://wa.me/${site.contact.whatsappNumber}?text=${encodeURIComponent(BOOKING_MESSAGE)}`;
 
 const SURVEY_STEPS = [
   { title: "We visit your home", body: "A Homeasy technician comes at a time that suits you." },
@@ -34,7 +38,9 @@ const GOOD_TO_KNOW = [
   "If your wiring needs a small fix, we tell you before you pay.",
 ];
 
-export default function BookSurveyPage() {
+export default async function BookSurveyPage() {
+  const site = await getSite();
+  const bookOnWhatsAppHref = `https://wa.me/${site.contact.whatsappNumber}?text=${encodeURIComponent(BOOKING_MESSAGE)}`;
   return (
     <>
       <PageHero
@@ -45,7 +51,7 @@ export default function BookSurveyPage() {
 
       <Section>
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-          <SurveyForm whatsappHref={bookOnWhatsAppHref} telHref={telHref} leadResponse={site.contact.leadResponse} />
+          <SurveyForm whatsappHref={bookOnWhatsAppHref} telHref={site.telHref} leadResponse={site.contact.leadResponse} />
           <div className="grid min-w-0 gap-4">
             <Card className="min-w-0">
               <h2 className="text-h4">Good to know</h2>
@@ -67,7 +73,7 @@ export default function BookSurveyPage() {
                 <a href={bookOnWhatsAppHref} target="_blank" rel="noopener noreferrer" className="btn btn-secondary min-h-12 px-6">
                   <WhatsAppIcon size={18} /> Book on WhatsApp
                 </a>
-                <a href={telHref} className="btn btn-outline min-h-12 px-6">
+                <a href={site.telHref} className="btn btn-outline min-h-12 px-6">
                   <Phone aria-hidden="true" className="size-[18px]" strokeWidth={2} /> Call us
                 </a>
               </div>

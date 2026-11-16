@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
-import faq from "@/data/faq.json";
+import { getContent } from "@/lib/content/store";
 import { flags, usp, type UspId } from "@/lib/flags";
-import { site, whatsappHref } from "@/lib/site";
-import { CtaBand, Faq, PageHero, Section, StatusBadge, type Status } from "@/components/ui";
+import { getSite } from "@/lib/site-live";
+import { Faq, PageHero, Section, StatusBadge, type Status } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Homeasy FAQ — Smart Retrofit Questions Answered",
   description: "Switches, wiring, installation, app, pricing and support.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/faq", pageMeta);
+}
 
 type Part = { text: string; whenOn?: string; whenOff?: string };
 type Item = {
@@ -25,22 +31,13 @@ function isOn(flag: string): boolean {
   return flag in flags ? flags[flag as keyof typeof flags] : false;
 }
 
-const TOKENS: Record<string, string> = {
-  phone: site.contact.phoneDisplay,
-  hours: site.contact.hours,
-  legalName: site.legalName,
-  foundedYear: String(site.foundedYear),
-  founderName: site.founder.name,
-  founderRole: site.founder.role,
-};
-
-/** Joins the parts that pass their flag checks and fills {tokens} from site.json. */
-function answerText(item: Item): string {
+/** Joins the parts that pass their flag checks and fills {tokens} with the published company details. */
+function answerText(item: Item, tokens: Record<string, string>): string {
   return item.parts
     .filter((p) => (!p.whenOn || isOn(p.whenOn)) && (!p.whenOff || !isOn(p.whenOff)))
     .map((p) => p.text)
     .join(" ")
-    .replace(/\{(\w+)\}/g, (match, key: string) => TOKENS[key] ?? match);
+    .replace(/\{(\w+)\}/g, (match, key: string) => tokens[key] ?? match);
 }
 
 function statusOf(item: Item): Status | undefined {
@@ -50,10 +47,20 @@ function statusOf(item: Item): Status | undefined {
 }
 
 /** PRD §8.13, wireframe §25.10 */
-export default function FaqPage() {
+export default async function FaqPage() {
+  const site = await getSite();
+  const tokens: Record<string, string> = {
+    phone: site.contact.phoneDisplay,
+    hours: site.contact.hours,
+    legalName: site.legalName,
+    foundedYear: String(site.foundedYear),
+    founderName: site.founder.name,
+    founderRole: site.founder.role,
+  };
+  const faq = await getContent("faq");
   const groups = faq.groups.map((group) => ({
     ...group,
-    items: (group.items as Item[]).map((item) => ({ item, text: answerText(item), status: statusOf(item) })),
+    items: (group.items as Item[]).map((item) => ({ item, text: answerText(item, tokens), status: statusOf(item) })),
   }));
 
   // FAQPage structured data (PRD §13.4), built from the same resolved answers shown on the page.
@@ -141,7 +148,7 @@ export default function FaqPage() {
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <a
-              href={whatsappHref("general")}
+              href={site.whatsappHref("general")}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-secondary min-h-12 px-6"

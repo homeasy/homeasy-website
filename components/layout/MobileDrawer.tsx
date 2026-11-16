@@ -5,14 +5,14 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { Camera, ChevronDown, Menu, X } from "lucide-react";
 import nav from "@/data/navigation.json";
-import { SocialLinks } from "./SocialLinks";
 
 /**
  * Mobile navigation drawer. Uses the native <dialog> (showModal) so focus trapping,
  * ESC to close, background inertness and focus restore come from the browser.
  * The drawer closes on every link click because Next keeps routes mounted (Activity).
  */
-export function MobileDrawer({ photoHref }: { photoHref: string }) {
+/** `social` is the server-rendered social links row (it reads the published contact details). */
+export function MobileDrawer({ photoHref, social }: { photoHref: string; social: React.ReactNode }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
 
@@ -109,7 +109,7 @@ export function MobileDrawer({ photoHref }: { photoHref: string }) {
               <Camera size={18} aria-hidden="true" />
               Send a switchboard photo
             </a>
-            <SocialLinks className="justify-center pt-1 text-ink" />
+            {social}
           </div>
         </div>
       </dialog>

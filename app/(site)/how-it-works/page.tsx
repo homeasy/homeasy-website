@@ -1,16 +1,22 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { Box, Camera, Check, Cpu, Smartphone, ToggleRight, Wifi, WifiOff, Zap } from "lucide-react";
 import { flags } from "@/lib/flags";
-import { whatsappHref } from "@/lib/site";
-import { Card, CtaBand, Faq, PageHero, Section, SectionHeading, StatusBadge, Steps } from "@/components/ui";
+import { getSite } from "@/lib/site-live";
+import { Card, Faq, PageHero, Section, SectionHeading, StatusBadge, Steps } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { Callout, SurveyChecklist, live, replyLine, visitLine } from "@/components/service";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "How Homeasy Works — Smart Retrofit Without Rewiring",
   description:
     "See how Homeasy fits smart modules behind your existing switches. Free survey, professional installation, easy app.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/how-it-works", pageMeta);
+}
 
 const DIAGRAM = [
   { icon: ToggleRight, label: "Your switchboard", note: "Looks the same as before." },
@@ -35,7 +41,8 @@ const GAINS = [
 ];
 
 /** PRD §8.2, §26.1, wireframe §25.3 */
-export default function HowItWorksPage() {
+export default async function HowItWorksPage() {
+  const site = await getSite();
   const steps = [
     {
       title: "Free home survey",
@@ -69,7 +76,7 @@ export default function HowItWorksPage() {
     },
     {
       title: "Support",
-      body: `${replyLine} ${visitLine}`,
+      body: `${replyLine(site.contact.hours)} ${visitLine}`,
     },
   ];
 
@@ -117,7 +124,7 @@ export default function HowItWorksPage() {
           Book a free home survey
         </Link>
         <a
-          href={whatsappHref("photo")}
+          href={site.whatsappHref("photo")}
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-outline min-h-12 px-6"

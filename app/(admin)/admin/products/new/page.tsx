@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { ArrowLeft } from "lucide-react";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { BACK_LINK } from "@/components/admin/ui";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { requireAdmin } from "@/lib/admin/session";
 import { dbMode } from "@/lib/db";
@@ -9,11 +10,11 @@ import { dbMode } from "@/lib/db";
 async function NewProduct() {
   await requireAdmin();
   return (
-    <AdminShell mode={dbMode()} active="products">
-      <Link href="/admin/products" className="link inline-flex min-h-11 items-center gap-1.5 text-[15px] font-semibold">
+    <AdminShell mode={dbMode()}>
+      <Link href="/admin/products" className={BACK_LINK}>
         <ArrowLeft size={16} aria-hidden="true" /> All products
       </Link>
-      <h1 className="mb-6 mt-2 text-h4">Add product</h1>
+      <h1 className="mb-6 text-2xl font-semibold tracking-tight text-white">Add product</h1>
       <ProductForm
         values={{
           id: "", name: "", slug: "", headline: "", line: "", description: "", controls: "", highlights: "", icon: "relay",
@@ -26,7 +27,7 @@ async function NewProduct() {
 
 export default function NewProductPage() {
   return (
-    <Suspense fallback={<p className="p-8 text-body">Loading…</p>}>
+    <Suspense fallback={<p className="p-8 text-mist">Loading…</p>}>
       <NewProduct />
     </Suspense>
   );

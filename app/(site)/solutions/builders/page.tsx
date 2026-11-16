@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import {
   Armchair,
   Hotel,
@@ -14,13 +15,18 @@ import {
   Stethoscope,
   Store,
 } from "lucide-react";
-import { Card, CtaBand, PageHero, Section, SectionHeading } from "@/components/ui";
+import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { ChipList, EnquiryCard, FeatureGrid, StepList, type Feature } from "@/components/catalog";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Smart-Ready Homes for Builders & Commercial — Homeasy",
   description: "Retrofit smart control for flats, offices and shops with Homeasy.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/solutions/builders", pageMeta);
+}
 
 const USE_CASES = [
   { icon: House, label: "Ready-to-move flats" },

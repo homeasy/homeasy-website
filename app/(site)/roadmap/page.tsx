@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
-import { CtaBand, PageHero, Section, StatusBadge } from "@/components/ui";
+import { PageHero, Section, StatusBadge } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import roadmapData from "@/data/roadmap.json";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Homeasy Roadmap",
   description: "What we've built and what's next for Homeasy in India.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/roadmap", pageMeta);
+}
 
 type RoadmapStatus = "done" | "in-progress" | "planned";
 type RoadmapItem = { period: string; title: string; detail?: string; status: RoadmapStatus };

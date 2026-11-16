@@ -6,8 +6,9 @@ import { Camera, Check, ChevronRight, ClipboardCheck, ShieldCheck, Truck, Wrench
 import { PriceLine, ProductCard, ProductVisual } from "@/components/catalog/ProductCard";
 import { AddToCart } from "@/components/shop/AddToCart";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
-import { CtaBand, Faq, Section, SectionHeading, StatusBadge } from "@/components/ui";
-import { site, whatsappHref } from "@/lib/site";
+import { Faq, Section, SectionHeading, StatusBadge } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
+import { getSite } from "@/lib/site-live";
 import { getPublicProduct, getPublicProducts } from "@/lib/store/products";
 
 type Params = Promise<{ slug: string }>;
@@ -27,6 +28,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 async function ProductDetail({ params }: { params: Params }) {
+  const site = await getSite();
   const { slug } = await params;
   const p = await getPublicProduct(slug);
   if (!p) notFound();
@@ -123,7 +125,7 @@ async function ProductDetail({ params }: { params: Params }) {
                   <Link href="/book-survey" className="btn btn-primary min-h-12 flex-1 whitespace-nowrap px-6">
                     Book a free home survey
                   </Link>
-                  <a href={whatsappHref("general")} target="_blank" rel="noopener noreferrer" className="btn btn-outline min-h-12 flex-1 whitespace-nowrap px-6">
+                  <a href={site.whatsappHref("general")} target="_blank" rel="noopener noreferrer" className="btn btn-outline min-h-12 flex-1 whitespace-nowrap px-6">
                     <WhatsAppIcon size={18} /> Ask on WhatsApp
                   </a>
                 </div>
@@ -134,7 +136,7 @@ async function ProductDetail({ params }: { params: Params }) {
               <Camera size={20} aria-hidden="true" className="mt-0.5 shrink-0" />
               <p>
                 Not sure it fits your switchboard?{" "}
-                <a href={whatsappHref("photo")} target="_blank" rel="noopener noreferrer" className="link font-semibold">
+                <a href={site.whatsappHref("photo")} target="_blank" rel="noopener noreferrer" className="link font-semibold">
                   Send us a photo on WhatsApp
                 </a>{" "}
                 and we will tell you.

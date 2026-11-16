@@ -36,3 +36,9 @@ create index if not exists survey_requests_created_at_idx on public.survey_reque
 create index if not exists survey_requests_status_idx on public.survey_requests (status);
 
 alter table public.survey_requests enable row level security;
+
+-- Added for the admin dashboard: priority, notes history and "last updated".
+-- Safe to run again on a table that already exists.
+alter table public.survey_requests add column if not exists priority text not null default 'medium';
+alter table public.survey_requests add column if not exists activity jsonb not null default '[]'::jsonb;
+alter table public.survey_requests add column if not exists updated_at timestamptz not null default now();

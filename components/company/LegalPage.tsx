@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { FileWarning } from "lucide-react";
 import { PageHero, Section } from "@/components/ui";
-import { fullAddress, mailHref, site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 
 /** Static on purpose: update by hand when a legal page changes (no `new Date()` in server components). */
 export const LEGAL_LAST_UPDATED = "16 November 2026";
@@ -59,15 +59,16 @@ export function LegalPage({
 }
 
 /** Grievance contact block. No individual is named until one is formally appointed. */
-export function GrievanceContact() {
+export async function GrievanceContact() {
+  const site = await getSite();
   return (
     <address>
       Grievance Officer, {site.legalName}
       <br />
-      {fullAddress}, India
+      {site.fullAddress}, India
       <br />
       Email:{" "}
-      <a href={mailHref} className="link">
+      <a href={site.mailHref} className="link">
         {site.contact.email}
       </a>
     </address>
@@ -75,10 +76,11 @@ export function GrievanceContact() {
 }
 
 /** One-line company identity used at the top of each legal page. */
-export function CompanyIdentity() {
+export async function CompanyIdentity() {
+  const site = await getSite();
   return (
     <>
-      {site.legalName} (CIN {site.cin}), registered office at {fullAddress}, India
+      {site.legalName} (CIN {site.cin}), registered office at {site.fullAddress}, India
     </>
   );
 }

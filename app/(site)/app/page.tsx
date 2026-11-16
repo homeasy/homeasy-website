@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import {
   BatteryCharging,
@@ -13,14 +14,19 @@ import {
   Mic,
   Users,
 } from "lucide-react";
-import { CtaBand, PageHero, Section, SectionHeading, StatusBadge } from "@/components/ui";
+import { PageHero, Section, SectionHeading, StatusBadge } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { FeatureGrid, IconTile, type Feature } from "@/components/catalog";
 import { flags, usp } from "@/lib/flags";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Homeasy App — Control Your Whole Home",
   description: "Rooms, scenes, schedules and family sharing. Free for every Homeasy customer.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/app", pageMeta);
+}
 
 const PLANNED: Feature[] = [
   { icon: Mic, title: "Voice assistants", body: "Control by voice through popular assistants.", status: "planned" },

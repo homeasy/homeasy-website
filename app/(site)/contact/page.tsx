@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
-import { Card, CtaBand, PageHero, Section, SectionHeading } from "@/components/ui";
+import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
 import { usp } from "@/lib/flags";
-import { fullAddress, mailHref, site, telHref, whatsappHref } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Contact Homeasy — Patna",
   description: "Call, WhatsApp or email Homeasy for a free home survey or partnership.",
 };
 
-const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-  `${site.shortLegalName}, ${fullAddress}`,
-)}`;
+export function generateMetadata() {
+  return seoMetadata("/contact", pageMeta);
+}
 
 const TILE =
   "flex h-full min-h-[120px] flex-col rounded-card border border-line bg-white p-6 text-ink no-underline transition-colors hover:border-navy hover:bg-cloud";
@@ -22,7 +24,11 @@ const TILE =
  * PRD §8.12 + §26.15. The contact form (topic, message, consent) is not built yet:
  * it arrives with the database. Until then the page offers direct channels only.
  */
-export default function ContactPage() {
+export default async function ContactPage() {
+  const site = await getSite();
+  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    `${site.shortLegalName}, ${site.fullAddress}`,
+  )}`;
   return (
     <>
       <PageHero
@@ -34,7 +40,7 @@ export default function ContactPage() {
       <Section>
         <ul className="grid gap-4 md:grid-cols-3">
           <li className="min-w-0">
-            <a href={whatsappHref("general")} target="_blank" rel="noopener noreferrer" className={TILE}>
+            <a href={site.whatsappHref("general")} target="_blank" rel="noopener noreferrer" className={TILE}>
               <WhatsAppIcon size={28} className="text-link" />
               <span className="mt-4 text-h4 font-semibold">WhatsApp</span>
               <span className="mt-1 break-words text-body">{site.contact.phoneDisplay}</span>
@@ -44,7 +50,7 @@ export default function ContactPage() {
             </a>
           </li>
           <li className="min-w-0">
-            <a href={telHref} className={TILE}>
+            <a href={site.telHref} className={TILE}>
               <Phone aria-hidden="true" className="size-7 text-link" strokeWidth={1.75} />
               <span className="mt-4 text-h4 font-semibold">Call</span>
               <span className="mt-1 break-words text-body">{site.contact.phoneDisplay}</span>
@@ -52,7 +58,7 @@ export default function ContactPage() {
             </a>
           </li>
           <li className="min-w-0">
-            <a href={mailHref} className={TILE}>
+            <a href={site.mailHref} className={TILE}>
               <Mail aria-hidden="true" className="size-7 text-link" strokeWidth={1.75} />
               <span className="mt-4 text-h4 font-semibold">Email</span>
               <span className="mt-1 break-words text-body">{site.contact.email}</span>
@@ -76,7 +82,7 @@ export default function ContactPage() {
             <address className="mt-2 break-words not-italic text-body">
               {site.shortLegalName}
               <br />
-              {fullAddress}
+              {site.fullAddress}
             </address>
             <a
               href={mapsHref}

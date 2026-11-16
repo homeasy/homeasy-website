@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import { Gift, GraduationCap, Headset, Wallet } from "lucide-react";
-import { Card, CtaBand, PageHero, Section, SectionHeading } from "@/components/ui";
+import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { CheckList, EnquiryCard, FeatureGrid, StepList, type Feature } from "@/components/catalog";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Join the Homeasy Electrician Network",
   description: "Learn smart-home installation and take paid jobs from Homeasy. Training and support by the Homeasy team.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/solutions/electricians", pageMeta);
+}
 
 const BENEFITS: Feature[] = [
   { icon: GraduationCap, title: "Training", body: "Learn Homeasy modules and our installation method." },

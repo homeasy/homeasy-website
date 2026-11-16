@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import {
   BedDouble,
   Briefcase,
@@ -11,15 +12,20 @@ import {
   MapPin,
   Power,
 } from "lucide-react";
-import { Card, CtaBand, PageHero, Section, SectionHeading } from "@/components/ui";
+import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { ChipList, EnquiryCard, FeatureGrid, type Feature } from "@/components/catalog";
-import { fullAddress, site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 import { usp } from "@/lib/flags";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Smart Retrofit for Government Buildings — Homeasy",
   description: "Central control and schedules for lights and fans in public buildings, without rewiring.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/solutions/government", pageMeta);
+}
 
 const USE_CASES = [
   { icon: House, label: "Government quarters" },
@@ -31,7 +37,8 @@ const USE_CASES = [
 ];
 
 /** PRD §8.7.4 / §26.10. No empanelment, GeM, tender, reference or energy-saving % claims (R8, R11). */
-export default function GovernmentPage() {
+export default async function GovernmentPage() {
+  const site = await getSite();
   const benefits: Feature[] = [
     { icon: Power, title: "Central control", body: "Switch off unused areas across a building." },
     { icon: CalendarClock, title: "Schedules", body: "Lights and fans run only when needed." },
@@ -50,7 +57,7 @@ export default function GovernmentPage() {
     { label: "Legal name", value: site.legalName },
     { label: "CIN", value: site.cin },
     { label: "Incorporated", value: String(site.foundedYear) },
-    { label: "Registered office", value: fullAddress },
+    { label: "Registered office", value: site.fullAddress },
   ];
 
   return (

@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { CompanyIdentity, LegalPage } from "@/components/company/LegalPage";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Refund and Cancellation Policy — Homeasy",
   description: "How to cancel a Homeasy order, when refunds apply, and how they are paid.",
 };
 
+export function generateMetadata() {
+  return seoMetadata("/refund-policy", pageMeta);
+}
+
 /** First draft for founder and lawyer review. Time limits are deliberately not stated until the founder sets them. */
-export default function RefundPolicyPage() {
+export default async function RefundPolicyPage() {
+  const site = await getSite();
   return (
     <LegalPage title="Refund and cancellation policy" intro="How to cancel an order, when a refund applies, and how it is paid.">
       <h2>1. Who this applies to</h2>

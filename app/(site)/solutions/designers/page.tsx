@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import { CalendarClock, Gem, Hammer, Headset, MonitorPlay, PencilRuler, Wallet, Wrench } from "lucide-react";
-import { CtaBand, Faq, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
+import { Faq, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { EnquiryCard, FeatureGrid, type Feature } from "@/components/catalog";
 import { flags, usp } from "@/lib/flags";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Smart Home Solutions for Interior Designers — Homeasy",
   description: "Add smart control behind existing switchboards — no design change, no rewiring.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/solutions/designers", pageMeta);
+}
 
 const BENEFITS: Feature[] = [
   { icon: PencilRuler, title: "Your design stays intact", body: "Modules sit inside the existing switchboxes, behind the switches." },

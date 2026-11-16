@@ -127,3 +127,18 @@ export async function saveImage(folder: string, name: string, bytes: Buffer, con
   await writeFile(path.join(dir, name), bytes);
   return `/uploads/${folder}/${name}`;
 }
+
+/** Turns a storage error into advice the admin can act on. */
+export function dbErrorHint(e: unknown): string {
+  const m = e instanceof Error ? e.message : String(e);
+  if (/PGRST205|\b404\b/.test(m)) {
+    return "A database table is missing. In Supabase, open the SQL Editor and run supabase/schema.sql, supabase/02-store.sql and supabase/03-content.sql. Use the same project as SUPABASE_URL.";
+  }
+  if (/PGRST204|42703/.test(m)) {
+    return "A database column is missing. In Supabase, open the SQL Editor and run supabase/schema.sql again (it only adds what is missing).";
+  }
+  if (/\b40[13]\b/.test(m)) {
+    return "Supabase rejected the key. SUPABASE_SERVICE_ROLE_KEY must be the secret (service_role) key, not the anon or publishable key.";
+  }
+  return "Could not reach Supabase. Check that SUPABASE_URL is the plain project address, like https://xxxx.supabase.co, then redeploy.";
+}

@@ -1,23 +1,29 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Card, CtaBand, PageHero, Section, SectionHeading } from "@/components/ui";
+import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { flags, usp } from "@/lib/flags";
-import { mailHref, site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Homeasy for Investors",
   description: "Bringing smart living to India's traditional homes.",
 };
 
-const investorMail = `${mailHref}?subject=Investor%20enquiry`;
+export function generateMetadata() {
+  return seoMetadata("/investors", pageMeta);
+}
 
 /**
  * PRD §8.10 + §26.13. Rule R10: no funding, revenue, valuation or market-size figures.
  * The one-pager download is a "Could" item and is not offered yet.
  */
-export default function InvestorsPage() {
+export default async function InvestorsPage() {
   if (!flags.SHOW_INVESTORS_PAGE) notFound();
+  const site = await getSite();
+  const investorMail = `${site.mailHref}?subject=Investor%20enquiry`;
 
   // "Written service levels" is only claimed once the reply-time and visit-time promises are live.
   const serviceLevels = usp("U2") && usp("U5");

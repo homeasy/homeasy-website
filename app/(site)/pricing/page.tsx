@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
-import data from "@/data/packages.json";
-import { Card, CtaBand, Faq, PageHero, Section, SectionHeading, StatusBadge, type Status } from "@/components/ui";
+import { getContent } from "@/lib/content/store";
+import { Card, Faq, PageHero, Section, SectionHeading, StatusBadge, type Status } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { CheckList } from "@/components/catalog";
 import { flags, usp, type UspId } from "@/lib/flags";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Homeasy Packages — Smart Room to Full Smart Home",
   description: "Simple smart-home packages. Exact price confirmed after a free home survey.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/pricing", pageMeta);
+}
 
 type Item = { text: string; usp?: string };
 type AddOn = { name: string; price: number | null; status: string | null };
@@ -28,7 +34,8 @@ function visible(items: Item[]): string[] {
   return items.filter((i) => !i.usp || usp(i.usp as UspId)).map((i) => i.text);
 }
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const data = await getContent("packages");
   const fixedPrice = usp("U4");
   const addOns = data.addOns as AddOn[];
 

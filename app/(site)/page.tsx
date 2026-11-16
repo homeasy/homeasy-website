@@ -16,15 +16,21 @@ import {
   ServiceArea,
   Switches,
 } from "@/components/home/sections";
-import home from "@/data/home.json";
-import { site, whatsappHref } from "@/lib/site";
+import { getContent } from "@/lib/content/store";
+import { seoMetadata } from "@/lib/seo/meta";
+import { getSite } from "@/lib/site-live";
 
 /** Home (PRD §8.1). Section copy and the show/hide switches are in data/home.json. The real-installs gallery (S10) appears after the pilot. */
-export default function Home() {
-  const show = home.sections; // switch sections on/off in data/home.json
+export function generateMetadata() {
+  return seoMetadata("/");
+}
+
+export default async function Home() {
+  const site = await getSite();
+  const show = (await getContent("home")).sections; // switched on/off in Admin → Homepage
   return (
     <>
-      <Hero tagline={site.tagline} photoHref={whatsappHref("photo")} />
+      <Hero tagline={site.tagline} photoHref={site.whatsappHref("photo")} />
       {show.problem && <Problem />}
       {show.how && <HowItWorks />}
       {show.appliances && <Appliances />}

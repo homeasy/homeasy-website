@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import { LegalPage } from "@/components/company/LegalPage";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Privacy Policy — Homeasy",
   description: "How Homeasy Automation Private Limited collects, uses, stores, shares and protects your personal information.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/privacy-policy", pageMeta);
+}
 
 /**
  * Privacy Policy carried over from the live site (homeasy.io/privacy-policy, last updated 08/09/2025),

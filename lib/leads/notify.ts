@@ -7,7 +7,7 @@
  * A failed email never fails the booking: the lead is already saved.
  */
 import "server-only";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 
 const TEST_SENDER = "Homeasy <onboarding@resend.dev>";
 
@@ -53,6 +53,7 @@ export type SurveyLead = {
 /** Alert to the Homeasy team, plus a confirmation to the customer when they gave an email. */
 export async function notifySurveyLead(lead: SurveyLead) {
   if (!process.env.RESEND_API_KEY) return;
+  const site = await getSite();
   const to = (process.env.LEAD_NOTIFY_TO || site.contact.email).split(",").map((s) => s.trim()).filter(Boolean);
   const rows: [string, string][] = [
     ["Request no.", lead.ref],

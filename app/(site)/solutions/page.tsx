@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { ArrowRight, Building2, Landmark, PencilRuler, Wrench, type LucideIcon } from "lucide-react";
-import { Card, CtaBand, PageHero, Section } from "@/components/ui";
+import { Card, PageHero, Section } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { IconTile } from "@/components/catalog";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Homeasy for Business — Smart Retrofit Solutions",
   description:
     "Smart retrofit for interior designers, builders, electricians and government buildings. No rewiring, no new switchboards.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/solutions", pageMeta);
+}
 
 const SOLUTIONS: { href: string; icon: LucideIcon; title: string; body: string }[] = [
   {

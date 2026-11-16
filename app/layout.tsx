@@ -1,25 +1,28 @@
 import type { Metadata, Viewport } from "next";
 import { preload } from "react-dom";
 import "./globals.css";
+import { getContent } from "@/lib/content/store";
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE } from "@/lib/seo/meta";
 import { isTestSite, site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  // beta and preview addresses stay out of search engines
-  ...(isTestSite ? { robots: { index: false, follow: false } } : {}),
-  title: {
-    default: "Homeasy — Make Your Existing Home Smart Without Rewiring",
-    template: "%s",
-  },
-  description:
-    "Smart modules inside your existing switchbox. Control lights, fans, geyser and AC from your phone. Free home survey in Bihar.",
-  applicationName: site.brand,
-  openGraph: {
-    type: "website",
-    siteName: site.brand,
-    locale: "en_IN",
-  },
-};
+/** Site-wide defaults. Search-engine verification codes come from Admin → SEO → Search tools. */
+export async function generateMetadata(): Promise<Metadata> {
+  const { verification: v } = await getContent("seo");
+  return {
+    metadataBase: new URL(site.url),
+    // beta and preview addresses stay out of search engines
+    ...(isTestSite ? { robots: { index: false, follow: false } } : {}),
+    title: { default: DEFAULT_TITLE, template: "%s" },
+    description: DEFAULT_DESCRIPTION,
+    applicationName: site.brand,
+    openGraph: { type: "website", siteName: site.brand, locale: "en_IN" },
+    verification: {
+      ...(v.google ? { google: v.google } : {}),
+      ...(v.yandex ? { yandex: v.yandex } : {}),
+      ...(v.bing ? { other: { "msvalidate.01": v.bing } } : {}),
+    },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#FFFFFF",

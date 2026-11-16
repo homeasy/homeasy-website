@@ -1,63 +1,144 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { ArrowLeft, Phone } from "lucide-react";
-import { AdminShell, formatWhen, StatusChip } from "@/components/admin/AdminShell";
-import { LeadEditor } from "@/components/admin/LeadEditor";
+import { ArrowLeft, Mail, Phone } from "lucide-react";
+import { AdminShell } from "@/components/admin/AdminShell";
+import { CopyRef, DeleteLead, LeadNotes, LeadPipeline, type NoteView } from "@/components/admin/LeadPanels";
+import { BACK_LINK, Card, fmtDateTime, InfoRow, LeadStatusBadge, Pill, timeAgo } from "@/components/admin/ui";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
-import { requireAdmin } from "@/lib/admin/session";
-import { statusLabel } from "@/lib/leads/schema";
-import { getLead, storageMode } from "@/lib/leads/store";
+import { requestTime, requireAdmin } from "@/lib/admin/session";
+import { getLead, listLeads, storageMode } from "@/lib/leads/store";
 
 async function LeadDetail({ params }: { params: Promise<{ ref: string }> }) {
   await requireAdmin();
   const { ref } = await params;
   const lead = await getLead(decodeURIComponent(ref));
   if (!lead) notFound();
+  const now = await requestTime();
   const wa = lead.whatsapp || lead.mobile;
-  const rows: [string, string][] = [
-    ["Area", `${lead.locality}, ${lead.pincode}`],
-    ["In service area", lead.in_service_area ? "Yes" : "No"],
-    ["Home type", lead.home_type],
-    ["Rooms", lead.rooms ?? "—"],
-    ["Wants to control", lead.appliances?.join(", ") || "—"],
-    ["Switch brand", lead.switch_brand ?? "—"],
-    ["Preferred visit", [lead.preferred_date, lead.time_slot].filter(Boolean).join(", ") || "—"],
-    ["Email", lead.email ?? "—"],
-    ["Heard from", lead.heard_from ?? "—"],
-    ["Came from", [lead.page, lead.source_cta, lead.utm_source && `utm: ${lead.utm_source}`].filter(Boolean).join(" · ") || "—"],
-    ["Received", formatWhen(lead.created_at)],
-  ];
+  const firstName = lead.full_name.split(" ")[0];
+  const related = (await listLeads()).filter((l) => l.mobile === lead.mobile && l.ref !== lead.ref).slice(0, 5);
+
+  const notes: NoteView[] = [...lead.activity].reverse().map((n) => ({
+    id: n.id,
+    text: n.text,
+    author: n.author || "admin",
+    ago: timeAgo(n.at, now),
+    when: fmtDateTime(n.at),
+    system: !!n.system,
+  }));
+  if (lead.notes) notes.push({ id: "legacy", text: lead.notes, author: "Earlier note", ago: "", when: "", system: false });
+
   return (
     <AdminShell mode={storageMode()}>
-      <Link href="/admin" className="link inline-flex min-h-11 items-center gap-1.5 text-[15px] font-semibold">
+      <Link href="/admin/leads" className={BACK_LINK}>
         <ArrowLeft size={16} aria-hidden="true" /> All leads
       </Link>
-      <div className="mt-3 flex flex-wrap items-center gap-3">
-        <h1 className="text-h3 leading-tight">{lead.full_name}</h1>
-        <StatusChip status={lead.status} label={statusLabel(lead.status)} />
-        <span className="text-[14px] text-slate">{lead.ref}</span>
+
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="text-2xl font-semibold tracking-tight text-white">{lead.full_name}</h1>
+            <LeadStatusBadge status={lead.status} />
+          </div>
+          <p className="mt-1 text-sm text-mist">
+            {lead.locality}, {lead.pincode} · Received {fmtDateTime(lead.created_at)}
+            <CopyRef value={lead.ref} />
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <a href={`tel:+91${lead.mobile}`} className="adm-btn adm-btn-primary">
+            <Phone size={16} aria-hidden="true" /> Call
+          </a>
+          <a
+            href={`https://wa.me/91${wa}?text=${encodeURIComponent(`Hi ${firstName}, this is Homeasy. Thank you for booking a free survey (request ${lead.ref}).`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="adm-btn adm-btn-secondary"
+          >
+            <WhatsAppIcon size={16} /> WhatsApp
+          </a>
+          {lead.email && (
+            <a href={`mailto:${lead.email}?subject=${encodeURIComponent(`Your Homeasy survey request (${lead.ref})`)}`} className="adm-btn adm-btn-secondary">
+              <Mail size={16} aria-hidden="true" /> Email
+            </a>
+          )}
+          <DeleteLead leadRef={lead.ref} name={lead.full_name} />
+        </div>
       </div>
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-        <a href={`tel:+91${lead.mobile}`} className="btn btn-secondary min-h-12 px-5">
-          <Phone size={18} aria-hidden="true" /> Call +91 {lead.mobile}
-        </a>
-        <a href={`https://wa.me/91${wa}`} target="_blank" rel="noopener noreferrer" className="btn btn-outline min-h-12 px-5">
-          <WhatsAppIcon size={18} /> WhatsApp +91 {wa}
-        </a>
-      </div>
-      <div className="mt-6 grid items-start gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
-        <dl className="divide-y divide-line rounded-card border border-line bg-white">
-          {rows.map(([k, v]) => (
-            <div key={k} className="grid gap-1 p-4 sm:grid-cols-[160px_minmax(0,1fr)]">
-              <dt className="text-[14px] text-slate">{k}</dt>
-              <dd className="break-words font-semibold">{v}</dd>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
+          <Card title="Survey request">
+            <p className="mb-2 text-xs uppercase tracking-wider text-ash">Wants to control</p>
+            <div className="mb-4 flex flex-wrap gap-1.5">
+              {lead.appliances?.length ? lead.appliances.map((a) => <Pill key={a}>{a}</Pill>) : <span className="text-sm text-mist">Not said</span>}
             </div>
-          ))}
-        </dl>
-        <div className="rounded-card border border-line bg-white p-5">
-          <h2 className="mb-4 text-h4">Follow-up</h2>
-          <LeadEditor leadRef={lead.ref} status={lead.status} assignedTo={lead.assigned_to ?? ""} notes={lead.notes ?? ""} />
+            <dl className="-mb-2.5 divide-y divide-navy-700 border-t border-navy-700">
+              <InfoRow label="Home type">{lead.home_type}</InfoRow>
+              <InfoRow label="Rooms">{lead.rooms}</InfoRow>
+              <InfoRow label="Switch brand">{lead.switch_brand}</InfoRow>
+              <InfoRow label="Preferred visit">{[lead.preferred_date, lead.time_slot].filter(Boolean).join(", ")}</InfoRow>
+            </dl>
+          </Card>
+
+          <Card title="Activity & notes">
+            <LeadNotes leadRef={lead.ref} notes={notes} />
+          </Card>
+        </div>
+
+        <div className="min-w-0 space-y-6">
+          <Card title="Pipeline">
+            <LeadPipeline leadRef={lead.ref} status={lead.status} priority={lead.priority} assignedTo={lead.assigned_to ?? ""} />
+          </Card>
+
+          <Card title="Contact">
+            <dl className="-my-2.5 divide-y divide-navy-700">
+              <InfoRow label="Mobile">
+                <a href={`tel:+91${lead.mobile}`} className="text-white no-underline hover:text-amber">
+                  +91 {lead.mobile}
+                </a>
+              </InfoRow>
+              <InfoRow label="WhatsApp">{lead.whatsapp && `+91 ${lead.whatsapp}`}</InfoRow>
+              <InfoRow label="Email">
+                {lead.email && (
+                  <a href={`mailto:${lead.email}`} className="text-white no-underline hover:text-amber">
+                    {lead.email}
+                  </a>
+                )}
+              </InfoRow>
+              <InfoRow label="Area">
+                {lead.locality}, {lead.pincode}
+              </InfoRow>
+              <InfoRow label="Service area">{lead.in_service_area ? "Inside (Bihar)" : "Outside"}</InfoRow>
+            </dl>
+          </Card>
+
+          <Card title="Details">
+            <dl className="-my-2.5 divide-y divide-navy-700">
+              <InfoRow label="Heard from">{lead.heard_from}</InfoRow>
+              <InfoRow label="Page">{[lead.page, lead.source_cta].filter(Boolean).join(" · ")}</InfoRow>
+              <InfoRow label="Campaign">{[lead.utm_source, lead.utm_medium, lead.utm_campaign].filter(Boolean).join(" / ")}</InfoRow>
+              <InfoRow label="Updated">{timeAgo(lead.updated_at, now)}</InfoRow>
+            </dl>
+          </Card>
+
+          {related.length > 0 && (
+            <Card title="Previous requests">
+              <ul className="space-y-2.5">
+                {related.map((r) => (
+                  <li key={r.ref}>
+                    <Link href={`/admin/leads/${r.ref}`} className="flex items-center justify-between gap-2 text-sm no-underline hover:text-amber">
+                      <span className="truncate text-mist">
+                        {r.ref} · {fmtDateTime(r.created_at)}
+                      </span>
+                      <LeadStatusBadge status={r.status} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          )}
         </div>
       </div>
     </AdminShell>
@@ -66,7 +147,7 @@ async function LeadDetail({ params }: { params: Promise<{ ref: string }> }) {
 
 export default function LeadPage({ params }: { params: Promise<{ ref: string }> }) {
   return (
-    <Suspense fallback={<p className="p-8 text-body">Loading lead…</p>}>
+    <Suspense fallback={<p className="p-8 text-mist">Loading lead…</p>}>
       <LeadDetail params={params} />
     </Suspense>
   );

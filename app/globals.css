@@ -7,6 +7,8 @@
   --font-sans: var(--font-primary);
   --font-hindi: var(--font-hindi);
 
+  --color-deep: #070B14; /* admin page background: one step deeper than navy */
+  --color-ash: #7C8AA5; /* admin: quiet labels on dark */
   --color-navy: var(--brand-navy);
   --color-navy-800: var(--surface-dark-raised);
   --color-navy-700: var(--surface-dark-hover);
@@ -95,6 +97,48 @@
   .btn-outline-on-dark:hover { background: var(--surface-dark-hover); }
 
   .link { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+}
+
+/* ---------- Admin dashboard (dark, Kynyx-style layout in Homeasy colours) ---------- */
+@layer components {
+  .adm-control {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--surface-dark-hover);
+    background: var(--brand-navy);
+    padding-inline: 12px;
+    min-height: 40px;
+    padding-block: 8px;
+    font-size: 14px;
+    color: #fff;
+  }
+  .adm-control::placeholder { color: #7C8AA5; }
+  .adm-control:focus-visible { outline: 2px solid var(--brand-amber); outline-offset: 1px; }
+  select.adm-control { cursor: pointer; }
+  .adm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding-inline: 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out;
+  }
+  .adm-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .adm-btn-sm { height: 32px; padding-inline: 10px; font-size: 13px; }
+  .adm-btn-primary { background: var(--brand-amber); color: var(--brand-navy); }
+  .adm-btn-primary:hover:not(:disabled) { background: var(--amber-300); }
+  .adm-btn-secondary { border: 1px solid var(--surface-dark-hover); background: var(--surface-dark-raised); color: #fff; }
+  .adm-btn-secondary:hover:not(:disabled) { background: var(--surface-dark-hover); }
+  .adm-btn-ghost { color: var(--text-on-dark-secondary); }
+  .adm-btn-ghost:hover:not(:disabled) { background: rgb(255 255 255 / 0.06); color: #fff; }
+  .adm-btn-danger { border: 1px solid rgb(248 113 113 / 0.4); background: rgb(248 113 113 / 0.1); color: #FCA5A5; }
+  .adm-btn-danger:hover:not(:disabled) { background: rgb(248 113 113 / 0.2); }
 }
 
 /* ---------- Motion (flat brand: movement and colour only, no glows or shadows) ---------- */

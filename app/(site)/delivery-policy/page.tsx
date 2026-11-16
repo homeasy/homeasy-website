@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { CompanyIdentity, LegalPage } from "@/components/company/LegalPage";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Delivery Policy — Homeasy",
   description: "Where Homeasy delivers, how delivery is arranged, and what it costs.",
 };
 
+export function generateMetadata() {
+  return seoMetadata("/delivery-policy", pageMeta);
+}
+
 /** First draft for founder and lawyer review. Delivery times are confirmed per order until the founder sets a standard. */
-export default function DeliveryPolicyPage() {
+export default async function DeliveryPolicyPage() {
+  const site = await getSite();
   return (
     <LegalPage title="Delivery policy" intro="Where we deliver, how delivery is arranged, and what it costs.">
       <h2>1. Who this applies to</h2>

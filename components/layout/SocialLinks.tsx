@@ -1,14 +1,14 @@
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 import { FacebookIcon, InstagramIcon, LinkedInIcon, YouTubeIcon } from "@/components/icons/brand-icons";
 
-const items = [
-  { href: site.social.linkedin, label: "Homeasy on LinkedIn", Icon: LinkedInIcon },
-  { href: site.social.instagram, label: "Homeasy on Instagram", Icon: InstagramIcon },
-  { href: site.social.facebook, label: "Homeasy on Facebook", Icon: FacebookIcon },
-  { href: site.social.youtube, label: "Homeasy on YouTube", Icon: YouTubeIcon },
-];
-
-export function SocialLinks({ className = "" }: { className?: string }) {
+export async function SocialLinks({ className = "" }: { className?: string }) {
+  const site = await getSite();
+  const items = [
+    { href: site.social.linkedin, label: "Homeasy on LinkedIn", Icon: LinkedInIcon },
+    { href: site.social.instagram, label: "Homeasy on Instagram", Icon: InstagramIcon },
+    { href: site.social.facebook, label: "Homeasy on Facebook", Icon: FacebookIcon },
+    { href: site.social.youtube, label: "Homeasy on YouTube", Icon: YouTubeIcon },
+  ];
   return (
     <ul className={`flex items-center gap-1 ${className}`}>
       {items.map(({ href, label, Icon }) => (

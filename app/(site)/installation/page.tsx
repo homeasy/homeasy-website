@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import {
   Camera,
@@ -15,21 +16,28 @@ import {
 } from "lucide-react";
 import serviceAreas from "@/data/service-areas.json";
 import { flags } from "@/lib/flags";
-import { Card, CtaBand, PageHero, Section, SectionHeading, StatusBadge, Steps } from "@/components/ui";
-import { IconList, PromiseStatus, SurveyChecklist, hours, live } from "@/components/service";
+import { Card, PageHero, Section, SectionHeading, StatusBadge, Steps } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
+import { IconList, PromiseStatus, SurveyChecklist, live } from "@/components/service";
+import { getSite } from "@/lib/site-live";
 import { PincodeChecker } from "@/components/service/PincodeChecker";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Smart Home Installation in Patna — Homeasy",
   description: "Free home survey and professional installation by trained Homeasy electricians.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/installation", pageMeta);
+}
 
 function Who({ children }: { children: string }) {
   return <span className="mt-3 block text-[14px] font-semibold text-ink">Who: {children}</span>;
 }
 
 /** PRD §8.4, §26.3, wireframe §25.5 */
-export default function InstallationPage() {
+export default async function InstallationPage() {
+  const { hours } = (await getSite()).contact;
   const timeline = [
     {
       title: "Survey",

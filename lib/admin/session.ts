@@ -7,6 +7,7 @@ import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 
 const COOKIE = "he_admin";
 const MAX_AGE = 60 * 60 * 12; // 12 hours
@@ -54,6 +55,9 @@ export async function isAdmin(): Promise<boolean> {
   // Read the request first, always: this keeps every admin page rendered per request,
   // never baked at build time (when ADMIN_PASSWORD may not be set yet).
   const raw = (await cookies()).get(COOKIE)?.value;
+  // The expiry check below reads the clock. connection() tells Next this must run per request,
+  // including during its runtime prerender pass (otherwise it logs "unstable value Date.now()").
+  await connection();
   if (!adminConfigured() || !raw) return false;
   const [exp, sig] = raw.split(".");
   if (!exp || !sig || !safeEqual(sig, sign(exp))) return false;
@@ -63,4 +67,10 @@ export async function isAdmin(): Promise<boolean> {
 /** Call at the top of every admin page, action and route. */
 export async function requireAdmin() {
   if (!(await isAdmin())) redirect("/admin/login");
+}
+
+/** The time of this request. Server pages use this instead of calling Date.now() while rendering. */
+export async function requestTime(): Promise<number> {
+  await connection();
+  return Date.now();
 }

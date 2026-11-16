@@ -8,13 +8,13 @@ export function LoginForm() {
   return (
     <form action={action} className="mt-6 space-y-4">
       <div>
-        <label htmlFor="email" className="mb-1.5 block text-[15px] font-semibold">
+        <label htmlFor="email" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-mist">
           Email
         </label>
-        <input id="email" name="email" type="email" autoComplete="username" required className="h-12 w-full rounded-input border border-line bg-white px-4" />
+        <input id="email" name="email" type="email" autoComplete="username" required className="adm-control" />
       </div>
       <div>
-        <label htmlFor="password" className="mb-1.5 block text-[15px] font-semibold">
+        <label htmlFor="password" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-mist">
           Password
         </label>
         <input
@@ -24,16 +24,16 @@ export function LoginForm() {
           autoComplete="current-password"
           required
           aria-describedby={state?.error ? "login-error" : undefined}
-          className="h-12 w-full rounded-input border border-line bg-white px-4"
+          className="adm-control"
         />
       </div>
       {state?.error && (
-        <p id="login-error" role="alert" className="text-sm text-error">
+        <p id="login-error" role="alert" className="text-sm text-red-300">
           {state.error}
         </p>
       )}
-      <button type="submit" disabled={pending} className="btn btn-primary min-h-12 w-full disabled:opacity-60">
-        {pending ? "Checking…" : "Log in"}
+      <button type="submit" disabled={pending} className="adm-btn adm-btn-primary w-full">
+        {pending ? "Checking…" : "Sign in"}
       </button>
     </form>
   );

@@ -9,7 +9,7 @@ async function LoginCard() {
   return adminConfigured() ? (
     <LoginForm />
   ) : (
-    <p className="mt-6 rounded-card bg-tint p-4 text-[15px]">
+    <p className="mt-6 rounded-lg border border-amber/30 bg-amber/10 p-4 text-sm text-amber">
       The admin is switched off. Set <code>ADMIN_EMAIL</code> and <code>ADMIN_PASSWORD</code> in the environment settings, then redeploy.
     </p>
   );
@@ -17,11 +17,18 @@ async function LoginCard() {
 
 export default function AdminLoginPage() {
   return (
-    <div className="flex min-h-dvh items-center justify-center p-4">
-      <div className="w-full max-w-[400px] rounded-card border border-line bg-white p-6 sm:p-8">
-        <Image src="/logo/homeasy-logo-light.svg" alt="Homeasy" width={146} height={32} className="h-8 w-auto" />
-        <h1 className="mt-6 text-h4">Admin login</h1>
-        <Suspense fallback={<p className="mt-6 text-body">Loading…</p>}>
+    <div className="on-dark flex min-h-dvh items-center justify-center p-4 [color-scheme:dark]">
+      <div className="w-full max-w-[400px] rounded-xl border border-navy-700 bg-navy p-6 sm:p-8">
+        <div className="flex items-center gap-3">
+          <Image src="/logo/homeasy-icon.svg" alt="" width={40} height={40} />
+          <span className="leading-tight">
+            <span className="block text-lg font-bold tracking-[0.04em] text-white">homeasy</span>
+            <span className="block text-[10px] font-semibold uppercase tracking-[0.3em] text-amber">Admin</span>
+          </span>
+        </div>
+        <h1 className="mt-6 text-xl font-semibold tracking-tight text-white">Sign in</h1>
+        <p className="mt-1 text-sm text-mist">Leads, orders, products and settings.</p>
+        <Suspense fallback={<p className="mt-6 text-sm text-mist">Loading…</p>}>
           <LoginCard />
         </Suspense>
       </div>

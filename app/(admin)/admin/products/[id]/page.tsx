@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { BACK_LINK } from "@/components/admin/ui";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { requireAdmin } from "@/lib/admin/session";
 import { dbMode } from "@/lib/db";
@@ -14,14 +15,14 @@ async function EditProduct({ params }: { params: Promise<{ id: string }> }) {
   const p = (await listAllProducts()).products.find((x) => x.id === id);
   if (!p) notFound();
   return (
-    <AdminShell mode={dbMode()} active="products">
-      <Link href="/admin/products" className="link inline-flex min-h-11 items-center gap-1.5 text-[15px] font-semibold">
+    <AdminShell mode={dbMode()}>
+      <Link href="/admin/products" className={BACK_LINK}>
         <ArrowLeft size={16} aria-hidden="true" /> All products
       </Link>
-      <div className="mb-6 mt-2 flex flex-wrap items-center gap-4">
-        <h1 className="text-h4">{p.name}</h1>
+      <div className="mb-6 flex flex-wrap items-center gap-4">
+        <h1 className="text-2xl font-semibold tracking-tight text-white">{p.name}</h1>
         {p.active && (
-          <a href={`/products/${p.slug}`} target="_blank" rel="noopener noreferrer" className="link inline-flex items-center gap-1.5 text-[14px] font-semibold">
+          <a href={`/products/${p.slug}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-mist no-underline hover:text-amber">
             View on website <ExternalLink size={14} aria-hidden="true" />
           </a>
         )}
@@ -52,7 +53,7 @@ async function EditProduct({ params }: { params: Promise<{ id: string }> }) {
 
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   return (
-    <Suspense fallback={<p className="p-8 text-body">Loading product…</p>}>
+    <Suspense fallback={<p className="p-8 text-mist">Loading product…</p>}>
       <EditProduct params={params} />
     </Suspense>
   );

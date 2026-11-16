@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,16 +21,21 @@ import {
   Wrench,
   Zap,
 } from "lucide-react";
-import { Card, CtaBand, PageHero, Section, SectionHeading } from "@/components/ui";
+import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { reveal } from "@/components/ui/reveal";
 import { LinkedInIcon } from "@/components/icons/brand-icons";
-import { fullAddress, mailHref, site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "About Homeasy — Smart Home Retrofit Company, Patna",
   description:
     "Homeasy Automation Pvt. Ltd. (founded 2025, Patna) makes traditional homes smart without rewiring.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/about", pageMeta);
+}
 
 const VALUES = [
   { icon: Feather, title: "Simplicity", body: "Smart living should be easy to buy, easy to use and easy to explain." },
@@ -83,16 +89,17 @@ const WORK_WITH = [
 ];
 
 /** PRD §8.8. Recognition is hidden until there are confirmed items; GST is omitted until provided. */
-export default function AboutPage() {
+export default async function AboutPage() {
+  const site = await getSite();
   const facts: { label: string; value: ReactNode }[] = [
     { label: "Legal name", value: site.legalName },
     { label: "CIN", value: site.cin },
     { label: "Incorporated", value: String(site.foundedYear) },
-    { label: "Registered office", value: fullAddress },
+    { label: "Registered office", value: site.fullAddress },
     {
       label: "Email",
       value: (
-        <a href={mailHref} className="link">
+        <a href={site.mailHref} className="link">
           {site.contact.email}
         </a>
       ),

@@ -1,22 +1,29 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
-import { site, telHref, whatsappHref } from "@/lib/site";
-import { Card, CtaBand, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
+import { getSite } from "@/lib/site-live";
+import { Card, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
 import { BulletList, Callout, live, replyLine, visitLine } from "@/components/service";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Warranty Policy: 3 Years on Homeasy Modules — Homeasy",
   description:
     "Homeasy modules carry a 3-year warranty against manufacturing defects, from your installation date. See what is covered and how to claim.",
 };
 
+export function generateMetadata() {
+  return seoMetadata("/warranty", pageMeta);
+}
+
 /** PRD §8.15 */
-export default function WarrantyPage() {
+export default async function WarrantyPage() {
+  const site = await getSite();
   const claimSteps = [
     { title: "Contact us", body: "Message us on WhatsApp or call. Tell us what has stopped working." },
     { title: "Get a ticket number", body: "We register your complaint and share a ticket number." },
-    { title: "We reply", body: replyLine },
+    { title: "We reply", body: replyLine(site.contact.hours) },
     { title: "Technician visit", body: visitLine },
   ];
 
@@ -75,14 +82,14 @@ export default function WarrantyPage() {
         </div>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <a
-            href={whatsappHref("general")}
+            href={site.whatsappHref("general")}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-secondary min-h-12 px-6"
           >
             <WhatsAppIcon size={18} /> WhatsApp us
           </a>
-          <a href={telHref} className="btn btn-outline min-h-12 px-6">
+          <a href={site.telHref} className="btn btn-outline min-h-12 px-6">
             Call {site.contact.phoneDisplay}
           </a>
         </div>

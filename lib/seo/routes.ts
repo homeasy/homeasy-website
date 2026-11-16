@@ -1,0 +1,30 @@
+/** The public pages managed by the SEO tools and listed in the sitemap. Add new pages here. */
+export type SeoRoute = { path: string; label: string; kind: "home" | "page" | "legal" };
+
+export const SEO_ROUTES: SeoRoute[] = [
+  { path: "/", label: "Home", kind: "home" },
+  { path: "/how-it-works", label: "How it works", kind: "page" },
+  { path: "/products", label: "Products", kind: "page" },
+  { path: "/pricing", label: "Pricing", kind: "page" },
+  { path: "/installation", label: "Installation", kind: "page" },
+  { path: "/app", label: "Homeasy app", kind: "page" },
+  { path: "/book-survey", label: "Book a free survey", kind: "page" },
+  { path: "/solutions", label: "Solutions", kind: "page" },
+  { path: "/solutions/designers", label: "Interior designers", kind: "page" },
+  { path: "/solutions/builders", label: "Builders & commercial", kind: "page" },
+  { path: "/solutions/electricians", label: "Electricians", kind: "page" },
+  { path: "/solutions/government", label: "Government", kind: "page" },
+  { path: "/about", label: "About", kind: "page" },
+  { path: "/contact", label: "Contact", kind: "page" },
+  { path: "/faq", label: "FAQ", kind: "page" },
+  { path: "/guarantee", label: "Guarantee", kind: "page" },
+  { path: "/warranty", label: "Warranty", kind: "page" },
+  { path: "/roadmap", label: "Roadmap", kind: "page" },
+  { path: "/investors", label: "Investors", kind: "page" },
+  { path: "/careers", label: "Careers", kind: "page" },
+  { path: "/privacy-policy", label: "Privacy policy", kind: "legal" },
+  { path: "/terms-of-service", label: "Terms of service", kind: "legal" },
+  { path: "/refund-policy", label: "Refund policy", kind: "legal" },
+  { path: "/delivery-policy", label: "Delivery policy", kind: "legal" },
+  { path: "/cookie-policy", label: "Cookie policy", kind: "legal" },
+];

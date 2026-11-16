@@ -1,16 +1,22 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { CompanyIdentity, GrievanceContact, LegalPage } from "@/components/company/LegalPage";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Terms of Service — Homeasy",
   description:
     "The terms for using the Homeasy website and for Homeasy surveys, quotes, installation and support in India.",
 };
 
+export function generateMetadata() {
+  return seoMetadata("/terms-of-service", pageMeta);
+}
+
 /** PRD §8.16 + §15. First draft: must be reviewed by a lawyer before go-live. */
-export default function TermsOfServicePage() {
+export default async function TermsOfServicePage() {
+  const site = await getSite();
   return (
     <LegalPage
       title="Terms of service"

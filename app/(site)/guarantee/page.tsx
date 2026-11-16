@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Card, CtaBand, PageHero, Section, SectionHeading, StatusBadge } from "@/components/ui";
-import { BulletList, Callout, PromiseStatus, hours, live } from "@/components/service";
+import { Card, PageHero, Section, SectionHeading, StatusBadge } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
+import { BulletList, Callout, PromiseStatus, live } from "@/components/service";
+import { getSite } from "@/lib/site-live";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "The Homeasy Promise, in Writing — Homeasy",
   description:
     "Our draft guarantee terms: same-look installation, fixed price, WhatsApp replies, technician visits in Patna and a 3-year module warranty.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/guarantee", pageMeta);
+}
 
 type Pledge = {
   id: string;
@@ -22,7 +29,8 @@ type Pledge = {
 };
 
 /** PRD §8.20, §8.20.1 (draft terms), §26.18, wireframe §25.12 */
-export default function GuaranteePage() {
+export default async function GuaranteePage() {
+  const site = await getSite();
   const promises: Pledge[] = [
     {
       id: "same-look",
@@ -77,7 +85,7 @@ export default function GuaranteePage() {
       on: live.reply,
       promise: "During working hours, a real person replies on WhatsApp within 30 minutes.",
       counts: [
-        `Messages sent during working hours: ${hours}.`,
+        `Messages sent during working hours: ${site.contact.hours}.`,
         "A reply means a person gives you an answer or a next step. An automatic acknowledgement doesn't count.",
       ],
       excludes: [

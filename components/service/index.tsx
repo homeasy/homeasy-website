@@ -5,7 +5,6 @@
 import type { ComponentType, ReactNode } from "react";
 import { Cable, Gauge, Info, Ruler, ShieldCheck, ToggleRight, Wifi } from "lucide-react";
 import { usp } from "@/lib/flags";
-import { site } from "@/lib/site";
 import { StatusBadge } from "@/components/ui";
 
 type IconType = ComponentType<{ size?: number; className?: string; "aria-hidden"?: boolean }>;
@@ -19,12 +18,11 @@ export const live = {
   visit: usp("U5"),
 };
 
-/** e.g. "9 am – 9 pm, every day" (from data/site.json) */
-export const hours = site.contact.hours;
-
-export const replyLine = live.reply
-  ? `We reply on WhatsApp within 30 minutes during working hours (${hours}).`
-  : `We reply on WhatsApp during working hours, ${hours}.`;
+/** `hours` is the published working hours, e.g. "9 am – 9 pm, every day": pass `(await getSite()).contact.hours`. */
+export const replyLine = (hours: string) =>
+  live.reply
+    ? `We reply on WhatsApp within 30 minutes during working hours (${hours}).`
+    : `We reply on WhatsApp during working hours, ${hours}.`;
 
 export const visitLine = live.visit
   ? "In Patna, a technician visits within 24 hours."

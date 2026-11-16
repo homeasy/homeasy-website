@@ -1,6 +1,6 @@
 import "server-only";
 import { sendEmail } from "@/lib/leads/notify";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/site-live";
 import type { Order } from "./orders";
 import { inr } from "./pricing";
 
@@ -10,6 +10,7 @@ const esc = (v: unknown) =>
 /** Emails the team (and the customer, when a verified sender is set) about an order. Never throws. */
 export async function notifyOrder(order: Order, event: "placed" | "paid") {
   if (!process.env.RESEND_API_KEY) return;
+  const site = await getSite();
   const to = (process.env.LEAD_NOTIFY_TO || site.contact.email).split(",").map((s) => s.trim()).filter(Boolean);
   const lines = order.items.map((i) => `<tr><td style="padding:4px 12px 4px 0">${esc(i.name)} × ${i.qty}</td><td style="text-align:right">${inr(i.price * i.qty)}</td></tr>`).join("");
   const c = order.contact;

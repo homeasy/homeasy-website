@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { reveal } from "@/components/ui/reveal";
@@ -9,14 +10,19 @@ import {
   Wrench,
   type LucideIcon,
 } from "lucide-react";
-import { Card, CtaBand, PageHero, Section, SectionHeading } from "@/components/ui";
+import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { IconTile } from "@/components/catalog";
 
-export const metadata: Metadata = {
+const pageMeta: Metadata = {
   title: "Homeasy Smart Modules for Indian Switchboxes",
   description:
     "Smart relay, fan controller, power module and IR remote — installed inside your existing switchbox.",
 };
+
+export function generateMetadata() {
+  return seoMetadata("/products", pageMeta);
+}
 
 
 const INFO: { icon: LucideIcon; text: string }[] = [
