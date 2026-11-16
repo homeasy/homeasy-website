@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { ExternalLink, Plus } from "lucide-react";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { StarterArticlesButton } from "@/components/admin/StarterArticlesButton";
+import starter from "@/data/blog-starter.json";
 import { Card, EmptyState, ErrorBanner, PageHeader, Pill, ScoreBadge, fmtDateTime } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin/session";
 import { scoreArticle } from "@/lib/blog/score";
@@ -25,12 +27,19 @@ async function Articles() {
       <Plus size={16} aria-hidden="true" /> New article
     </Link>
   );
+  const have = new Set(articles.map((a) => a.slug));
+  const starterLeft = starter.articles.filter((a) => !have.has(a.slug)).length;
   return (
     <AdminShell mode={dbMode()}>
       <PageHeader
         title="Blog articles"
         description="Write articles for the blog. They are saved as drafts and reach the website when you tick “Show on the website” and press “Publish changes”."
-        actions={newButton}
+        actions={
+          <>
+            {starterLeft > 0 && !problem && <StarterArticlesButton count={starterLeft} />}
+            {newButton}
+          </>
+        }
       />
       {problem && (
         <ErrorBanner title="The articles could not be read.">

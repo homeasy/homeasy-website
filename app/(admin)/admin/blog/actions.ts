@@ -1,6 +1,7 @@
 "use server";
 
 import { refresh } from "next/cache";
+import starter from "@/data/blog-starter.json";
 import { requireAdmin } from "@/lib/admin/session";
 import { cleanArticleHtml } from "@/lib/blog/sanitize";
 import { DEFAULT_AUTHOR, slugify, type ArticleInput } from "@/lib/blog/shared";
@@ -57,6 +58,45 @@ export async function saveArticle(form: ArticleForm): Promise<SaveResult> {
   } catch (e) {
     console.error(e);
     return { ok: false, error: `Could not save. ${dbErrorHint(e)} If this is the first article, run supabase/07-blog.sql in Supabase once.` };
+  }
+}
+
+/**
+ * Adds the ten starter articles (data/blog-starter.json) as drafts marked "Show on the website", skipping any whose
+ * link name already exists. Nothing reaches the website until Publish is pressed.
+ */
+export async function importStarterArticles(): Promise<{ ok: boolean; message: string }> {
+  await requireAdmin();
+  try {
+    const have = new Set((await listArticles()).map((a) => a.slug));
+    const missing = starter.articles.filter((a) => !have.has(a.slug));
+    let added = 0;
+    for (const a of missing) {
+      const id = await createArticle({
+        slug: a.slug,
+        title: a.title,
+        excerpt: a.excerpt,
+        body_html: cleanArticleHtml(a.body_html),
+        cover_url: null,
+        cover_alt: a.cover_alt,
+        author: DEFAULT_AUTHOR,
+        category: a.category,
+        focus_keyword: a.focus_keyword,
+        seo_title: "",
+        seo_description: "",
+        noindex: false,
+        active: true,
+        published_on: todayIST(),
+      });
+      if (id) added++;
+    }
+    refresh();
+    if (!missing.length) return { ok: true, message: "All the starter articles are already here." };
+    if (added < missing.length) return { ok: false, message: `Added ${added} of ${missing.length}. If the blog has not been set up, run supabase/07-blog.sql in Supabase once, then try again.` };
+    return { ok: true, message: `Added ${added} articles. Add a cover photo to each, then press “Publish changes”.` };
+  } catch (e) {
+    console.error(e);
+    return { ok: false, message: `Could not add the articles. ${dbErrorHint(e)} If the blog has not been set up, run supabase/07-blog.sql in Supabase once.` };
   }
 }
 
