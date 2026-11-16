@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import nav from "@/data/navigation.json";
@@ -15,8 +16,23 @@ const linkBase =
 const activeMark =
   "after:absolute after:inset-x-1 after:bottom-1.5 after:h-0.5 after:rounded-full after:bg-blue-700";
 
+/**
+ * The page address is only known per request on pages with a variable address (e.g. /products/[slug]),
+ * so the part that reads it sits in <Suspense>; until it is known the menu shows with no item marked.
+ */
 export function DesktopNav() {
-  const pathname = usePathname();
+  return (
+    <Suspense fallback={<NavList pathname="" />}>
+      <CurrentNav />
+    </Suspense>
+  );
+}
+
+function CurrentNav() {
+  return <NavList pathname={usePathname()} />;
+}
+
+function NavList({ pathname }: { pathname: string }) {
   return (
     <nav aria-label="Main" className="hidden lg:block">
       <ul className="flex items-center gap-3 xl:gap-6">

@@ -1,15 +1,14 @@
 import type { MetadataRoute } from "next";
 import { getContent } from "@/lib/content/store";
-import { isTestSite, site } from "@/lib/site";
+import { site } from "@/lib/site";
 
 const PRIVATE = ["/admin", "/api", "/cart", "/order-placed"];
 // AI assistants that fetch pages to answer a question, and crawlers that collect text to train models.
 const AI_SEARCH = ["OAI-SearchBot", "ChatGPT-User", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Perplexity-User"];
 const AI_TRAINING = ["GPTBot", "ClaudeBot", "CCBot", "Google-Extended", "Meta-ExternalAgent", "Bytespider", "Applebot-Extended"];
 
-/** robots.txt. Test addresses (beta, previews) block everything; the real site blocks only private areas. */
+/** robots.txt for the real site: only private areas are blocked. On test addresses (beta, previews) proxy.ts answers instead and blocks everything. */
 export default async function robots(): Promise<MetadataRoute.Robots> {
-  if (isTestSite) return { rules: { userAgent: "*", disallow: "/" } };
   const { aiCrawlers } = await getContent("seo"); // Admin → SEO → Search tools
   return {
     rules: [

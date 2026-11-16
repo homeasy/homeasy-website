@@ -91,6 +91,47 @@ export async function dbUpdate(table: string, column: string, value: string, pat
   return true;
 }
 
+let localQueue: Promise<void> = Promise.resolve();
+
+/** One row by a key column, or null. */
+export async function dbGet<T extends Row>(table: string, column: string, value: string): Promise<T | null> {
+  const mode = dbMode();
+  if (mode === "supabase") {
+    const { base, headers } = sb(table);
+    const res = await fetch(`${base}?select=*&${column}=eq.${encodeURIComponent(value)}&limit=1`, { headers, cache: "no-store" });
+    if (!res.ok) throw new Error(`[db] get ${table} failed: ${res.status} ${await res.text()}`);
+    return ((await res.json()) as T[])[0] ?? null;
+  }
+  if (mode === "none") return null;
+  return ((await readLocal<T>(table)) ?? []).find((r) => r[column] === value) ?? null;
+}
+
+/** Insert, or replace the row that has the same key. One request. Returns an error text on failure. */
+export async function dbUpsert(table: string, column: string, row: Row): Promise<string | null> {
+  const mode = dbMode();
+  if (mode === "supabase") {
+    const { base, headers } = sb(table);
+    const res = await fetch(`${base}?on_conflict=${column}`, {
+      method: "POST",
+      headers: { ...headers, Prefer: "resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify(row),
+      cache: "no-store",
+    });
+    if (res.ok) return null;
+    const detail = `${res.status} ${await res.text()}`;
+    console.error(`[db] upsert ${table} failed: ${detail}`);
+    return detail;
+  }
+  if (mode === "none") return "No storage is connected.";
+  // local test files: several upserts may arrive together, so do them one at a time per process
+  localQueue = localQueue.then(async () => {
+    const rows = (await readLocal(table)) ?? [];
+    await writeLocal(table, [...rows.filter((r) => r[column] !== row[column]), row]);
+  });
+  await localQueue;
+  return null;
+}
+
 export async function dbDelete(table: string, column: string, value: string): Promise<boolean> {
   const mode = dbMode();
   if (mode === "supabase") {
@@ -132,8 +173,9 @@ export async function saveImage(folder: string, name: string, bytes: Buffer, con
 export function dbErrorHint(e: unknown): string {
   const m = e instanceof Error ? e.message : String(e);
   if (/PGRST205|\b404\b/.test(m)) {
-    return "A database table is missing. In Supabase, open the SQL Editor and run supabase/schema.sql, supabase/02-store.sql and supabase/03-content.sql. Use the same project as SUPABASE_URL.";
+    return "A database table is missing. In Supabase, open the SQL Editor and run supabase/schema.sql, 02-store.sql, 03-content.sql and 04-enquiries.sql from the supabase folder. Use the same project as SUPABASE_URL.";
   }
+  if (/\b413\b|too large/i.test(m)) return "The content is too large to save in one go.";
   if (/PGRST204|42703/.test(m)) {
     return "A database column is missing. In Supabase, open the SQL Editor and run supabase/schema.sql again (it only adds what is missing).";
   }

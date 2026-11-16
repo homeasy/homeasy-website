@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { flags, usp } from "@/lib/flags";
 import { DEFAULT_DESCRIPTION } from "@/lib/seo/meta";
 import { getSite } from "@/lib/site-live";
@@ -35,7 +35,7 @@ export async function SiteChrome({ children }: { children: ReactNode }) {
       postalCode: site.address.pincode,
       addressCountry: "IN",
     },
-    areaServed: { "@type": "State", name: "Bihar" },
+    areaServed: { "@type": "State", name: site.serviceAreaLabel },
     knowsAbout: ["Home automation", "Smart home retrofit", "Smart switch modules", "Smart home installation"],
     sameAs: Object.values(site.social),
   };
@@ -55,8 +55,11 @@ export async function SiteChrome({ children }: { children: ReactNode }) {
       </main>
       <Footer />
       <MobileActionBar />
-      <FloatingWhatsApp whatsappHref={site.whatsappHref("general")} showReplyPromise={usp("U2")} />
-      <RevealObserver />
+      {/* both read the page address, which is only known per request on pages like /products/[slug] */}
+      <Suspense fallback={null}>
+        <FloatingWhatsApp whatsappHref={site.whatsappHref("general")} showReplyPromise={usp("U2")} />
+        <RevealObserver />
+      </Suspense>
     </div>
   );
 }

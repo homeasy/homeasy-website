@@ -12,6 +12,10 @@ const env = process.env;
 
 export const flags = {
   SHOW_PRICES: bool(env.SHOW_PRICES, false),
+  // Online buying (cart, checkout). Founder decision 16 Nov 2026: on. Set SHOW_CART=false to show survey → quote → install only.
+  SHOW_CART: bool(env.SHOW_CART, true),
+  // "Delivery across Bihar" wording and delivery of online orders.
+  DELIVERY_ENABLED: bool(env.DELIVERY_ENABLED, true),
   SHOW_INSTALLS: bool(env.SHOW_INSTALLS, false),
   // Founder decision (16 Nov 2026): the app launches together with the website, so this is on by default.
   // Set APP_LIVE=false if the site ever has to go live before the app.

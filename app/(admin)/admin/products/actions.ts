@@ -3,19 +3,17 @@
 import { refresh, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin/session";
-import { saveImage } from "@/lib/db";
+import { dbErrorHint, saveImage } from "@/lib/db";
 import {
   createProduct,
   deleteProduct,
   importStarterProducts,
-  publishProducts,
   PRODUCT_ICONS,
   PRODUCT_STATUSES,
   updateProduct,
   type ProductInput,
 } from "@/lib/store/products";
-import { publishContent } from "@/lib/content/store";
-import { publishSettings } from "@/lib/store/settings";
+import { publishAll } from "@/lib/store/publish-all";
 
 export type ProductFormState = { error?: string; fields?: Record<string, string> } | undefined;
 
@@ -118,11 +116,19 @@ export async function importStarters() {
   redirect("/admin/products");
 }
 
-/** Makes every saved draft live on the website. */
-export async function publishNow() {
+/** Makes every saved draft live on the website, and says what happened. */
+export async function publishNow(): Promise<{ ok: boolean; message: string }> {
   await requireAdmin();
-  if (await publishProducts()) updateTag("products");
-  if (await publishSettings()) updateTag("store");
-  if (await publishContent()) updateTag("content");
-  refresh();
+  try {
+    const r = await publishAll();
+    for (const tag of r.tags) updateTag(tag);
+    refresh();
+    if (r.failed.length) {
+      return { ok: false, message: `Could not publish: ${r.failed.join(", ")}. ${dbErrorHint(new Error(r.detail))}` };
+    }
+    return { ok: true, message: r.published ? "Published. The website is updated." : "Nothing to publish: the website is already up to date." };
+  } catch (e) {
+    console.error(e);
+    return { ok: false, message: `Could not publish. ${dbErrorHint(e)}` };
+  }
 }

@@ -1,7 +1,6 @@
 import { getContent } from "@/lib/content/store";
 import { DEFAULT_DESCRIPTION } from "@/lib/seo/meta";
 import { SEO_ROUTES } from "@/lib/seo/routes";
-import { isTestSite } from "@/lib/site";
 import { getSite } from "@/lib/site-live";
 import { getPublicProducts } from "@/lib/store/products";
 
@@ -12,7 +11,6 @@ const TEXT = { "Content-Type": "text/plain; charset=utf-8" };
  * Facts only, taken from the same published data as the site. The opening summary is edited in Admin → SEO → Search tools.
  */
 export async function GET() {
-  if (isTestSite) return new Response("This is a test address. See https://homeasy.io\n", { headers: TEXT });
   const [seo, site, products] = await Promise.all([getContent("seo"), getSite(), getPublicProducts()]);
   const url = (path: string) => `${site.url}${path === "/" ? "" : path}`;
   const pages = SEO_ROUTES.filter((r) => !seo.pages[r.path]?.noindex);

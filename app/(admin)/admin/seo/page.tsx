@@ -6,11 +6,12 @@ import { Card, CheckList, ErrorBanner, Kpi, PageHeader, ScoreBadge } from "@/com
 import { requireAdmin } from "@/lib/admin/session";
 import { getDraft } from "@/lib/content/store";
 import { dbErrorHint, dbMode } from "@/lib/db";
-import { auditSite, type PageAudit } from "@/lib/seo/audit";
-import { isTestSite, site } from "@/lib/site";
+import { auditSite, type PageAudit, onTestAddress } from "@/lib/seo/audit";
+import { site } from "@/lib/site";
 
 async function Health() {
   await requireAdmin();
+  const isTestSite = await onTestAddress();
   let pages: PageAudit[] = [];
   let loadError = "";
   try {

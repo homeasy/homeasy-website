@@ -3,8 +3,8 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { cacheLife, cacheTag } from "next/cache";
 import seed from "@/data/products.json";
-import { dbDelete, dbInsert, dbList, dbMode, dbUpdate, type Row } from "@/lib/db";
-import { countChanges, getSnapshot, saveSnapshot } from "./publish";
+import { dbDelete, dbInsert, dbList, dbMode, dbUpdate } from "@/lib/db";
+import { getSnapshot } from "./publish";
 
 export const PRODUCT_STATUSES = ["available", "coming-soon", "planned"] as const;
 export const PRODUCT_ICONS = ["relay", "fan", "power", "ir", "no-neutral", "plug"] as const;
@@ -79,21 +79,6 @@ export async function getPublicProducts(): Promise<Product[]> {
   }
   // before the first publish (or with no storage) show the starter list, so the catalogue is never empty
   return (live ?? seedRows()).filter((p) => p.active).sort((a, b) => a.sort_order - b.sort_order);
-}
-
-/** Draft vs live, for the admin's "waiting to go live" bar. */
-export async function productPublishState(): Promise<{ pending: number; publishedAt: string | null; ready: boolean }> {
-  const rows = await dbList<Product>(TABLE, "sort_order.asc");
-  if (!rows || rows.length === 0) return { pending: 0, publishedAt: null, ready: false };
-  const snap = await getSnapshot<Product[]>("products");
-  return { pending: countChanges(rows as Row[], (snap?.data as Row[] | undefined) ?? null), publishedAt: snap?.published_at ?? null, ready: true };
-}
-
-/** Copies the working products into the live snapshot. */
-export async function publishProducts(): Promise<boolean> {
-  const rows = await dbList<Product>(TABLE, "sort_order.asc");
-  if (!rows || rows.length === 0) return false;
-  return saveSnapshot("products", rows);
 }
 
 export async function getPublicProduct(slug: string): Promise<Product | null> {

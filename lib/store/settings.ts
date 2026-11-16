@@ -3,7 +3,7 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { dbInsert, dbList, dbUpdate, type Row } from "@/lib/db";
 import { DEFAULT_SETTINGS, type StoreSettings } from "./pricing";
-import { getSnapshot, saveSnapshot } from "./publish";
+import { getSnapshot } from "./publish";
 
 const TABLE = "store_settings";
 type SettingsRow = StoreSettings & { key: string; updated_at: string };
@@ -38,16 +38,4 @@ export async function getPublicSettings(): Promise<StoreSettings> {
     console.error(e);
     return DEFAULT_SETTINGS;
   }
-}
-
-export async function settingsPending(): Promise<boolean> {
-  const { settings, exists } = await getDraftSettings();
-  if (!exists) return false;
-  const live = (await getSnapshot<StoreSettings>("store"))?.data;
-  return JSON.stringify(clean(live)) !== JSON.stringify(settings) || !live;
-}
-
-export async function publishSettings(): Promise<boolean> {
-  const { settings, exists } = await getDraftSettings();
-  return exists ? saveSnapshot("store", settings) : false;
 }

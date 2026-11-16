@@ -6,8 +6,8 @@ import { Card, ErrorBanner, PageHeader, Pill } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin/session";
 import { getDraft } from "@/lib/content/store";
 import { dbErrorHint, dbMode } from "@/lib/db";
-import { crawlerFiles } from "@/lib/seo/audit";
-import { isTestSite, site } from "@/lib/site";
+import { crawlerFiles, onTestAddress } from "@/lib/seo/audit";
+import { site } from "@/lib/site";
 
 const LINKS = [
   ["Google Search Console", "https://search.google.com/search-console"],
@@ -18,6 +18,7 @@ const LINKS = [
 
 async function Tools() {
   await requireAdmin();
+  const isTestSite = await onTestAddress();
   let seo: Awaited<ReturnType<typeof getDraft<"seo">>>["data"] | null = null;
   let loadError = "";
   try {

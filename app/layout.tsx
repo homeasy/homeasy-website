@@ -3,15 +3,13 @@ import { preload } from "react-dom";
 import "./globals.css";
 import { getContent } from "@/lib/content/store";
 import { DEFAULT_DESCRIPTION, DEFAULT_TITLE } from "@/lib/seo/meta";
-import { isTestSite, site } from "@/lib/site";
+import { site } from "@/lib/site";
 
 /** Site-wide defaults. Search-engine verification codes come from Admin → SEO → Search tools. */
 export async function generateMetadata(): Promise<Metadata> {
   const { verification: v } = await getContent("seo");
   return {
     metadataBase: new URL(site.url),
-    // beta and preview addresses stay out of search engines
-    ...(isTestSite ? { robots: { index: false, follow: false } } : {}),
     title: { default: DEFAULT_TITLE, template: "%s" },
     description: DEFAULT_DESCRIPTION,
     applicationName: site.brand,

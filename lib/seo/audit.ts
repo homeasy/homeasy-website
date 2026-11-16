@@ -5,7 +5,7 @@
 import "server-only";
 import { headers } from "next/headers";
 import type { SeoDoc } from "@/lib/content/docs";
-import { isTestSite } from "@/lib/site";
+import { isProductionHost } from "@/lib/site";
 import { SEO_ROUTES, type SeoRoute } from "./routes";
 
 export type Level = "good" | "ok" | "bad";
@@ -145,4 +145,7 @@ export async function crawlerFiles(): Promise<{ name: string; ok: boolean; href:
 }
 
 export const band = (score: number): Level => (score >= 80 ? "good" : score >= 55 ? "ok" : "bad");
-export { isTestSite };
+/** true when the admin is being viewed on a test address (beta, preview, localhost), where search engines are blocked. */
+export async function onTestAddress(): Promise<boolean> {
+  return !isProductionHost(new URL(await siteOrigin()).host);
+}

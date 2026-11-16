@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Related } from "@/components/ui/Related";
+import { flags } from "@/lib/flags";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { ProductCard } from "@/components/catalog/ProductCard";
@@ -29,7 +30,7 @@ export function generateMetadata() {
 const INFO: { icon: LucideIcon; text: string }[] = [
   { icon: Wrench, text: "All Homeasy modules are installed by our trained electricians after a free survey." },
   { icon: ShieldCheck, text: "3-year warranty on every Homeasy module." },
-  { icon: Truck, text: "Delivery across Bihar. We recommend a free survey first, to check your switchboxes." },
+  ...(flags.DELIVERY_ENABLED ? [{ icon: Truck, text: "Delivery across Bihar. We recommend a free survey first, to check your switchboxes." }] : []),
 ];
 
 /** Product listing. Shows the PUBLISHED products (edited in /admin/products, live after Publish). */

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { flags } from "@/lib/flags";
 import { CartView } from "@/components/shop/CartView";
 import { PageHero, Section } from "@/components/ui";
 import { getSite } from "@/lib/site-live";
@@ -10,6 +12,7 @@ export const metadata: Metadata = { title: "Your cart — Homeasy", robots: { in
 
 /** Cart and checkout. Only products with a price and "Available" status can be bought. */
 export default async function CartPage() {
+  if (!flags.SHOW_CART) notFound(); // online buying switched off
   const site = await getSite();
   const [products, settings] = await Promise.all([getPublicProducts(), getPublicSettings()]);
   const buyable = products

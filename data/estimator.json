@@ -1,0 +1,6 @@
+{
+  "_note": "Estimator data (PRD §8.18). Prices stay null until the founder confirms them: with SHOW_PRICES=false the estimator shows modules needed, not rupees.",
+  "rooms": [],
+  "appliances": [],
+  "note": ""
+}

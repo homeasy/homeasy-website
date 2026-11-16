@@ -104,3 +104,25 @@ export function BulletList({ items }: { items: ReactNode[] }) {
     </ul>
   );
 }
+
+/**
+ * Service levels in one strip (PRD §5.7): WhatsApp reply, service visit, warranty. Time promises show their
+ * numbers only when the USP flag is on; otherwise the softer, truthful wording.
+ */
+export function ServiceLevelsStrip({ hours, className = "" }: { hours: string; className?: string }) {
+  const items = [
+    { title: live.reply ? "Reply within 30 minutes" : "WhatsApp replies", body: live.reply ? `On WhatsApp, during working hours (${hours}).` : `On WhatsApp during working hours, ${hours}.` },
+    { title: live.visit ? "Visit within 24 hours" : "Local technicians", body: live.visit ? "In Patna, counted from when you report the problem." : "If a visit is needed, we arrange a technician as soon as we can." },
+    { title: "3-year warranty", body: "On Homeasy modules, from your installation date." },
+  ];
+  return (
+    <ul className={`grid gap-4 md:grid-cols-3 ${className}`}>
+      {items.map((i) => (
+        <li key={i.title} className="min-w-0 rounded-card border border-line bg-white p-5">
+          <p className="text-[1.0625rem] font-semibold text-ink">{i.title}</p>
+          <p className="mt-1 text-[15px] text-body">{i.body}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}

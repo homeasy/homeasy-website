@@ -27,7 +27,7 @@ export async function Footer() {
                 <ul className="mt-3 space-y-2">
                   {col.links.map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className="text-sm text-mist no-underline hover:text-white hover:underline">
+                      <Link href={l.href} className="inline-flex min-h-6 items-center text-sm text-mist no-underline hover:text-white hover:underline">
                         {l.label}
                       </Link>
                     </li>

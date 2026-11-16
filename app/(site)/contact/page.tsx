@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Card, PageHero, Section, SectionHeading } from "@/components/ui";
 import { CtaBand } from "@/components/ui/CtaBand";
+import { EnquiryFormBase } from "@/components/forms/EnquiryFormBase";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
 import { usp } from "@/lib/flags";
 import { getSite } from "@/lib/site-live";
@@ -103,6 +104,15 @@ export default async function ContactPage() {
           </Link>
           .
         </p>
+      </Section>
+
+      <Section tone="cloud">
+        <div id="message" className="max-w-[760px] scroll-mt-28">
+          <SectionHeading title="Send us a message" sub="Tell us what you need and we will get back to you during working hours." />
+          <div className="mt-8">
+            <EnquiryFormBase kind="contact" page="/contact" show={{ email: true, city: true, message: true }} submitLabel="Send message" />
+          </div>
+        </div>
       </Section>
 
       <Section>

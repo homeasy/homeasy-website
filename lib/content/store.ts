@@ -7,8 +7,8 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { dbInsert, dbList, dbUpdate, type Row } from "@/lib/db";
-import { getSnapshot, saveSnapshot } from "@/lib/store/publish";
-import { CONTENT_KEYS, SEEDS, type ContentDoc, type ContentKey } from "./docs";
+import { getSnapshot } from "@/lib/store/publish";
+import { SEEDS, type ContentDoc, type ContentKey } from "./docs";
 import { mergeDefaults } from "./shape";
 
 const TABLE = "site_content";
@@ -41,27 +41,6 @@ export async function getContent<K extends ContentKey>(key: K): Promise<ContentD
     console.error(e);
     return SEEDS[key];
   }
-}
-
-/** Which saved documents differ from what is live. */
-export async function contentPending(): Promise<ContentKey[]> {
-  const drafts = (await rows()).filter((r) => (CONTENT_KEYS as string[]).includes(r.key));
-  const out: ContentKey[] = [];
-  for (const d of drafts) {
-    const live = await getSnapshot<unknown>(`content:${d.key}`);
-    if (!live || JSON.stringify(live.data) !== JSON.stringify(d.data)) out.push(d.key as ContentKey);
-  }
-  return out;
-}
-
-/** Copies every changed draft to the live copy. Returns true if anything was published. */
-export async function publishContent(): Promise<boolean> {
-  const pending = await contentPending();
-  if (!pending.length) return false;
-  const all = await rows();
-  let ok = true;
-  for (const key of pending) ok = (await saveSnapshot(`content:${key}`, all.find((r) => r.key === key)!.data)) && ok;
-  return ok;
 }
 
 /** Admin-only documents (not part of publishing), e.g. the keyword list. */

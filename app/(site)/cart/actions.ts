@@ -1,5 +1,6 @@
 "use server";
 
+import { flags } from "@/lib/flags";
 import { headers } from "next/headers";
 import { randomInt } from "node:crypto";
 import { z } from "zod";
@@ -42,6 +43,7 @@ export type PlaceOrderResult =
 
 /** Creates the order. Prices come from the published products on the server; the browser's numbers are ignored. */
 export async function placeOrder(input: unknown): Promise<PlaceOrderResult> {
+  if (!flags.SHOW_CART) return { ok: false, message: "Online ordering is switched off. Please book a free survey or contact us." };
   const h = await headers();
   const ip = (h.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
   if (!allow(`order:${ip}`)) return { ok: false, message: "Too many attempts. Please wait a few minutes, or WhatsApp us." };

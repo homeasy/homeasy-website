@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Camera, Check, ChevronRight, ClipboardCheck, ShieldCheck, Truck, Wrench } from "lucide-react";
 import { PriceLine, ProductCard, ProductVisual } from "@/components/catalog/ProductCard";
+import { flags } from "@/lib/flags";
 import { AddToCart } from "@/components/shop/AddToCart";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
 import { Faq, Section, SectionHeading, StatusBadge } from "@/components/ui";
@@ -34,7 +35,7 @@ async function ProductDetail({ params }: { params: Params }) {
   if (!p) notFound();
   const all = await getPublicProducts();
   const related = all.filter((x) => x.id !== p.id).sort((a, b) => Number(b.featured) - Number(a.featured)).slice(0, 3);
-  const buyable = !!p.price && p.status === "available";
+  const buyable = flags.SHOW_CART && (!!p.price && p.status === "available");
   const paragraphs = p.description.split(/\n\s*\n/).map((t) => t.trim()).filter(Boolean);
   const points = p.highlights.length ? p.highlights : p.controls.map((c) => `Controls: ${c}`);
 
@@ -47,7 +48,7 @@ async function ProductDetail({ params }: { params: Params }) {
       a: "Homeasy modules go inside your existing switchbox, behind your switches. We recommend installation by our trained electricians, after a free survey that checks your switchboxes and wiring.",
     },
     { q: "Warranty and support", a: "Every Homeasy module carries a 3-year warranty against manufacturing defects. You can reach our team on WhatsApp and phone." },
-    { q: "Delivery", a: "We deliver across Bihar. We confirm the delivery date with you after your order." },
+    ...(flags.DELIVERY_ENABLED ? [{ q: "Delivery", a: "We deliver across Bihar. We confirm the delivery date with you after your order." }] : []),
   ];
 
   const jsonLd = {
@@ -151,7 +152,7 @@ async function ProductDetail({ params }: { params: Params }) {
               {[
                 { icon: ShieldCheck, t: "3-year warranty" },
                 { icon: Wrench, t: "Installation available" },
-                { icon: Truck, t: "Delivery across Bihar" },
+                ...(flags.DELIVERY_ENABLED ? [{ icon: Truck, t: "Delivery across Bihar" }] : []),
               ].map(({ icon: Icon, t }) => (
                 <li key={t} className="rounded-card border border-line p-3">
                   <Icon size={20} aria-hidden="true" className="mx-auto text-link" />

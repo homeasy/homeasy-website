@@ -1,10 +1,7 @@
 import type { ReactNode } from "react";
-import { Rocket } from "lucide-react";
-import { publishNow } from "@/app/(admin)/admin/products/actions";
-import { productPublishState } from "@/lib/store/products";
-import { contentPending } from "@/lib/content/store";
-import { settingsPending } from "@/lib/store/settings";
+import { publishState } from "@/lib/store/publish-all";
 import { AdminFrame } from "./AdminFrame";
+import { PublishButton } from "./PublishButton";
 import { fmtDateTime } from "./ui";
 
 /**
@@ -12,31 +9,21 @@ import { fmtDateTime } from "./ui";
  * Nothing edited in the admin is public until this is pressed.
  */
 async function PublishBox() {
-  let pending = 0;
-  let publishedAt: string | null = null;
-  let ready = false;
+  let state: Awaited<ReturnType<typeof publishState>>;
   try {
-    const [products, settings, content] = await Promise.all([productPublishState(), settingsPending(), contentPending()]);
-    pending = products.pending + (settings ? 1 : 0) + content.length;
-    publishedAt = products.publishedAt;
-    ready = true;
-  } catch {
-    return null;
+    state = await publishState();
+  } catch (e) {
+    console.error(e);
+    return <p className="rounded-lg border border-red-400/30 bg-red-400/10 p-3 text-xs text-red-200">Could not check for unpublished changes. Open Settings → System.</p>;
   }
-  if (!ready) return null;
+  const { pending, publishedAt } = state;
   return (
     <div className="rounded-lg border border-navy-700 bg-navy-800 p-3">
       <p className="text-xs text-mist">
         {pending === 0 ? "No unpublished changes." : `${pending} change${pending === 1 ? "" : "s"} waiting to go live`}
       </p>
       {publishedAt && pending === 0 && <p className="mt-0.5 text-[11px] text-ash">Last published {fmtDateTime(publishedAt)}</p>}
-      {pending > 0 && (
-        <form action={publishNow}>
-          <button type="submit" className="adm-btn adm-btn-primary adm-btn-sm mt-2 w-full">
-            <Rocket size={14} aria-hidden="true" /> Publish changes
-          </button>
-        </form>
-      )}
+      {pending > 0 && <PublishButton />}
     </div>
   );
 }

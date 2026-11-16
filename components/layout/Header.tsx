@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getSite } from "@/lib/site-live";
 import { WhatsAppIcon } from "@/components/icons/brand-icons";
+import { flags } from "@/lib/flags";
 import { CartButton, HideOnPhoneWhenCartHasItems } from "@/components/shop/CartButton";
 import { Logo } from "./Logo";
 import { DesktopNav } from "./DesktopNav";
@@ -25,13 +26,20 @@ export async function Header() {
           >
             <WhatsAppIcon size={22} />
           </a>
-          <CartButton />
-          <HideOnPhoneWhenCartHasItems>
+          {flags.SHOW_CART && <CartButton />}
+          {flags.SHOW_CART ? (
+            <HideOnPhoneWhenCartHasItems>
+              <Link href="/book-survey" className="btn btn-primary min-h-10 whitespace-nowrap px-3 text-[15px] lg:min-h-11 lg:px-5">
+                <span className="lg:hidden">Book survey</span>
+                <span className="hidden lg:inline">Book a free survey</span>
+              </Link>
+            </HideOnPhoneWhenCartHasItems>
+          ) : (
             <Link href="/book-survey" className="btn btn-primary min-h-10 whitespace-nowrap px-3 text-[15px] lg:min-h-11 lg:px-5">
-              <span className="lg:hidden">Book survey</span>
-              <span className="hidden lg:inline">Book a free survey</span>
-            </Link>
-          </HideOnPhoneWhenCartHasItems>
+                <span className="lg:hidden">Book survey</span>
+                <span className="hidden lg:inline">Book a free survey</span>
+              </Link>
+          )}
           <MobileDrawer photoHref={site.whatsappHref("photo")} social={<SocialLinks className="justify-center pt-1 text-ink" />} />
         </div>
       </div>

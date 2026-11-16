@@ -99,6 +99,7 @@ export default async function FaqPage() {
                 <li key={g.id}>
                   <a
                     href={`#${g.id}`}
+                    aria-label={`${g.title} questions`}
                     className="inline-flex min-h-11 items-center rounded-full border border-line px-4 text-[15px] font-semibold text-ink hover:bg-cloud lg:rounded-none lg:border-0 lg:px-0"
                   >
                     {g.title}

@@ -3,11 +3,13 @@ import { AdminShell } from "@/components/admin/AdminShell";
 import { Card, InfoRow, PageHeader, Pill } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin/session";
 import { dbMode } from "@/lib/db";
-import { isTestSite, site } from "@/lib/site";
+import { onTestAddress } from "@/lib/seo/audit";
+import { site } from "@/lib/site";
 import { razorpayConfigured } from "@/lib/store/razorpay";
 
 async function System() {
   await requireAdmin();
+  const isTestSite = await onTestAddress();
   const checks = [
     { label: "Database (Supabase)", ok: dbMode() === "supabase", help: "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY" },
     { label: "Email alerts (Resend)", ok: !!process.env.RESEND_API_KEY, help: "RESEND_API_KEY, LEAD_NOTIFY_TO, LEAD_NOTIFY_FROM" },

@@ -4,20 +4,18 @@
  * So nothing goes live by accident, and a redeploy never leaks unpublished edits.
  */
 import "server-only";
-import { dbInsert, dbList, dbUpdate, type Row } from "@/lib/db";
+import { dbGet, dbUpsert, type Row } from "@/lib/db";
 
 const TABLE = "published_content";
 type Snapshot<T> = { key: string; data: T; published_at: string };
 
 export async function getSnapshot<T>(key: string): Promise<Snapshot<T> | null> {
-  const rows = await dbList<Snapshot<T> & Row>(TABLE, "key.asc");
-  return rows?.find((r) => r.key === key) ?? null;
+  return dbGet<Snapshot<T> & Row>(TABLE, "key", key);
 }
 
-export async function saveSnapshot(key: string, data: unknown): Promise<boolean> {
-  const published_at = new Date().toISOString();
-  const existing = await getSnapshot(key);
-  return existing ? dbUpdate(TABLE, "key", key, { data, published_at }) : dbInsert(TABLE, { key, data, published_at });
+/** Writes the live copy in one request. Returns an error text on failure. */
+export async function saveSnapshot(key: string, data: unknown): Promise<string | null> {
+  return dbUpsert(TABLE, "key", { key, data, published_at: new Date().toISOString() });
 }
 
 /** Stable text form of a row for comparing drafts with the live version (ignores timestamps). */
