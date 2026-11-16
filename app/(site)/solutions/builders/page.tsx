@@ -64,7 +64,7 @@ export default function BuildersPage() {
       <PageHero
         eyebrow="Builders and commercial"
         title="Smart-ready homes and spaces, without redesign."
-        sub="Home automation for builders and commercial spaces: upgrade ready flats, show flats, offices and shops with Homeasy retrofit. Give buyers one more reason to choose you."
+        sub="Home automation for builders and commercial spaces: upgrade ready flats, show flats, offices and shops with Homeasy retrofit. Give buyers one more reason to choose you. Based in Patna, we bring smart home solutions to projects across Bihar."
       >
         <a href="#enquire" className="btn btn-primary min-h-12 px-6">
           Discuss a project

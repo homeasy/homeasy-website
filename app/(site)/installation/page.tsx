@@ -124,7 +124,7 @@ export default async function InstallationPage() {
       <PageHero
         eyebrow="Installation"
         title="Professional installation, done right."
-        sub="Smart home installation in Patna, with free home surveys across Bihar. From survey to app setup, our trained electricians handle everything."
+        sub="Smart home installation in Patna, with free home automation surveys across Bihar. From survey to app setup, our installation service and trained electricians handle everything."
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
           Book a free home survey

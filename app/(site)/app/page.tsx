@@ -78,8 +78,8 @@ export default function AppPage() {
         title="One easy app for your whole home."
         sub={
           live
-            ? "The Homeasy smart home app is free for every Homeasy customer, on Android and iOS. We set it up for you at installation."
-            : "The Homeasy smart home app is free for every Homeasy customer. Android and iOS versions are coming soon."
+            ? "The Homeasy smart home app is free for every Homeasy customer, on Android and iOS. Control lights, fans, the geyser and the AC from your phone. App control needs Wi-Fi and internet; we set it up for you at installation."
+            : "The Homeasy smart home app is free for every Homeasy customer. Control lights, fans, the geyser and the AC from your phone. App control needs Wi-Fi and internet. Android and iOS versions are coming soon."
         }
       >
         {/* Store badges go here once APP_LIVE=true and the store links exist. */}

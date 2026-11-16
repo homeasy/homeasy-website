@@ -72,7 +72,7 @@ export default async function InvestorsPage() {
       <PageHero
         eyebrow="Homeasy for investors"
         title="Bringing smart living to India's traditional homes."
-        sub="Most Indian homes can't go smart without rewiring. Homeasy makes it possible with retrofit modules, professional installation and a free app."
+        sub="Most Indian homes can't go smart without rewiring. Homeasy makes it possible with retrofit modules, professional installation and a free app. Homeasy is a smart home startup from Patna, India, incorporated in 2025."
       >
         <a href={investorMail} className="btn btn-primary min-h-12 px-6">
           Contact the founder

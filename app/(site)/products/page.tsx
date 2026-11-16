@@ -40,7 +40,7 @@ export default async function ProductsPage() {
       <PageHero
         eyebrow="Products"
         title="Homeasy smart modules"
-        sub="Each Homeasy smart switch module is designed to fit inside Indian switchboxes and make everyday appliances smart."
+        sub="Each Homeasy retrofit smart switch module is designed to fit inside Indian switchboxes, behind your existing switchboard, so you can control lights, fans, the geyser and the AC from your phone."
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
           Book a free home survey

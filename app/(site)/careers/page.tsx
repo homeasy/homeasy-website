@@ -127,8 +127,8 @@ export default async function CareersPage() {
             survey-to-support service around them.
           </p>
           <p>
-            <strong className="font-semibold text-ink">Where we work:</strong> Homeasy is based in Patna, Bihar. Installation roles work in customers&apos; homes
-            across our service area.
+            <strong className="font-semibold text-ink">Jobs in Patna:</strong> Homeasy is based in Patna, Bihar. Smart home installation jobs are done in
+            customers&apos; homes across our service area.
           </p>
         </div>
       </Section>

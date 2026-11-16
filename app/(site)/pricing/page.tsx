@@ -64,8 +64,8 @@ export default async function PricingPage() {
         title="Simple packages. Exact price after a free survey."
         sub={
           fixedPrice
-            ? "Home automation cost, made simple: one fixed price for modules, installation, app setup and GST. What we quote is what you pay."
-            : "Home automation cost depends on how many rooms and appliances you want to control. Pick a starting point; we confirm your exact price in writing after a free home survey."
+            ? "Home automation cost, made simple: one fixed price for modules, installation, app setup and GST. What we quote is what you pay. We serve homes in Bihar, India."
+            : "Home automation cost depends on how many rooms and appliances you want to control. Pick a starting point; we confirm your exact price in writing after a free home survey. We serve homes in Bihar, India."
         }
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">

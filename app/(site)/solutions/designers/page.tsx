@@ -68,7 +68,7 @@ export default function DesignersPage() {
       <PageHero
         eyebrow="Interior designers and architects"
         title="Smart homes without changing your design."
-        sub="Smart home solutions for interior designers and architects: add smart control behind the switchboards your clients chose. No wall chasing, no redesign."
+        sub="Smart home solutions for interior designers and architects: add home automation behind the switchboards your clients chose. No wall chasing, no redesign."
       >
         <a href="#enquire" className="btn btn-primary min-h-12 px-6">
           Become a design partner

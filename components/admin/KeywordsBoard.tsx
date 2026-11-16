@@ -4,11 +4,16 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import { Plus, Search, Trash2 } from "lucide-react";
 import { addKeyword, deleteKeyword, importRecommendedKeywords, keywordIdeas, updateKeyword } from "@/app/(admin)/admin/seo/actions";
-import { KEYWORD_STATUSES, type Coverage, type Keyword } from "@/lib/seo/keywords";
+import type { Coverage, Keyword } from "@/lib/seo/keywords";
 import { useToast } from "./toast";
 import { Pill } from "./ui";
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+const STATUS = {
+  planned: { label: "Planned", tone: "grey" },
+  optimized: { label: "Optimized", tone: "blue" },
+  ranking: { label: "Ranking", tone: "green" },
+} as const;
 const COVER: Record<Coverage, { label: string; tone: "green" | "amber" | "red" | "grey" }> = {
   strong: { label: "Well covered", tone: "green" },
   partial: { label: "Partly covered", tone: "amber" },
@@ -16,7 +21,7 @@ const COVER: Record<Coverage, { label: string; tone: "green" | "amber" | "red" |
   unassigned: { label: "No page chosen", tone: "grey" },
 };
 
-export function KeywordsBoard({ keywords, coverage, pages, recommended }: { keywords: Keyword[]; coverage: Record<string, Coverage>; pages: { path: string; label: string }[]; recommended: number }) {
+export function KeywordsBoard({ keywords, coverage, pages, recommended, status }: { keywords: Keyword[]; coverage: Record<string, Coverage>; pages: { path: string; label: string }[]; recommended: number; status: Record<string, "planned" | "optimized" | "ranking"> }) {
   const toast = useToast();
   const [busy, start] = useTransition();
   const [term, setTerm] = useState("");
@@ -146,14 +151,8 @@ export function KeywordsBoard({ keywords, coverage, pages, recommended }: { keyw
                           </Link>
                         )}
                       </td>
-                      <td className="px-3 py-3">
-                        <select value={k.status} onChange={(e) => run(() => updateKeyword(k.id, { status: e.target.value }))} aria-label={`Status of ${k.term}`} className="adm-control w-32">
-                          {KEYWORD_STATUSES.map((s) => (
-                            <option key={s} value={s}>
-                              {cap(s)}
-                            </option>
-                          ))}
-                        </select>
+                      <td className="whitespace-nowrap px-3 py-3">
+                        <Pill tone={STATUS[status[k.id] ?? "planned"].tone}>{STATUS[status[k.id] ?? "planned"].label}</Pill>
                       </td>
                       <td className="px-3 py-3">
                         <input

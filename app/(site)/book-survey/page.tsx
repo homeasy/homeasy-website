@@ -47,7 +47,7 @@ export default async function BookSurveyPage() {
       <PageHero
         eyebrow="Free home survey"
         title="Book your free home survey"
-        sub="We'll visit, check your switchboxes and wiring, and give you a clear quote. No obligation."
+        sub="We'll visit, check your switchboxes and wiring, and give you a clear quote. No obligation. It is the first step to home automation and smart home installation in your home."
       />
 
       <Section>

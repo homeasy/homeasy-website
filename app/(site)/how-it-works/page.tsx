@@ -119,7 +119,7 @@ export default async function HowItWorksPage() {
       <PageHero
         eyebrow="How it works"
         title="How Homeasy makes your home smart"
-        sub="Homeasy fits a retrofit smart switch module inside your existing switchbox, behind the switches you already have. It is the simple way to convert a normal switch to a smart switch, with no rewiring. Same switches. Smarter home."
+        sub="Home automation the simple way: Homeasy fits a retrofit smart switch module inside your existing switchbox, behind the switches you already have. It is how we convert a normal switch to a smart switch without rewiring. Same switches. Smarter home."
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
           Book a free home survey

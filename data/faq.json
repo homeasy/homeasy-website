@@ -8,40 +8,63 @@
         {
           "q": "Do I need to change my switches?",
           "parts": [
-            { "text": "No. Homeasy modules fit inside your existing switchbox, behind the switches you already have." }
+            {
+              "text": "No. Homeasy modules fit inside your existing switchbox, behind the switches you already have."
+            }
+          ]
+        },
+        {
+          "q": "How do you convert a normal switch to a smart switch?",
+          "parts": [
+            {
+              "text": "We fit a Homeasy module inside the switchbox, behind your normal switch. The switch looks and works the same, and you can also control it from the app. In most homes this gives you a smart home without rewiring."
+            }
           ]
         },
         {
           "q": "Is rewiring needed?",
           "parts": [
-            { "text": "No rewiring in most homes. Our free survey checks your wiring first. If something needs a small fix, we'll tell you before you pay." }
+            {
+              "text": "No rewiring in most homes. Our free survey checks your wiring first. If something needs a small fix, we'll tell you before you pay."
+            }
           ]
         },
         {
           "q": "Will my switches still work?",
           "parts": [
-            { "text": "Yes. Your switches work by hand exactly as before, even if the internet is down." }
+            {
+              "text": "Yes. Your switches work by hand exactly as before, even if the internet is down."
+            }
           ]
         },
         {
           "q": "Will my switchboard look different?",
           "parts": [
-            { "text": "No. From the outside, it looks the same. If a switchbox needs a visible change, we agree it with you in the quote first." }
+            {
+              "text": "No. From the outside, it looks the same. If a switchbox needs a visible change, we agree it with you in the quote first."
+            }
           ]
         },
         {
           "q": "What is a neutral wire and do I need one?",
           "parts": [
-            { "text": "It's one of the wires in your switchbox. Some modules need it, and our survey checks every box. A no-neutral option is planned." }
+            {
+              "text": "It's one of the wires in your switchbox. Some modules need it, and our survey checks every box. A no-neutral option is planned."
+            }
           ],
           "status": "planned"
         },
         {
           "q": "Is it safe?",
           "parts": [
-            { "text": "Installations are done by trained electricians following a safety checklist. If we find a wiring problem, we tell you first." }
+            {
+              "text": "Installations are done by trained electricians following a safety checklist. If we find a wiring problem, we tell you first."
+            }
           ],
-          "link": { "href": "/installation", "label": "See our safety checklist" }
+          "link": {
+            "href": "/installation",
+            "label": "See our safety checklist"
+          }
         }
       ]
     },
@@ -52,52 +75,94 @@
         {
           "q": "How long does installation take?",
           "parts": [
-            { "text": "It depends on the number of rooms and switchboxes. We'll confirm timing at your survey." }
+            {
+              "text": "It depends on the number of rooms and switchboxes. We'll confirm timing at your survey."
+            }
           ]
         },
         {
           "q": "Is the survey really free?",
-          "parts": [{ "text": "Yes, within our service area." }]
+          "parts": [
+            {
+              "text": "Yes, within our service area."
+            }
+          ]
         },
         {
           "q": "Which areas do you serve?",
           "parts": [
-            { "text": "We survey homes across Bihar. Our head office and pilot are in Patna." }
+            {
+              "text": "We survey homes across Bihar. Our head office and pilot are in Patna."
+            }
           ],
-          "link": { "href": "/installation#service-area", "label": "Check your pincode" }
+          "link": {
+            "href": "/installation#service-area",
+            "label": "Check your pincode"
+          }
         },
         {
           "q": "What warranty do I get?",
           "parts": [
-            { "text": "3 years on Homeasy modules against manufacturing defects." }
+            {
+              "text": "3 years on Homeasy modules against manufacturing defects."
+            }
           ],
-          "link": { "href": "/warranty", "label": "Read our warranty policy" }
+          "link": {
+            "href": "/warranty",
+            "label": "Read our warranty policy"
+          }
         },
         {
           "q": "How fast do you fix problems?",
           "parts": [
-            { "whenOn": "U2", "text": "We reply on WhatsApp within 30 minutes during working hours ({hours})." },
-            { "whenOff": "U2", "text": "We reply on WhatsApp during working hours, {hours}." },
-            { "whenOn": "U5", "text": "In Patna, a technician visits within 24 hours." },
-            { "whenOff": "U5", "text": "If a visit is needed, we arrange a technician as soon as we can. Our 24-hour visit promise for Patna launches after our pilot." }
+            {
+              "whenOn": "U2",
+              "text": "We reply on WhatsApp within 30 minutes during working hours ({hours})."
+            },
+            {
+              "whenOff": "U2",
+              "text": "We reply on WhatsApp during working hours, {hours}."
+            },
+            {
+              "whenOn": "U5",
+              "text": "In Patna, a technician visits within 24 hours."
+            },
+            {
+              "whenOff": "U5",
+              "text": "If a visit is needed, we arrange a technician as soon as we can. Our 24-hour visit promise for Patna launches after our pilot."
+            }
           ],
-          "link": { "href": "/guarantee", "label": "Read our promises" }
+          "link": {
+            "href": "/guarantee",
+            "label": "Read our promises"
+          }
         },
         {
           "q": "Who do I contact for support?",
           "parts": [
-            { "text": "WhatsApp or call our support team on {phone}." }
+            {
+              "text": "WhatsApp or call our support team on {phone}."
+            }
           ],
-          "link": { "href": "/contact", "label": "Contact us" }
+          "link": {
+            "href": "/contact",
+            "label": "Contact us"
+          }
         },
         {
           "q": "Can I add more rooms later?",
-          "parts": [{ "text": "Yes, anytime." }]
+          "parts": [
+            {
+              "text": "Yes, anytime."
+            }
+          ]
         },
         {
           "q": "Can I install it in a rented home?",
           "parts": [
-            { "text": "Usually yes, as nothing visible changes. Check with your landlord first." }
+            {
+              "text": "Usually yes, as nothing visible changes. Check with your landlord first."
+            }
           ]
         }
       ]
@@ -109,35 +174,61 @@
         {
           "q": "Is the app free?",
           "parts": [
-            { "whenOn": "APP_LIVE", "text": "Yes, free for every Homeasy customer." },
-            { "whenOff": "APP_LIVE", "text": "Yes. The Homeasy app will be free for every Homeasy customer. It is coming soon." }
+            {
+              "whenOn": "APP_LIVE",
+              "text": "Yes, free for every Homeasy customer."
+            },
+            {
+              "whenOff": "APP_LIVE",
+              "text": "Yes. The Homeasy app will be free for every Homeasy customer. It is coming soon."
+            }
           ],
-          "statusWhenOff": { "flag": "APP_LIVE", "status": "coming-soon" }
+          "statusWhenOff": {
+            "flag": "APP_LIVE",
+            "status": "coming-soon"
+          }
         },
         {
           "q": "Android or iOS?",
           "parts": [
-            { "whenOn": "APP_LIVE", "text": "Both." },
-            { "whenOff": "APP_LIVE", "text": "Both. The Android and iOS apps are coming soon." }
+            {
+              "whenOn": "APP_LIVE",
+              "text": "Both."
+            },
+            {
+              "whenOff": "APP_LIVE",
+              "text": "Both. The Android and iOS apps are coming soon."
+            }
           ],
-          "statusWhenOff": { "flag": "APP_LIVE", "status": "coming-soon" }
+          "statusWhenOff": {
+            "flag": "APP_LIVE",
+            "status": "coming-soon"
+          }
         },
         {
           "q": "What if the internet goes down?",
           "parts": [
-            { "text": "Your switches always work by hand. App control needs Wi-Fi and internet." }
+            {
+              "text": "Your switches always work by hand. App control needs Wi-Fi and internet."
+            }
           ]
         },
         {
           "q": "Does it work with Alexa or Google Home?",
           "parts": [
-            { "text": "Not yet. Voice assistant support is planned. We'll announce it only when it is ready." }
+            {
+              "text": "Not yet. Voice assistant support is planned. We'll announce it only when it is ready."
+            }
           ],
           "status": "planned"
         },
         {
           "q": "Can my family use it?",
-          "parts": [{ "text": "Yes, with family sharing in the app." }]
+          "parts": [
+            {
+              "text": "Yes, with family sharing in the app."
+            }
+          ]
         }
       ]
     },
@@ -148,21 +239,34 @@
         {
           "q": "How much does it cost?",
           "parts": [
-            { "text": "It depends on your rooms and appliances. Your exact price is confirmed after the free survey." }
+            {
+              "text": "It depends on your rooms and appliances. Your exact price is confirmed after the free survey."
+            }
           ],
-          "link": { "href": "/book-survey", "label": "Book a free home survey" }
+          "link": {
+            "href": "/book-survey",
+            "label": "Book a free home survey"
+          }
         },
         {
           "q": "Is GST included?",
           "parts": [
-            { "whenOn": "U4", "text": "Yes. One price covers modules, installation, app setup and GST." },
-            { "whenOff": "U4", "text": "Your written quote shows the full amount, including taxes, before you decide." }
+            {
+              "whenOn": "U4",
+              "text": "Yes. One price covers modules, installation, app setup and GST."
+            },
+            {
+              "whenOff": "U4",
+              "text": "Your written quote shows the full amount, including taxes, before you decide."
+            }
           ]
         },
         {
           "q": "How do I pay?",
           "parts": [
-            { "text": "We share payment options with your quote. The survey is free." }
+            {
+              "text": "We share payment options with your quote. The survey is free."
+            }
           ]
         }
       ]
@@ -174,16 +278,26 @@
         {
           "q": "Do you work with interior designers, builders or government?",
           "parts": [
-            { "text": "Yes. We work with interior designers, builders, electricians and government buildings." }
+            {
+              "text": "Yes. We work with interior designers, builders, electricians and government buildings."
+            }
           ],
-          "link": { "href": "/solutions", "label": "See Solutions" }
+          "link": {
+            "href": "/solutions",
+            "label": "See Solutions"
+          }
         },
         {
           "q": "Who is behind Homeasy?",
           "parts": [
-            { "text": "{legalName}, founded in {foundedYear} in Patna, led by {founderRole} {founderName}." }
+            {
+              "text": "{legalName}, founded in {foundedYear} in Patna, led by {founderRole} {founderName}."
+            }
           ],
-          "link": { "href": "/about", "label": "About Homeasy" }
+          "link": {
+            "href": "/about",
+            "label": "About Homeasy"
+          }
         }
       ]
     }
