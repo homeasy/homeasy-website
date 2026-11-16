@@ -13,9 +13,22 @@
 import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 
-const env = process.env;
+// Values pasted into the hosting settings often pick up a stray space or line break: read them trimmed.
+const read = (name: string) => (process.env[name] ?? "").trim();
+const env = {
+  get WHATSAPP_TOKEN() { return read("WHATSAPP_TOKEN"); },
+  get WHATSAPP_PHONE_NUMBER_ID() { return read("WHATSAPP_PHONE_NUMBER_ID"); },
+  get WHATSAPP_TEAM_NUMBERS() { return read("WHATSAPP_TEAM_NUMBERS"); },
+  get WHATSAPP_APP_SECRET() { return read("WHATSAPP_APP_SECRET"); },
+  get WHATSAPP_VERIFY_TOKEN() { return read("WHATSAPP_VERIFY_TOKEN"); },
+  get WHATSAPP_TEMPLATE() { return read("WHATSAPP_TEMPLATE"); },
+  get WHATSAPP_TEMPLATE_LANG() { return read("WHATSAPP_TEMPLATE_LANG"); },
+  get WHATSAPP_API_VERSION() { return read("WHATSAPP_API_VERSION"); },
+};
+/** The phrase Meta must send when the webhook is saved. */
+export const verifyToken = () => env.WHATSAPP_VERIFY_TOKEN;
 export const whatsappConfigured = () => !!(env.WHATSAPP_TOKEN && env.WHATSAPP_PHONE_NUMBER_ID && teamNumbers().length);
-export const teamNumbers = () => (env.WHATSAPP_TEAM_NUMBERS ?? "").split(",").map((n) => n.replace(/\D/g, "")).filter((n) => n.length >= 10);
+export const teamNumbers = () => env.WHATSAPP_TEAM_NUMBERS.split(",").map((n) => n.replace(/\D/g, "")).filter((n) => n.length >= 10);
 
 const endpoint = () => `https://graph.facebook.com/${env.WHATSAPP_API_VERSION ? `${env.WHATSAPP_API_VERSION}/` : ""}${env.WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
@@ -82,7 +95,7 @@ function explain(code: number | null, status?: number): string {
   if (code === 131047) return "Outside the 24-hour window: send any WhatsApp message from this phone to the business number first, or set an approved template in WHATSAPP_TEMPLATE.";
   if (code === 131030) return "This number is not on the test number's allowed list. In Meta, add it under \"Send to\" → Manage recipients and verify it.";
   if (code === 10 || code === 200 || code === 3) return "The token does not have permission for this WhatsApp account. Assign the WhatsApp account to the system user with full control, then generate the token again.";
-  if (code === 100) return "Meta did not recognise the phone number ID or the request. Check WHATSAPP_PHONE_NUMBER_ID (the long number under \"Phone number ID\", not the phone number itself).";
+  if (code === 100) return "Either WHATSAPP_PHONE_NUMBER_ID is not the ID Meta shows under \"Phone number ID\", or (more often) this token has no access to the WhatsApp account that owns the number: in Business settings > Accounts > WhatsApp accounts, give the system user full control of that account (test numbers live in a \"Test WhatsApp Business Account\"), then generate the token again.";
   if (code === 131026) return "WhatsApp could not deliver to this number (not on WhatsApp, or it has not accepted the latest terms).";
   return "See the message from Meta above.";
 }
@@ -97,7 +110,7 @@ export type WhatsAppTest = {
 export async function whatsappSelfTest(): Promise<WhatsAppTest> {
   const settings = [
     { label: "WHATSAPP_TOKEN", ok: !!env.WHATSAPP_TOKEN },
-    { label: "WHATSAPP_PHONE_NUMBER_ID", ok: /^\d{8,}$/.test(env.WHATSAPP_PHONE_NUMBER_ID ?? "") },
+    { label: "WHATSAPP_PHONE_NUMBER_ID", ok: /^\d{8,}$/.test(env.WHATSAPP_PHONE_NUMBER_ID) },
     { label: "WHATSAPP_TEAM_NUMBERS", ok: teamNumbers().length > 0 },
     { label: "WHATSAPP_APP_SECRET (for replies coming back)", ok: !!env.WHATSAPP_APP_SECRET },
     { label: "WHATSAPP_VERIFY_TOKEN", ok: !!env.WHATSAPP_VERIFY_TOKEN },

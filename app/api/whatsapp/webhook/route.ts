@@ -1,5 +1,5 @@
 import { getChat, listChats, updateChat } from "@/lib/chat/store";
-import { sendToTeam, teamNumbers, validSignature } from "@/lib/chat/whatsapp";
+import { sendToTeam, teamNumbers, validSignature, verifyToken } from "@/lib/chat/whatsapp";
 
 type Incoming = { from?: string; id?: string; type?: string; text?: { body?: string }; context?: { id?: string } };
 type Payload = { entry?: { changes?: { value?: { messages?: Incoming[] } }[] }[] };
@@ -10,7 +10,7 @@ type Payload = { entry?: { changes?: { value?: { messages?: Incoming[] } }[] }[]
  */
 export async function GET(request: Request) {
   const q = new URL(request.url).searchParams;
-  const ok = q.get("hub.mode") === "subscribe" && !!process.env.WHATSAPP_VERIFY_TOKEN && q.get("hub.verify_token") === process.env.WHATSAPP_VERIFY_TOKEN;
+  const ok = q.get("hub.mode") === "subscribe" && !!verifyToken() && q.get("hub.verify_token") === verifyToken();
   return ok ? new Response(q.get("hub.challenge") ?? "", { status: 200 }) : new Response("forbidden", { status: 403 });
 }
 
