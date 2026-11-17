@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
-import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -92,22 +91,19 @@ const WORK_WITH = [
   { icon: Handshake, title: "Investors", body: "Our model, stage and company facts.", href: "/investors" },
 ];
 
-/** PRD §8.8. Recognition is hidden until there are confirmed items; GST is omitted until provided. */
+/**
+ * PRD §8.8, reworked 17 Nov 2026 (founder): story beside the founder's quote and photo, values folded into
+ * "What drives us", an animated journey, a fuller founder section with the company's legal facts as a small card
+ * (the separate "Company facts" section went: the same facts are in the footer of every page).
+ * Recognition is hidden until there are confirmed items; GST is omitted until provided.
+ */
 export default async function AboutPage() {
   const site = await getSite();
-  const facts: { label: string; value: ReactNode }[] = [
+  const facts: { label: string; value: string }[] = [
     { label: "Legal name", value: site.legalName },
     { label: "CIN", value: site.cin },
     { label: "Incorporated", value: String(site.foundedYear) },
     { label: "Registered office", value: site.fullAddress },
-    {
-      label: "Email",
-      value: (
-        <a href={site.mailHref} className="link">
-          {site.contact.email}
-        </a>
-      ),
-    },
   ];
 
   return (
@@ -127,37 +123,46 @@ export default async function AboutPage() {
       </PageHero>
 
       <Section>
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
-          <div className="min-w-0">
-            <SectionHeading title="Our story" />
-            <div className="mt-6 max-w-[640px] space-y-4 text-lg text-body">
-              <p>Most Indian families live in homes built long before smart homes existed.</p>
-              <p>
-                Going smart usually means new switchboards or fresh wiring. That is costly and dusty, and it changes a
-                home people already like.
-              </p>
-              <p>
-                Modules sold online are cheaper, but they leave the family to work out the wiring alone. When
-                something stops working, there is no one to call.
-              </p>
-              <p>
-                We started Homeasy in {site.foundedYear} to close that gap. Small modules go inside the switchboxes a
-                home already has, installed and supported by our own team.
-              </p>
-              <p>The switches stay. The walls stay. The home simply does more.</p>
-            </div>
+        <SectionHeading title="Our story" />
+        {/* both columns start on the same line and end on the same line */}
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1.35fr_1fr] lg:items-stretch lg:gap-14">
+          <div {...reveal()} className="min-w-0 space-y-4 text-lg text-body">
+            <p>Most Indian families live in homes built long before smart homes existed.</p>
+            <p>
+              Going smart usually means new switchboards or fresh wiring. That is costly and dusty, and it changes a home
+              people already like.
+            </p>
+            <p>
+              Modules sold online are cheaper, but they leave the family to work out the wiring alone. When something
+              stops working, there is no one to call.
+            </p>
+            <p>
+              We started Homeasy in {site.foundedYear} to close that gap. Small modules go inside the switchboxes a home
+              already has, installed and supported by our own team.
+            </p>
+            <p className="font-semibold text-ink">The switches stay. The walls stay. The home simply does more.</p>
           </div>
-          <div className="min-w-0">
-            <blockquote className="rounded-card bg-navy p-6 text-white lg:p-8">
-              <p className="text-h4 font-semibold leading-snug">
-                &ldquo;Most families want a smarter home. They just don&apos;t want broken walls or new
-                switchboards.&rdquo;
+          <figure {...reveal(1)} className="on-dark flex min-w-0 flex-col justify-between gap-8 rounded-card bg-navy p-6 text-white lg:p-8">
+            <blockquote>
+              <span aria-hidden="true" className="block h-8 text-[4rem] font-bold leading-none text-amber">&ldquo;</span>
+              <p className="mt-4 text-h4 font-semibold leading-snug">
+                Most families want a smarter home. They just don&apos;t want broken walls or new switchboards.
               </p>
-              <footer className="mt-4 text-[15px] text-mist">
-                {site.founder.name}, {site.founder.role}
-              </footer>
             </blockquote>
-          </div>
+            <figcaption className="flex items-center gap-4 border-t border-navy-700 pt-6">
+              <Image
+                src={site.founder.photo}
+                alt={`${site.founder.name}, ${site.founder.role} of Homeasy`}
+                width={88}
+                height={88}
+                className="size-[88px] shrink-0 rounded-2xl object-cover"
+              />
+              <span className="min-w-0">
+                <span className="block text-[1.0625rem] font-semibold text-white">{site.founder.name}</span>
+                <span className="block text-[15px] text-mist">{site.founder.role}, Homeasy</span>
+              </span>
+            </figcaption>
+          </figure>
         </div>
       </Section>
 
@@ -171,6 +176,17 @@ export default async function AboutPage() {
                 <h3 className="mt-4 text-[13px] font-semibold uppercase tracking-[0.1em] text-body">{label}</h3>
                 <p className="mt-2 text-h4 font-semibold leading-snug text-ink">{text}</p>
               </Card>
+            </li>
+          ))}
+        </ul>
+        <h3 className="mt-12 text-[13px] font-semibold uppercase tracking-[0.1em] text-body">What we value</h3>
+        <ul className="mt-4 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-5">
+          {VALUES.map(({ icon: Icon, title, body }, i) => (
+            <li key={title} {...reveal(i)} className="min-w-0 border-t border-line pt-4">
+              <p className="flex items-center gap-2 font-semibold text-ink">
+                <Icon aria-hidden="true" className="size-5 shrink-0 text-link" strokeWidth={1.75} /> {title}
+              </p>
+              <p className="mt-1.5 text-[15px] text-body">{body}</p>
             </li>
           ))}
         </ul>
@@ -196,77 +212,108 @@ export default async function AboutPage() {
       </Section>
 
       <Section>
-        <SectionHeading title="Our journey so far" sub="We are a young company, and we would rather show an honest short timeline than a long one." />
-        <ol className="mt-10 max-w-[760px]">
-          {JOURNEY.map((j, i) => (
-            <li key={j.title} {...reveal(i)} className="relative flex gap-5 pb-8 last:pb-0">
-              {i < JOURNEY.length - 1 && <span aria-hidden="true" className="absolute left-[7px] top-5 h-full w-px bg-line" />}
-              <span aria-hidden="true" className={`relative mt-1.5 size-[15px] shrink-0 rounded-full border-2 ${j.when === "Next" ? "border-amber bg-white" : "border-amber bg-amber"}`} />
-              <div className="min-w-0">
-                <p className="text-[13px] font-semibold uppercase tracking-[0.1em] text-slate">{j.when}</p>
-                <h3 className="mt-1 text-[1.1875rem] leading-snug">{j.title}</h3>
-                <p className="mt-1 text-body">{j.body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-        <Link href="/roadmap" className="link mt-8 inline-flex min-h-11 items-center gap-1.5 font-semibold">
-          See what&apos;s next on our roadmap <ArrowRight size={16} aria-hidden="true" />
-        </Link>
-      </Section>
-
-      <Section tone="cloud">
-        <SectionHeading title="What we value" />
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {VALUES.map(({ icon: Icon, title, body }) => (
-            <li key={title} className="min-w-0">
-              <Card className="h-full">
-                <Icon aria-hidden="true" className="size-6 text-link" strokeWidth={1.75} />
-                <h3 className="mt-4 text-[1.1875rem] leading-snug">{title}</h3>
-                <p className="mt-2 text-[15px] text-body">{body}</p>
-              </Card>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <Section>
-        <SectionHeading title="Founder" />
-        <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
-          <Image
-            src={site.founder.photo}
-            alt={`${site.founder.name}, ${site.founder.role} of Homeasy`}
-            width={160}
-            height={160}
-            className="size-40 shrink-0 rounded-full border border-line object-cover"
-          />
-          <div className="min-w-0 max-w-[640px]">
-            <h3 className="text-h4">{site.founder.name}</h3>
-            <p className="mt-1 text-slate">{site.founder.role}</p>
-            <p className="mt-4 text-body">
-              Vishwjeet brings 13+ years of personal experience in interior design, automation and smart-home
-              integration.
-            </p>
-            <ul className="mt-4 list-disc space-y-1 pl-5 text-body">
-              <li>B.Tech, MAIT Rohini (GGSIPU)</li>
-              <li>Diploma in Mechanical Engineering, Government Polytechnic Purnea</li>
-            </ul>
-            <a
-              href={site.social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link mt-4 inline-flex min-h-11 items-center gap-2"
-            >
-              <LinkedInIcon size={18} /> Homeasy on LinkedIn
-            </a>
-            <p className="mt-6 border-t border-line pt-6 text-body">
-              We&apos;re a small, focused team building Homeasy from Patna.
-            </p>
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.35fr] lg:gap-16">
+          <div className="min-w-0 lg:sticky lg:top-28 lg:self-start">
+            <SectionHeading title="Our journey so far" sub="We are a young company, and we would rather show an honest short timeline than a long one." />
+            <Link href="/roadmap" className="link mt-6 inline-flex min-h-11 items-center gap-1.5 font-semibold">
+              See what&apos;s next on our roadmap <ArrowRight size={16} aria-hidden="true" />
+            </Link>
           </div>
+          {/* the amber line fills as you scroll, each dot pops in with its step, and "Now" pulses (app/globals.css) */}
+          <ol className="journey relative min-w-0">
+            <span aria-hidden="true" className="journey-track">
+              <span className="journey-fill" />
+            </span>
+            {JOURNEY.map((j, i) => {
+              const state = j.when === "Now" ? "now" : i > JOURNEY.findIndex((x) => x.when === "Now") ? "ahead" : "done";
+              return (
+                <li key={j.title} {...reveal(i)} className="relative flex gap-5 pb-9 last:pb-0">
+                  <span
+                    aria-hidden="true"
+                    className={`fx-pop relative z-[1] mt-1.5 size-4 shrink-0 rounded-full border-2 border-amber ${state === "ahead" ? "bg-white" : "bg-amber"} ${state === "now" ? "journey-now" : ""}`}
+                  />
+                  <div className="min-w-0">
+                    <p className={`text-[13px] font-semibold uppercase tracking-[0.1em] ${state === "now" ? "text-amber-700" : "text-slate"}`}>
+                      {j.when}
+                      {state === "now" && <span className="sr-only"> (where we are today)</span>}
+                    </p>
+                    <h3 className="mt-1 text-[1.1875rem] leading-snug">{j.title}</h3>
+                    <p className="mt-1 text-body">{j.body}</p>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </Section>
 
       <Section tone="cloud">
+        <SectionHeading title="The founder" />
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:items-start lg:gap-12">
+          <div {...reveal()} className="flex min-w-0 flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+            <Image
+              src={site.founder.photo}
+              alt={`${site.founder.name}, ${site.founder.role} of Homeasy`}
+              width={200}
+              height={200}
+              className="size-40 shrink-0 rounded-card border border-line object-cover sm:size-[200px]"
+            />
+            <div className="min-w-0">
+              <h3 className="text-h4">{site.founder.name}</h3>
+              <p className="mt-1 text-slate">{site.founder.role}</p>
+              <div className="mt-4 space-y-3 text-body">
+                <p>
+                  Vishwjeet brings 13+ years of personal experience in interior design, automation and smart-home
+                  integration.
+                </p>
+                <p>
+                  That background covers both sides of the job: how a home is designed and finished, and how its
+                  electrical and automation systems are put together.
+                </p>
+                <p>
+                  He started Homeasy in Patna in {site.foundedYear} around one idea: a home should become smart without
+                  breaking walls or changing the switchboards a family already has.
+                </p>
+                <p>
+                  He also set the rule this website follows: publish only what is true today, and mark everything else
+                  as planned.
+                </p>
+              </div>
+              <ul className="mt-5 flex flex-wrap gap-2 text-[15px]">
+                <li className="rounded-full border border-line bg-white px-3 py-1.5 text-body">B.Tech, MAIT Rohini (GGSIPU)</li>
+                <li className="rounded-full border border-line bg-white px-3 py-1.5 text-body">
+                  Diploma in Mechanical Engineering, Government Polytechnic Purnea
+                </li>
+              </ul>
+              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-1">
+                {site.founder.linkedin && (
+                  <a href={site.founder.linkedin} target="_blank" rel="noopener noreferrer" className="link inline-flex min-h-11 items-center gap-2 font-semibold">
+                    <LinkedInIcon size={18} /> {site.founder.name.split(" ")[0]} on LinkedIn
+                  </a>
+                )}
+                <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" className="link inline-flex min-h-11 items-center gap-2">
+                  <LinkedInIcon size={18} /> Homeasy on LinkedIn
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <Card className="min-w-0">
+            <h3 className="text-[13px] font-semibold uppercase tracking-[0.1em] text-body">The company</h3>
+            <dl className="mt-3 divide-y divide-line">
+              {facts.map((f) => (
+                <div key={f.label} className="py-3 last:pb-0">
+                  <dt className="text-[14px] text-slate">{f.label}</dt>
+                  <dd className="mt-0.5 min-w-0 break-words font-semibold text-ink">{f.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-4 border-t border-line pt-4 text-[15px] text-body">We&apos;re a small, focused team building Homeasy from Patna.</p>
+          </Card>
+        </div>
+      </Section>
+
+      <Section>
         <SectionHeading title="Who we work with" />
         <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {WORK_WITH.map(({ icon: Icon, title, body, href }, i) => (
@@ -281,20 +328,6 @@ export default async function AboutPage() {
             </li>
           ))}
         </ul>
-      </Section>
-
-      <Section>
-        <SectionHeading title="Company facts" />
-        <Card className="mt-10 max-w-[720px]">
-          <dl className="divide-y divide-line">
-            {facts.map((f) => (
-              <div key={f.label} className="grid gap-1 py-4 first:pt-0 last:pb-0 sm:grid-cols-[180px_1fr] sm:gap-6">
-                <dt className="text-[15px] text-slate">{f.label}</dt>
-                <dd className="min-w-0 break-words font-semibold text-ink">{f.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </Card>
       </Section>
 
       <Related paths={["/how-it-works", "/careers", "/contact"]} />
