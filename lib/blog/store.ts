@@ -11,9 +11,19 @@ import type { Article, ArticleInput } from "./shared";
 
 const TABLE = "articles";
 
+/**
+ * The first starter articles were added with photo descriptions that began "Illustration: …". The founder does not
+ * want that word anywhere (17 Nov 2026), so it is dropped whenever an article is read, in the admin and on the site.
+ * Saving the article in the admin then stores the clean description.
+ */
+function clean<T extends Article>(a: T): T {
+  const alt = (a.cover_alt ?? "").replace(/^illustration:\s*/i, "");
+  return alt === a.cover_alt ? a : { ...a, cover_alt: alt.charAt(0).toUpperCase() + alt.slice(1) };
+}
+
 /** Every article, newest first, for the admin. */
 export async function listArticles(): Promise<Article[]> {
-  return ((await dbList<Article>(TABLE, "updated_at.desc")) ?? []) as Article[];
+  return (((await dbList<Article>(TABLE, "updated_at.desc")) ?? []) as Article[]).map(clean);
 }
 
 export async function getArticle(id: string): Promise<Article | null> {
@@ -40,6 +50,7 @@ export async function getPublicArticles(): Promise<Article[]> {
   try {
     const live = (await getSnapshot<Article[]>("articles"))?.data ?? [];
     return live
+      .map(clean)
       .filter((a) => a.active && a.slug && a.title)
       .sort((a, b) => (b.published_on ?? "").localeCompare(a.published_on ?? "") || b.created_at.localeCompare(a.created_at));
   } catch (e) {
