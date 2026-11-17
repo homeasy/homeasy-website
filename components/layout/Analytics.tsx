@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useSyncExternalStore } from "react";
-import { GA_ID, getConsent, onConsentChange, track } from "@/lib/analytics";
+import { GA_ID, getConsent, onConsentChange, sendConsent, track } from "@/lib/analytics";
 
 /** Where on the page a click happened, in the words PRD §14.1 uses. */
 function locationOf(el: Element): string {
@@ -15,31 +15,20 @@ function locationOf(el: Element): string {
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 40);
 
 /**
- * Google Analytics 4, loaded only when NEXT_PUBLIC_GA_ID is set AND the visitor has accepted analytics
- * cookies (PRD §14, §15). Also sends the site-wide events of PRD §14.1 from one place: CTA, WhatsApp, call and
- * photo-check clicks, FAQ opens, scroll depth, package cards coming into view, and the guarantee and sample
- * report page views. Form-specific events are sent by the forms themselves. Renders nothing.
+ * Sends the site-wide events of PRD §14.1 from one place, and only after the visitor has accepted analytics
+ * cookies: CTA, WhatsApp, call and photo-check clicks, FAQ opens, scroll depth, package cards coming into view,
+ * and the guarantee and sample report page views. Form-specific events are sent by the forms themselves.
+ * Page views are counted by the Google tag itself. Renders nothing.
  */
 export function Analytics() {
   const pathname = usePathname();
   const consent = useSyncExternalStore(onConsentChange, getConsent, () => null);
   const on = !!GA_ID && consent === "granted";
 
-  // load gtag once consent is given
+  // the tag itself is in the page's HTML (tagSnippet in SiteChrome); here it only learns the visitor's choice
   useEffect(() => {
-    if (!on || document.getElementById("ga4")) return;
-    window.dataLayer = window.dataLayer ?? [];
-    window.gtag = function gtag(...args: unknown[]) {
-      window.dataLayer!.push(args);
-    };
-    window.gtag("js", new Date());
-    window.gtag("config", GA_ID, { anonymize_ip: true });
-    const script = document.createElement("script");
-    script.id = "ga4";
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-    document.head.appendChild(script);
-  }, [on]);
+    if (GA_ID && consent) sendConsent(consent);
+  }, [consent]);
 
   // the two page-specific events
   useEffect(() => {

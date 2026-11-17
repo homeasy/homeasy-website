@@ -8,6 +8,7 @@ import { BookingModal } from "./BookingModal";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { CookieBanner } from "./CookieBanner";
 import { FloatingWhatsApp } from "./FloatingWhatsApp";
+import { TAG_ID, tagSnippet } from "@/lib/analytics";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { MobileActionBar } from "./MobileActionBar";
@@ -48,6 +49,8 @@ export async function SiteChrome({ children }: { children: ReactNode }) {
   return (
     <div className="site-chrome flex min-h-dvh flex-col">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replace(/</g, "\\u003c") }} />
+      {/* Google tag: consent defaults first, then Google's script (lib/analytics.ts) */}
+      {TAG_ID && <script dangerouslySetInnerHTML={{ __html: tagSnippet() }} />}
       <a
         href="#main"
         className="sr-only z-50 rounded-button bg-navy px-4 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"

@@ -41,7 +41,8 @@
     "google": "https://www.google.com/maps?cid=11883200515790212873"
   },
   "analytics": {
-    "ga4": "G-CDVCNJQLVJ"
+    "ga4": "G-CDVCNJQLVJ",
+    "tag": "GTM-P7JT2BRK"
   },
   "launch": {
     "label": "January 2027",
