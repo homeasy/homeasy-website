@@ -34,6 +34,8 @@ export const flags = {
   // The blog (founder, 17 Nov 2026). Its footer link and list stay quiet until the first article is published.
   SHOW_BLOG: bool(env.SHOW_BLOG, true),
   SHOW_CERTIFICATIONS: bool(env.SHOW_CERTIFICATIONS, false),
+  // Product pictures are illustrations until real module photos exist: while false, every product picture carries an "Illustrative render" label.
+  PRODUCT_PHOTOS_REAL: bool(env.PRODUCT_PHOTOS_REAL, false),
   SHOW_DEMO: bool(env.SHOW_DEMO, false),
 } as const;
 

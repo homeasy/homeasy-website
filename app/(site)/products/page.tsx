@@ -5,7 +5,7 @@ import { flags } from "@/lib/flags";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { ProductCard } from "@/components/catalog/ProductCard";
-import { reveal } from "@/components/ui/reveal";
+import { ProductExplorer } from "@/components/catalog/ProductExplorer";
 import { getPublicProducts } from "@/lib/store/products";
 import {
   Truck,
@@ -57,16 +57,12 @@ export default async function ProductsPage() {
 
       <Section>
         <SectionHeading
-          title="The module line-up"
+          title="What do you want to control?"
           sub="Every module is installed by our trained electricians after a free survey. We confirm the right ones for your home at the survey."
         />
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-          {products.map((p, i) => (
-            <li key={p.id} id={p.slug} {...reveal(i)} className="min-w-0 scroll-mt-28">
-              <ProductCard product={p} />
-            </li>
-          ))}
-        </ul>
+        <div className="mt-10">
+          <ProductExplorer items={products.map((p) => ({ slug: p.slug, controls: p.controls, card: <ProductCard product={p} /> }))} />
+        </div>
       </Section>
 
       <Section tone="cloud">

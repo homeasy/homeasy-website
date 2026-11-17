@@ -290,10 +290,6 @@ export default async function AboutPage() {
                   He started Homeasy in Patna in {site.foundedYear} around one idea: a home should become smart without
                   breaking walls or changing the switchboards a family already has.
                 </p>
-                <p>
-                  He also set the rule this website follows: publish only what is true today, and mark everything else
-                  as planned.
-                </p>
               </div>
             </div>
           </div>
