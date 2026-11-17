@@ -259,8 +259,24 @@ export default async function AboutPage() {
               className="size-40 shrink-0 rounded-card border border-line object-cover sm:size-[200px]"
             />
             <div className="min-w-0">
-              <h3 className="text-h4">{site.founder.name}</h3>
-              <p className="mt-1 text-slate">{site.founder.role}</p>
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <h3 className="text-h4">{site.founder.name}</h3>
+                  <p className="mt-1 text-slate">{site.founder.role}</p>
+                </div>
+                {site.founder.linkedin && (
+                  <a
+                    href={site.founder.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${site.founder.name} on LinkedIn (opens in a new tab)`}
+                    title="LinkedIn"
+                    className="inline-flex size-11 shrink-0 items-center justify-center rounded-button border border-line bg-white text-link transition-colors hover:border-navy hover:text-navy"
+                  >
+                    <LinkedInIcon size={22} />
+                  </a>
+                )}
+              </div>
               <div className="mt-4 space-y-3 text-body">
                 <p>
                   Vishwjeet brings 13+ years of personal experience in interior design, automation and smart-home
@@ -285,16 +301,6 @@ export default async function AboutPage() {
                   Diploma in Mechanical Engineering, Government Polytechnic Purnea
                 </li>
               </ul>
-              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-1">
-                {site.founder.linkedin && (
-                  <a href={site.founder.linkedin} target="_blank" rel="noopener noreferrer" className="link inline-flex min-h-11 items-center gap-2 font-semibold">
-                    <LinkedInIcon size={18} /> {site.founder.name.split(" ")[0]} on LinkedIn
-                  </a>
-                )}
-                <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" className="link inline-flex min-h-11 items-center gap-2">
-                  <LinkedInIcon size={18} /> Homeasy on LinkedIn
-                </a>
-              </div>
             </div>
           </div>
 
