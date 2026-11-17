@@ -279,12 +279,12 @@ export default async function AboutPage() {
               </div>
               <div className="mt-4 space-y-3 text-body">
                 <p>
-                  Vishwjeet brings 13+ years of personal experience in interior design, automation and smart-home
-                  integration.
+                  An engineer by training and an interior designer by passion, Vishwjeet has {site.founder.experience} of
+                  personal experience in interior design, automation and smart-home integration.
                 </p>
                 <p>
-                  That background covers both sides of the job: how a home is designed and finished, and how its
-                  electrical and automation systems are put together.
+                  That covers both sides of the job: how a home is designed and finished, and how its electrical and
+                  automation systems are put together.
                 </p>
                 <p>
                   He started Homeasy in Patna in {site.foundedYear} around one idea: a home should become smart without
@@ -295,12 +295,6 @@ export default async function AboutPage() {
                   as planned.
                 </p>
               </div>
-              <ul className="mt-5 flex flex-wrap gap-2 text-[15px]">
-                <li className="rounded-full border border-line bg-white px-3 py-1.5 text-body">B.Tech, MAIT Rohini (GGSIPU)</li>
-                <li className="rounded-full border border-line bg-white px-3 py-1.5 text-body">
-                  Diploma in Mechanical Engineering, Government Polytechnic Purnea
-                </li>
-              </ul>
             </div>
           </div>
 

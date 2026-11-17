@@ -113,7 +113,7 @@ export default async function InvestorsPage() {
           <Card className="min-w-0">
             <h2 className="text-h4">Founder</h2>
             <p className="mt-4 text-body">
-              {site.founder.name}, {site.founder.role}. He brings 13+ years of personal experience in interior design,
+              {site.founder.name}, {site.founder.role}. He brings {site.founder.experience} of personal experience in interior design,
               automation and smart-home integration.
             </p>
             <p className="mt-4">
