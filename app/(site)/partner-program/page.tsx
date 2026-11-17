@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Building2, Handshake, Home, PencilRuler, ShieldCheck, Users, Wallet, Wrench, type LucideIcon } from "lucide-react";
+import { Building2, Handshake, Home, PencilRuler, ShieldCheck, Users, Video, Wallet, Wrench, type LucideIcon } from "lucide-react";
 import { IconTile } from "@/components/catalog";
 import { EnquiryFormBase } from "@/components/forms/EnquiryFormBase";
 import { Card, Faq, PageHero, Section, SectionHeading, Steps } from "@/components/ui";
@@ -32,6 +32,7 @@ const WHO: { icon: LucideIcon; title: string; body: string; href?: string }[] = 
   { icon: PencilRuler, title: "Interior designers and architects", body: "Offer smart control without changing the switchboards your client chose.", href: "/solutions/designers" },
   { icon: Building2, title: "Builders and property consultants", body: "Give buyers and tenants one more reason to choose a flat.", href: "/solutions/builders" },
   { icon: Home, title: "Homeowners", body: "Happy with the idea? Refer a neighbour, a relative or a friend." },
+  { icon: Video, title: "Content creators and influencers", body: "If your audience is in Bihar, show them how an existing home becomes smart, and refer the families who ask." },
   { icon: Users, title: "Anyone with a network", body: "Shop owners, society members, students: if you know homes in Bihar, you can refer them." },
 ];
 
@@ -75,7 +76,7 @@ export default function PartnerProgramPage() {
                   name: "partner_type",
                   label: "I am",
                   type: "select",
-                  options: ["An electrician", "An interior designer or architect", "A builder or property consultant", "A homeowner", "Something else"],
+                  options: ["An electrician", "An interior designer or architect", "A builder or property consultant", "A content creator or influencer", "A homeowner", "Something else"],
                   required: true,
                 },
               ]}
