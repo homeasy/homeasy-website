@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { StatusBadge } from "@/components/ui";
-import { flags } from "@/lib/flags";
 import type { Product } from "@/lib/store/products";
 import { PRODUCT_ICON_MAP } from "./product-icons";
 
@@ -22,9 +21,6 @@ export function ProductVisual({ product, className = "", sizes }: { product: Pic
           sizes={sizes}
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-      ) : null}
-      {product.image_url && !flags.PRODUCT_PHOTOS_REAL ? (
-        <span className="absolute bottom-2 right-2 rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-semibold text-body">Illustrative render</span>
       ) : null}
       {product.image_url ? null : (
         <span className="absolute inset-0 flex items-center justify-center text-blue-800">
