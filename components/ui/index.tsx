@@ -62,20 +62,33 @@ export function PageHero({
   title,
   sub,
   children,
+  aside,
 }: {
   eyebrow?: string;
   title: ReactNode;
   sub?: ReactNode;
   children?: ReactNode;
+  /** a picture or panel for the right-hand side on wide screens (hidden on phones, where the text comes first) */
+  aside?: ReactNode;
 }) {
+  const text = (
+    <>
+      {eyebrow && <p className="text-[13px] font-semibold uppercase tracking-[0.1em] text-slate">{eyebrow}</p>}
+      <h1 className="mt-3 max-w-[820px] text-h1 leading-[1.1]">{title}</h1>
+      {sub && <p className="mt-5 max-w-[720px] text-lg text-body">{sub}</p>}
+      {children && <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">{children}</div>}
+    </>
+  );
   return (
     <section className="bg-cloud">
-      <div className="container-page py-14 lg:py-24">
-        {eyebrow && <p className="text-[13px] font-semibold uppercase tracking-[0.1em] text-slate">{eyebrow}</p>}
-        <h1 className="mt-3 max-w-[820px] text-h1 leading-[1.1]">{title}</h1>
-        {sub && <p className="mt-5 max-w-[720px] text-lg text-body">{sub}</p>}
-        {children && <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">{children}</div>}
-      </div>
+      {aside ? (
+        <div className="container-page grid items-center gap-12 py-14 lg:grid-cols-[1.15fr_1fr] lg:py-20">
+          <div className="min-w-0">{text}</div>
+          <div className="hidden min-w-0 lg:block">{aside}</div>
+        </div>
+      ) : (
+        <div className="container-page py-14 lg:py-24">{text}</div>
+      )}
     </section>
   );
 }

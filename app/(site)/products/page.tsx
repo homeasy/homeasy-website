@@ -6,6 +6,7 @@ import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { ProductExplorer } from "@/components/catalog/ProductExplorer";
+import { ProductHeroArt } from "@/components/catalog/ProductHeroArt";
 import { getPublicProducts } from "@/lib/store/products";
 import {
   Truck,
@@ -46,6 +47,7 @@ export default async function ProductsPage() {
         eyebrow="Products"
         title="Homeasy smart modules"
         sub="Each Homeasy retrofit smart switch module is designed to fit inside Indian switchboxes, behind your existing switchboard, so you can control lights, fans, the geyser and the AC from your phone."
+        aside={<ProductHeroArt products={products.filter((p) => p.image_url).slice(0, 4)} />}
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
           Book a free home survey
