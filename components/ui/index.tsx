@@ -68,7 +68,7 @@ export function PageHero({
   title: ReactNode;
   sub?: ReactNode;
   children?: ReactNode;
-  /** a picture or panel for the right-hand side on wide screens (hidden on phones, where the text comes first) */
+  /** a picture or panel for the right-hand side on wide screens; on phones it sits below the text */
   aside?: ReactNode;
 }) {
   const text = (
@@ -82,9 +82,9 @@ export function PageHero({
   return (
     <section className="bg-cloud">
       {aside ? (
-        <div className="container-page grid items-center gap-12 py-14 lg:grid-cols-[1.15fr_1fr] lg:py-20">
+        <div className="container-page grid items-center gap-10 py-14 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:py-20">
           <div className="min-w-0">{text}</div>
-          <div className="hidden min-w-0 lg:block">{aside}</div>
+          <div className="min-w-0">{aside}</div>
         </div>
       ) : (
         <div className="container-page py-14 lg:py-24">{text}</div>

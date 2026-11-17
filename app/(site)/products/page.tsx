@@ -6,7 +6,7 @@ import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { ProductExplorer } from "@/components/catalog/ProductExplorer";
-import { ProductHeroArt } from "@/components/catalog/ProductHeroArt";
+import { SwitchboardPlay, type PlayItem } from "@/components/catalog/SwitchboardPlay";
 import { getPublicProducts } from "@/lib/store/products";
 import {
   Truck,
@@ -40,6 +40,18 @@ const INFO: { icon: LucideIcon; text: string }[] = [
 /** Product listing. Shows the PUBLISHED products (edited in /admin/products, live after Publish). */
 export default async function ProductsPage() {
   const products = await getPublicProducts();
+  // the hero's switchboard: which pictured module sits behind each switch (matched on what the module controls)
+  const behind = (test: (controls: string) => boolean) => products.find((p) => p.image_url && test(p.controls.join(" | ")));
+  const wanted: [PlayItem["key"], (c: string) => boolean][] = [
+    ["light", (c) => /\blight/i.test(c)],
+    ["fan", (c) => /\bfan/i.test(c)],
+    ["geyser", (c) => /geyser/i.test(c)],
+    ["ac", (c) => /\bac\b/i.test(c) && /\btv\b/i.test(c)],
+  ];
+  const play: PlayItem[] = wanted.flatMap(([key, test]) => {
+    const p = behind(test);
+    return p ? [{ key, slug: p.slug, name: p.name, image: p.image_url! }] : [];
+  });
   return (
     <>
       <BreadcrumbJsonLd path="/products" />
@@ -47,7 +59,7 @@ export default async function ProductsPage() {
         eyebrow="Products"
         title="Homeasy smart modules"
         sub="Each Homeasy retrofit smart switch module is designed to fit inside Indian switchboxes, behind your existing switchboard, so you can control lights, fans, the geyser and the AC from your phone."
-        aside={<ProductHeroArt products={products.filter((p) => p.image_url).slice(0, 4)} />}
+        aside={<SwitchboardPlay items={play} />}
       >
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
           Book a free home survey
