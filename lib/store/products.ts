@@ -37,6 +37,14 @@ export type Product = {
 
 const TABLE = "products";
 
+/**
+ * Pictures that ship with the website (public/images/products/<link-name>.webp, 1200 × 1200). A product uses its
+ * own uploaded photo when it has one; otherwise the picture here, so the catalogue has pictures without anyone
+ * uploading them. Add a file and its link name here when a new product gets a picture.
+ */
+const BUILT_IN_PICTURES = new Set(["smart-relay", "fan-controller", "power-module", "ir-remote", "no-neutral-module", "smart-plug"]);
+const pictureFor = (p: Pick<Product, "slug" | "image_url">) => p.image_url || (BUILT_IN_PICTURES.has(p.slug) ? `/images/products/${p.slug}.webp` : null);
+
 function seedRows(): Product[] {
   const now = new Date(0).toISOString();
   return seed.products.map((p, i) => ({
@@ -90,7 +98,7 @@ export async function getPublicProducts(): Promise<Product[]> {
     .filter((p) => p.active)
     // before the public launch nothing is "available" yet: it shows as launching (LAUNCHED flag)
     // rows published before these fields existed have none: give them empty lists
-    .map((p) => ({ ...p, specs: p.specs ?? [], in_box: p.in_box ?? [], used_for: p.used_for ?? [] }))
+    .map((p) => ({ ...p, image_url: pictureFor(p), specs: p.specs ?? [], in_box: p.in_box ?? [], used_for: p.used_for ?? [] }))
     .map((p) => (!flags.LAUNCHED && p.status === "available" ? { ...p, status: "coming-soon" as const } : p))
     .sort((a, b) => a.sort_order - b.sort_order);
 }
