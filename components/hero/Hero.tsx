@@ -81,7 +81,7 @@ export function Hero({ tagline, photoHref }: Props) {
 
   const onCount = Object.values(devices).filter(Boolean).length;
   const hint = inside
-    ? "Plate off: the Homeasy module sits inside your existing switchbox, wired to the same switches. Illustrative render."
+    ? "Plate off: the Homeasy module sits inside your existing switchbox, wired to the same switches."
     : onCount === 0
       ? "Tap the switchboard, the lamp, the TV, the AC or the fan — or use the app."
       : "Same switches. Now on your phone too.";
@@ -203,14 +203,11 @@ export function Hero({ tagline, photoHref }: Props) {
               <Image src="/hero/switch/closed.jpg" alt="" fill sizes="100vw" className="object-cover object-[82%_50%] lg:object-center" />
               <Image
                 src="/hero/switch/open.jpg"
-                alt="Inside the switchbox: a compact Homeasy module wired behind the existing switches (illustrative render)"
+                alt="Inside the switchbox: a compact Homeasy module wired behind the existing switches"
                 fill
                 sizes="100vw"
                 className={`object-cover object-[82%_50%] lg:object-center transition-opacity delay-500 duration-1000 ${inside ? "opacity-100" : "opacity-0"}`}
               />
-              <span className="absolute bottom-3 right-3 rounded-full lg:bottom-24 lg:right-6 bg-navy/80 px-2.5 py-1 text-[11px] font-semibold text-white">
-                Illustrative render
-              </span>
             </div>
 
             {/* hover label, positioned by the viewer */}
