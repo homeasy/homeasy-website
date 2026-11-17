@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
+import { StepsCard } from "@/components/solutions/StepsCard";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { CalendarClock, Gem, Hammer, Headset, MonitorPlay, PencilRuler, Wallet, Wrench } from "lucide-react";
@@ -73,6 +74,19 @@ export default function DesignersPage() {
         eyebrow="Interior designers and architects"
         title="Smart homes without changing your design."
         sub="Smart home solutions for interior designers and architects: add home automation behind the switchboards your clients chose. No wall chasing, no redesign."
+        aside={
+          <StepsCard
+            steps={[
+            { title: "Tell us about your work", body: "A short form at the foot of this page. It takes a minute." },
+            { title: "We call you", body: "We explain how retrofit fits behind the switchboards you specify, and answer your questions." },
+            { title: "We survey your client's home", body: "A free survey and a written quote, so you and your client know what is possible before any work starts." },
+          ]}
+          >
+            <a href="#enquire" className="link inline-flex min-h-11 items-center font-semibold">
+              Go to the form
+            </a>
+          </StepsCard>
+        }
       >
         <a href="#enquire" className="btn btn-primary min-h-12 px-6">
           Become a design partner

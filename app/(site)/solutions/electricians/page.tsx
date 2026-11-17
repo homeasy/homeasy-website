@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
+import { StepsCard } from "@/components/solutions/StepsCard";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import { Gift, GraduationCap, Headset, Wallet } from "lucide-react";
@@ -58,6 +59,19 @@ export default function ElectriciansPage() {
         eyebrow="Electricians"
         title="Grow your work with Homeasy."
         sub="We are building the Homeasy electrician network in Bihar, starting in Patna. Get smart home installation training and take on new work."
+        aside={
+          <StepsCard
+            steps={[
+            { title: "Register", body: "Fill the short form below with your experience and area." },
+            { title: "We call you", body: "We explain the network and how the installation training works." },
+            { title: "Train and take on work", body: "Learn smart home installation with us and take on Homeasy work as the network grows from Patna." },
+          ]}
+          >
+            <a href="#enquire" className="link inline-flex min-h-11 items-center font-semibold">
+              Go to the form
+            </a>
+          </StepsCard>
+        }
       >
         <a href="#enquire" className="btn btn-primary min-h-12 px-6">
           Join the network

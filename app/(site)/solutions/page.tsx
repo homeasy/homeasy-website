@@ -3,7 +3,7 @@ import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import Link from "next/link";
-import { ArrowRight, Building2, Landmark, PencilRuler, Wrench, type LucideIcon } from "lucide-react";
+import { ArrowRight, Building2, Landmark, PencilRuler, Wrench, type LucideIcon, Handshake } from "lucide-react";
 import { Card, PageHero, Section } from "@/components/ui";
 import { CtaBand } from "@/components/ui/CtaBand";
 import { IconTile } from "@/components/catalog";
@@ -42,6 +42,12 @@ const SOLUTIONS: { href: string; icon: LucideIcon; title: string; body: string }
     icon: Landmark,
     title: "Government and institutions",
     body: "Central control and schedules for public buildings.",
+  },
+  {
+    href: "/partner-program",
+    icon: Handshake,
+    title: "Referral partners",
+    body: "Refer a home that wants to go smart and be rewarded when it is installed.",
   },
 ];
 

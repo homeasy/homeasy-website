@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
+import { StepsCard } from "@/components/solutions/StepsCard";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import {
@@ -88,6 +89,19 @@ export default function BuildersPage() {
         eyebrow="Builders and commercial"
         title="Smart-ready homes and spaces, without redesign."
         sub="Home automation for builders and commercial spaces: upgrade ready flats, show flats, offices and shops with Homeasy retrofit. Give buyers one more reason to choose you. Based in Patna, we bring smart home solutions to projects across Bihar."
+        aside={
+          <StepsCard
+            steps={[
+            { title: "Send your project details", body: "Type of project, number of units and its stage, in the form below." },
+            { title: "We visit the site", body: "We look at sample units or the show flat and check the switchboxes." },
+            { title: "You get a written proposal", body: "What can be made smart, how the work is phased, and the full price in writing." },
+          ]}
+          >
+            <a href="#enquire" className="link inline-flex min-h-11 items-center font-semibold">
+              Go to the form
+            </a>
+          </StepsCard>
+        }
       >
         <a href="#enquire" className="btn btn-primary min-h-12 px-6">
           Discuss a project

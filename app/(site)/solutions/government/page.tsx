@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/ui/Breadcrumbs";
+import { StepsCard } from "@/components/solutions/StepsCard";
 import { Related } from "@/components/ui/Related";
 import { seoMetadata } from "@/lib/seo/meta";
 import {
@@ -100,6 +101,19 @@ export default async function GovernmentPage() {
         eyebrow="Government and institutions"
         title="Smarter, energy-efficient public buildings — without rewiring."
         sub="Smart retrofit for government buildings: Homeasy gives departments central control and schedules for lights, fans and appliances across quarters, hostels and offices."
+        aside={
+          <StepsCard
+            steps={[
+            { title: "Send the building details", body: "Type of building, approximate scale and timeline, in the form below." },
+            { title: "We visit and assess", body: "We check the switchboxes and wiring on site and note what can be controlled centrally." },
+            { title: "You get a written proposal", body: "Scope, phases and the full price in writing, for your department to review." },
+          ]}
+          >
+            <a href="#enquire" className="link inline-flex min-h-11 items-center font-semibold">
+              Go to the form
+            </a>
+          </StepsCard>
+        }
       >
         <a href="#enquire" className="btn btn-primary min-h-12 px-6">
           Request a proposal

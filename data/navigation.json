@@ -139,6 +139,10 @@
         {
           "label": "Government",
           "href": "/solutions/government"
+        },
+        {
+          "label": "Partner program",
+          "href": "/partner-program"
         }
       ]
     },

@@ -9,6 +9,7 @@ export const ENQUIRY_KINDS = [
   { id: "government", label: "Government" },
   { id: "demo", label: "Demo request" },
   { id: "early_access", label: "Early access" },
+  { id: "partner", label: "Referral partner" },
 ] as const;
 export type EnquiryKind = (typeof ENQUIRY_KINDS)[number]["id"];
 export const enquiryKindLabel = (id: string) => ENQUIRY_KINDS.find((k) => k.id === id)?.label ?? id;
