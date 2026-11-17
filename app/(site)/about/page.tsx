@@ -117,7 +117,7 @@ export default async function AboutPage() {
         <Link href="/book-survey" className="btn btn-primary min-h-12 px-6">
           Book a free survey
         </Link>
-        <Link href="/solutions" className="btn btn-outline min-h-12 px-6">
+        <Link href="/partner-program" className="btn btn-outline min-h-12 px-6">
           Partner with us
         </Link>
       </PageHero>
